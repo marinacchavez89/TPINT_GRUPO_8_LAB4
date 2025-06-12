@@ -35,6 +35,7 @@
 							<div class="d-grid">
 								<button type="submit" class="btn btn-primary">Ingresar</button>
 							</div>
+							<div class="text-center mt-3"><a href="recuperarClave.jsp">¿Olvidaste tu clave?</a> </div>
 						</form>
 					</div>
 				</div>
