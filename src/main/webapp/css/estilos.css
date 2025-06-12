@@ -4,6 +4,11 @@ body {
     font-family: 'Segoe UI', sans-serif; /* fuente moderna */
 }
 
+.custom-navbar{
+    background-color: #003366;
+    border-color: #003366;
+}
+
 .card-header {
     background-color: #ff8000; /* naranja fuerte */
     color: white;
@@ -17,4 +22,11 @@ body {
 .btn-primary:hover {
     background-color: #003366;
     border-color: #003366;
+}
+
+.footer {
+    background-color: #002147; /* azul marino, como los botones */
+    color: white;
+    font-size: 0.9rem;
+    border-top: 3px solid #ff8000; /* línea naranja superior */
 }
