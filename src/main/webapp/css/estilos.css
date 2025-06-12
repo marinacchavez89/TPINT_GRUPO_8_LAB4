@@ -1,0 +1,20 @@
+@charset "UTF-8";
+body {
+    background-color: #fff6e6; /* fondo suave */
+    font-family: 'Segoe UI', sans-serif; /* fuente moderna */
+}
+
+.card-header {
+    background-color: #ff8000; /* naranja fuerte */
+    color: white;
+}
+
+.btn-primary {
+    background-color: #002147; /* azul marino */
+    border-color: #002147;
+}
+
+.btn-primary:hover {
+    background-color: #003366;
+    border-color: #003366;
+}
