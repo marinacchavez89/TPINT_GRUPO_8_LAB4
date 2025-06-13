@@ -30,3 +30,25 @@ body {
     font-size: 0.9rem;
     border-top: 3px solid #ff8000; /* línea naranja superior */
 }
+
+.tabla{
+	width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    
+}
+
+.tabla th, td
+{
+	border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.tabla th{
+	background-color: #ff8000;
+    color: white;
+}
+.tabla-botones{
+	display: grid;
+	gap: 0.5rem;
+}

@@ -21,7 +21,7 @@
         <p>Gestion de adminstrador:</p>
         <div class="d-grid gap-2 col-6 mx-auto mt-4">
             <a href="" class="btn btn-outline-primary">ABML Clientes</a>
-             <a href="" class="btn btn-outline-primary">ABML Usuarios</a>
+             <a href="administracionUsuarios.jsp" class="btn btn-outline-primary">ABML Usuarios</a>
             <a href="" class="btn btn-outline-primary">ABML Cuentas y asignacion de cuenta a cliente</a>
             <a href="" class="btn btn-outline-primary">Autorizacion de prestamos</a>
             <a href="" class="btn btn-outline-primary">Reportes</a>
