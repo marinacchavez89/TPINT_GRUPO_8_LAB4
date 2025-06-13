@@ -31,24 +31,25 @@ body {
     border-top: 3px solid #ff8000; /* línea naranja superior */
 }
 
-.tabla{
-	width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    
-}
-
-.tabla th, td
-{
-	border: 1px solid #dee2e6;
-    vertical-align: middle;
+.tabla-contenedor {
+    max-width: 1200px;
+    margin: 0 auto;  
+    padding: 0 8px;  
+    border: 1px solid #dee2e6;
 }
 
 .tabla th{
 	background-color: #ff8000;
     color: white;
 }
-.tabla-botones{
-	display: grid;
-	gap: 0.5rem;
+
+.contenedor-botones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
+
+
+
