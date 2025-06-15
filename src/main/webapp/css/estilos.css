@@ -56,4 +56,80 @@ body {
 }
 
 
+/* css de inicioCliente   */
+.btn-cliente {
+    display: inline-block;
+    background-color: white;
+    color: #ff8000;
+    border: 1px solid #ff8000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-cliente:hover {
+    background-color: #ff8000; 
+    color: white;
+}
+
+
+/*  css de perfilCliente.jsp  */
+.perfil-container {
+  max-width: 1000px;
+  margin: 40px auto;           
+  padding: 0 20px;             
+}
+
+.perfil-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-form label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.perfil-form input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.perfil-form input{
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.btn-volver {
+  background-color: #ff8000;
+  color: white;
+  padding: 10px 20px;
+  border: 2px solid #ff8000;
+  border-radius: 6px;
+  transition: 0.3s ease;
+  font-weight: bold;
+}
+
+.btn-volver:hover {
+  background-color: #ffa64d;
+  border-color: #ffa64d;
+}
+
+
+
+
+
+
+
+
 
