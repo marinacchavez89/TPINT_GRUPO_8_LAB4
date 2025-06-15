@@ -1,4 +1,8 @@
 @charset "UTF-8";
+* {
+    font-family: 'Segoe UI', sans-serif !important;
+}
+
 body {
     background-color: #fff6e6; /* fondo suave */
     font-family: 'Segoe UI', sans-serif; /* fuente moderna */
