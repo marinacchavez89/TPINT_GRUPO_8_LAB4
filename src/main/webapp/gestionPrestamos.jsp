@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Panel Cliente</title>
+<title>Gestion Préstamos</title>
 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -16,13 +16,10 @@
 <jsp:include page="navbar.jsp"/>
 
 <div class="container mt-5  mb-5 text-center">
-        <h2 class="mb-4">Home</h2>
+        <h2 class="mb-4">Gestión de Préstamos</h2>
         <div class="d-grid gap-2 col-6 mx-auto mt-4">
-            <a href="perfilCliente.jsp" class="btn-cliente">Mi Perfil</a>
-             <a href="" class="btn-cliente">Transferencias</a>
-            <a href="gestionPrestamos.jsp" class="btn-cliente">Préstamos</a>
-            <a href="" class="btn-cliente">Cuentas</a>
-           
+            <a href="solicitudPrestamo.jsp" class="btn-cliente">Solicitar Préstamos</a>
+             <a href="" class="btn-cliente">Mis Préstamos</a>       
         </div>
  </div>
 
