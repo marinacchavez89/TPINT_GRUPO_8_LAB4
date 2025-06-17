@@ -15,7 +15,7 @@
 
 <jsp:include page="navbar.jsp" />
 
-<div class="container mt-5">
+<div class="container mt-5  mb-5">
     <h2 class="mb-4 text-center">Seleccione un Reporte</h2>
     <div class="list-group col-6 mx-auto">
         <a href="" class="list-group-item list-group-item-action">Reporte de Ingresos vs. Egresos</a>
