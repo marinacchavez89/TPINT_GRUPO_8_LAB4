@@ -24,7 +24,7 @@
              <a href="administracionUsuarios.jsp" class="btn btn-outline-primary">ABML Usuarios</a>
             <a href="administracionCuentas.jsp" class="btn btn-outline-primary">ABML Cuentas y asignacion de cuenta a cliente</a>
             <a href="autorizarPrestamo.jsp" class="btn btn-outline-primary">Autorizacion de prestamos</a>
-            <a href="" class="btn btn-outline-primary">Reportes</a>
+            <a href="menuReportes.jsp" class="btn btn-outline-primary">Reportes</a>
         </div>
     </div>
 
