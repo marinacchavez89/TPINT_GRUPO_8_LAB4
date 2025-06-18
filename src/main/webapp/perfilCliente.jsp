@@ -31,16 +31,29 @@
         <input type="text" id="cuil">
 
         <label for="nacionalidad">Nacionalidad</label>
-        <input type="text" id="nacionalidad">
-
-        <label for="direccion">Dirección</label>
-        <input type="text" id="direccion">
+		<select id="nacionalidad" class="form-select">
+		  <option value="argentina">Argentina</option>
+		  <option value="uruguay">Uruguay</option>
+		  <option value="chile">Chile</option>
+		</select>        
 
         <label for="provincia">Provincia</label>
-        <input type="text" id="provincia">
-
-        <label for="email">Email</label>
-        <input type="email" id="email">
+		<select id="provincia" class="form-select">
+		  <option value="buenos_aires">Buenos Aires</option>
+		  <option value="cordoba">Córdoba</option>
+		  <option value="santafe">Santa Fe</option>
+		</select>
+		
+		<label for="localidad">Localidad</label>
+		<select id="localidad" class="form-select">
+		  <option value="la_plata">La Plata</option>
+		  <option value="cordoba_capital">Córdoba Capital</option>
+		  <option value="rosario">Rosario</option>
+		</select>
+        
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion">
+                
       </div>
 
 
@@ -51,17 +64,22 @@
         <label for="usuario">Usuario</label>
         <input type="text" id="usuario">
 
-        <label for="sexo">Sexo</label>
-        <input type="text" id="sexo">
+        <label for="sexo">Género</label>
+		<select id="sexo" class="form-select">
+		  <option value="femenino">Femenino</option>
+		  <option value="masculino">Masculino</option>
+		  <option value="otro">Otro</option>
+		</select>
 
         <label for="fechaNacimiento">Fecha de Nacimiento</label>
         <input type="date" id="fechaNacimiento">
-
-        <label for="localidad">Localidad</label>
-        <input type="text" id="localidad">
-
+        
         <label for="telefono">Teléfono</label>
         <input type="tel" id="telefono">
+        
+        <label for="email">Email</label>
+        <input type="email" id="email">
+        
       </div>
     </div>
   </form>
