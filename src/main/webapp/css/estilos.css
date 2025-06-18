@@ -151,6 +151,31 @@ body {
   border-color: #003366;
 }
 
+/*reportes*/
+
+/* Estilo para los links como botones */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.list-group-item {
+    display: inline-block;
+    background-color: white;
+    color:  #003366;
+    border: 1px solid  #003366;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover efecto claro con texto blanco */
+.list-group-item:hover {
+  background-color:  #003366;
+  color: white;
+}
+
+
 
 
 

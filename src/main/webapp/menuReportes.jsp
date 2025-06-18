@@ -11,7 +11,7 @@
 <link href="css/estilos.css" rel="stylesheet">
 </head>
 <body>
-<body class="bg-light">
+<body>
 
 <jsp:include page="navbar.jsp" />
 
@@ -23,6 +23,12 @@
         <a href="" class="list-group-item list-group-item-action">Reporte de Préstamos Autorizados</a>
         <a href="" class="list-group-item list-group-item-action">Reporte de Pagos de Cuotas</a>
     </div>
+</div>
+
+<div class="text-center mt-5 mb-5">
+    <form action="inicioAdmin.jsp" method="get">
+      <input type="submit" class="btn-volver" value="Volver">
+    </form>
 </div>
 
 <jsp:include page="footer.jsp" />

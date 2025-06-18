@@ -66,7 +66,7 @@
     </div>
   </form>
 
-  <!-- Botón -->
+  
   <div class="text-center mt-4">
     <form action="inicioCliente.jsp" method="get">
       <input type="submit" class="btn-volver" value="Volver">

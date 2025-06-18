@@ -58,6 +58,7 @@
   <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm">Modificar</button>
   <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
   <button type="submit" name="accion" value="Listar" class="btn btn-secondary btn-sm">Listar</button>
+  <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
 </div>
   <jsp:include page="footer.jsp" />
 

@@ -22,6 +22,12 @@
              <a href="" class="btn-cliente">Mis Préstamos</a>       
         </div>
  </div>
+ 
+ <div class="text-center mt-5 mb-5">
+    <form action="inicioCliente.jsp" method="get">
+      <input type="submit" class="btn-volver" value="Volver">
+    </form>
+</div>
 
  <jsp:include page="footer.jsp" />
 
