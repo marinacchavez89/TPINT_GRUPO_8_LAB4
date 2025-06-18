@@ -9,6 +9,7 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
 <link href="css/estilos.css" rel="stylesheet">
 </head>
 <body>
@@ -17,14 +18,54 @@
 
 <div class="container mt-5  mb-5 text-center">
         <h2 class="mb-4">Home</h2>
-        <div class="d-grid gap-2 col-6 mx-auto mt-4">
-            <a href="perfilCliente.jsp" class="btn-cliente">Mi Perfil</a>
-             <a href="" class="btn-cliente">Transferencias</a>
-            <a href="gestionPrestamos.jsp" class="btn-cliente">Préstamos</a>
-            <a href="" class="btn-cliente">Cuentas</a>
-           
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+
+    <div class="col">
+      <a href="perfilCliente.jsp" class="text-decoration-none text-dark">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <i class="bi bi-person-fill fs-1 mb-2"></i>
+            <h5 class="card-title">Mi Perfil</h5>
+          </div>
         </div>
- </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a href="" class="text-decoration-none text-dark">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <i class="bi bi-wallet2 fs-1 mb-2"></i>
+            <h5 class="card-title">Mis Cuentas</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a href="" class="text-decoration-none text-dark">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <i class="bi bi-arrow-left-right fs-1 mb-2"></i>
+            <h5 class="card-title">Transferencias</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a href="gestionPrestamos.jsp" class="text-decoration-none text-dark">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <i class="bi bi-cash-coin fs-1 mb-2"></i>
+            <h5 class="card-title">Préstamos</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
 
  <jsp:include page="footer.jsp" />
 
