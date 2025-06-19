@@ -16,6 +16,7 @@
 
 <jsp:include page="navbar.jsp"/>
 
+<main>
 <div class="container mt-5  mb-5 text-center">
         <h2 class="mb-4">Home</h2>
         <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -32,7 +33,7 @@
     </div>
 
     <div class="col">
-      <a href="" class="text-decoration-none text-dark">
+      <a href="misCuentas.jsp" class="text-decoration-none text-dark">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <i class="bi bi-wallet2 fs-1 mb-2"></i>
@@ -43,7 +44,7 @@
     </div>
 
     <div class="col">
-      <a href="" class="text-decoration-none text-dark">
+      <a href="transferencias.jsp" class="text-decoration-none text-dark">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <i class="bi bi-arrow-left-right fs-1 mb-2"></i>
@@ -66,6 +67,7 @@
 
   </div>
 </div>
+</main>
 
  <jsp:include page="footer.jsp" />
 

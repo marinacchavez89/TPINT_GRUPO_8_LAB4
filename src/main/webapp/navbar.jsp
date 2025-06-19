@@ -13,10 +13,10 @@
                     <a class="nav-link active" aria-current="page" href="inicioCliente.jsp">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Cuentas</a>
+                    <a class="nav-link" href="misCuentas.jsp">Cuentas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Transferencias</a>
+                    <a class="nav-link" href="transferencias.jsp">Transferencias</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="perfilCliente.jsp">Perfil</a>

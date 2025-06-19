@@ -14,7 +14,7 @@
 
 <jsp:include page="navbar.jsp"/>
 
-<div class="perfil-container">
+<main class="flex-grow-1 d-flex justify-content-center align-items-center py-5">
  <div class="perfil-card">
   <h2 class="text-center mb-4">Mi Perfil</h2>
   <form class="perfil-form">
@@ -98,7 +98,7 @@
     </form>
   </div>
  </div>
-</div>
+</main>
 
 
 

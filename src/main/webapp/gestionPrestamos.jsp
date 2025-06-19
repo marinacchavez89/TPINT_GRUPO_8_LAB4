@@ -15,19 +15,20 @@
 
 <jsp:include page="navbar.jsp"/>
 
-<div class="container mt-5  mb-5 text-center">
-        <h2 class="mb-4">Gestión de Préstamos</h2>
-        <div class="d-grid gap-2 col-6 mx-auto mt-4">
-            <a href="solicitudPrestamo.jsp" class="btn-cliente">Solicitar Préstamos</a>
-             <a href="" class="btn-cliente">Mis Préstamos</a>       
-        </div>
- </div>
+<div class="container mt-5  mb-5">
+   <h2 class="mb-4 text-center">Gestión de Préstamos</h2>
+    <div class="list-group col-6 mx-auto">
+        <a href="solicitudPrestamo.jsp" class="list-group-item list-group-item-action">Solicitar Préstamo</a>
+        <a href="" class="list-group-item list-group-item-action">Mis Préstamos</a>
+    </div>
+</div>
  
  <div class="text-center mt-5 mb-5">
     <form action="inicioCliente.jsp" method="get">
       <input type="submit" class="btn-volver" value="Volver">
     </form>
 </div>
+
 
  <jsp:include page="footer.jsp" />
 
