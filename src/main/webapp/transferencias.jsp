@@ -43,6 +43,13 @@
         <div class="d-grid mt-5 mb-5">
           <button type="submit" class="btn btn-primary">Transferir</button>
         </div>
+        
+        <div class="row mt-3">
+            <div class="col">
+                <a href="inicioCliente.jsp" class="btn btn-primary">Volver</a>
+            </div>
+        </div>
+        
       </form>
     </div>
   </div>

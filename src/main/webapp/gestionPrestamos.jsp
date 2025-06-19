@@ -19,7 +19,7 @@
    <h2 class="mb-4 text-center">Gestión de Préstamos</h2>
     <div class="list-group col-6 mx-auto">
         <a href="solicitudPrestamo.jsp" class="list-group-item list-group-item-action">Solicitar Préstamo</a>
-        <a href="" class="list-group-item list-group-item-action">Mis Préstamos</a>
+        <a href="misPrestamos.jsp" class="list-group-item list-group-item-action">Mis Préstamos</a>
     </div>
 </div>
  
