@@ -3,6 +3,7 @@ package daoImpl;
 import dao.ClienteDAO;
 import dominio.Conexion;
 import entidades.Cliente;
+import entidades.Direccion;
 import entidades.Nacionalidad;
 
 import java.sql.*;
@@ -27,7 +28,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             statement.setString(5, String.valueOf(cliente.getSexo()));
             statement.setInt(6, cliente.getNacionalidad().getIdNacionalidad());
             statement.setDate(7, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
-            statement.setInt(8, cliente.getIdDireccion());
+            statement.setInt(8, cliente.getDireccion().getIdDireccion());
             statement.setString(9, cliente.getCorreoElectronico());
             statement.setString(10, cliente.getTelefono());
             statement.setBoolean(11, cliente.isEstado());	
@@ -61,7 +62,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             statement.setString(4, String.valueOf(cliente.getSexo()));
             statement.setInt(5, cliente.getNacionalidad().getIdNacionalidad());
             statement.setDate(6, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
-            statement.setInt(7, cliente.getIdDireccion());
+            statement.setInt(7, cliente.getDireccion().getIdDireccion());
             statement.setString(8, cliente.getCorreoElectronico());
             statement.setString(9, cliente.getTelefono());
             statement.setBoolean(10, cliente.isEstado());
@@ -140,7 +141,9 @@ public class ClienteDAOImpl implements ClienteDAO {
                 nacionalidad.setIdNacionalidad(rs.getInt("ID_Nacionalidad"));
                 cliente.setNacionalidad(nacionalidad);
                 cliente.setFechaNacimiento(rs.getDate("Fecha_Nacimiento"));
-                cliente.setIdDireccion(rs.getInt("ID_Direccion"));
+                Direccion direccion = new Direccion();
+                direccion.setIdDireccion(rs.getInt("ID_Direccion"));
+                cliente.setDireccion(direccion);
                 cliente.setCorreoElectronico(rs.getString("Correo_Electronico"));
                 cliente.setTelefono(rs.getString("Telefono"));
                 cliente.setEstado(rs.getBoolean("Estado"));

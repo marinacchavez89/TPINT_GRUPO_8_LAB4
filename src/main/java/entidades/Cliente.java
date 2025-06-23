@@ -10,7 +10,7 @@ public class Cliente {
 	private char sexo;
 	private Nacionalidad nacionalidad;
 	private Date fechaNacimiento;
-	private int idDireccion;
+	private Direccion direccion;
 	private String correoElectronico;
 	private String telefono;
 	private boolean estado= true;
@@ -21,7 +21,7 @@ public class Cliente {
 	}
 	
 	public Cliente(int idCliente, String dni, String cuil, String nombre, String apellido, char sexo,
-			Nacionalidad nacionalidad, Date fechaNacimiento, int idDireccion, String correoElectronico, String telefono,
+			Nacionalidad nacionalidad, Date fechaNacimiento, Direccion direccion, String correoElectronico, String telefono,
 			boolean estado) {
 		this.idCliente = idCliente;
 		this.dni = dni;
@@ -31,7 +31,7 @@ public class Cliente {
 		this.sexo = sexo;
 		this.nacionalidad = nacionalidad;
 		this.fechaNacimiento = fechaNacimiento;
-		this.idDireccion = idDireccion;
+		this.direccion = direccion;
 		this.correoElectronico = correoElectronico;
 		this.telefono = telefono;
 		this.estado = estado;
@@ -86,11 +86,11 @@ public class Cliente {
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
-	public int getIdDireccion() {
-		return idDireccion;
+	public Direccion getDireccion() {
+		return direccion;
 	}
-	public void setIdDireccion(int idDireccion) {
-		this.idDireccion = idDireccion;
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
 	}
 	public String getCorreoElectronico() {
 		return correoElectronico;
