@@ -27,7 +27,6 @@
 
 <jsp:include page="navbar.jsp"/>  
 
-
 <div class="tabla-contenedor">
  <table id="table" class="tabla">
  <thead>
@@ -70,6 +69,7 @@
   <button type="submit" name="accion" value="Listar" class="btn btn-secondary btn-sm">Listar</button>
   <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
 </div>
+
   <jsp:include page="footer.jsp" />
 </body>
 </html>
