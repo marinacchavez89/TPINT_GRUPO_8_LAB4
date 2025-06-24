@@ -25,7 +25,7 @@
 </head>
 <body>
 
-<jsp:include page="navbar.jsp"/>  
+<jsp:include page="navbarAdmin.jsp"/>
 
 <form action="ServletCliente" method="post">
 <div class="tabla-contenedor">
@@ -33,7 +33,8 @@
  
 <thead>
     <tr>
-      <th>ID</th>
+      <th></th> <!-- columna vacía para el radio -->
+      <th class="d-none">ID</th>
       <th>DNI</th>
       <th>CUIL</th>
       <th>Nombre</th>
@@ -52,19 +53,33 @@
     if (clientes != null) {
         for (Cliente c : clientes) {
 %>
-    <tr onclick="seleccionarFila(this)">
-        <td><%= c.getIdCliente() %></td>
-        <td><%= c.getDni() %></td>
-        <td><%= c.getCuil() %></td>
-        <td><%= c.getNombre() %></td>
-        <td><%= c.getApellido() %></td>
-        <td><%= c.getSexo() %></td>
-		<td><%= c.getNacionalidad().getDescripcion() %></td>        
-		<td><%= c.getFechaNacimiento() %></td>
-		<td><%= c.getDireccion().getCalle() + " " + c.getDireccion().getNumero() %></td>
-        <td><%= c.getCorreoElectronico() %></td>
-        <td><%= c.getTelefono() %></td>
-    </tr>
+   <tr>
+  <td>
+    <input type="radio" name="clienteSeleccionado" onclick="seleccionarFila(this)"
+      data-id="<%= c.getIdCliente() %>"
+      data-dni="<%= c.getDni() %>"
+      data-cuil="<%= c.getCuil() %>"
+      data-nombre="<%= c.getNombre() %>"
+      data-apellido="<%= c.getApellido() %>"
+      data-sexo="<%= c.getSexo() %>"
+      data-nacionalidad="<%= c.getNacionalidad().getIdNacionalidad() %>"
+      data-fecha="<%= c.getFechaNacimiento() %>"
+      data-direccion="<%= c.getDireccion().getIdDireccion() %>"
+      data-email="<%= c.getCorreoElectronico() %>"
+      data-telefono="<%= c.getTelefono() %>">
+  </td>
+  <td class="d-none"><%= c.getIdCliente() %></td>
+  <td><%= c.getDni() %></td>
+  <td><%= c.getCuil() %></td>
+  <td><%= c.getNombre() %></td>
+  <td><%= c.getApellido() %></td>
+  <td><%= c.getSexo() %></td>
+  <td><%= c.getNacionalidad().getDescripcion() %></td>
+  <td><%= c.getFechaNacimiento() %></td>
+  <td><%= c.getDireccion().getCalle() + " " + c.getDireccion().getNumero() %></td>
+  <td><%= c.getCorreoElectronico() %></td>
+  <td><%= c.getTelefono() %></td>
+</tr>
 <%
         }
     }
@@ -73,60 +88,95 @@
   </table>
 </div>
 
-<!-- Inputs debajo de la tabla -->
-<div class="tabla-contenedor mt-3">
-  <table class="tabla">
-
-    
-
-                   
-  <tr>
-	<td><input type="text" name="id" class="form-control" readonly></td>
-    <td><input type="number" name="dni" class="form-control" required></td>
-    <td><input type="number" name="cuil" class="form-control" required></td>
-    <td><input type="text" name="nombre" class="form-control" required></td>
-    <td><input type="text" name="apellido" class="form-control" required></td>
-    <td><input type="text" name="sexo" class="form-control"></td>
-    <td><input type="text" name="nacionalidad" class="form-control"></td>
-	<td><input type="date" name="fechaNacimiento" class="form-control"></td>
-	<td><input type="text" name="direccion" class="form-control"></td>
-	<td><input type="email" name="email" class="form-control"></td>
- 	<td><input type="tel" name="telefono" class="form-control"></td>
- </tr>
-</table>
-</div>
-
-
 <div class="contenedor-botones">
-  <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Agregar</button>
-  <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm">Modificar</button>
-  <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
+  <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Agregar</button>  
   <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
 </div>
 
+<div class="tabla-contenedor mt-3" id="formModificar" style="display: none;">
+
+ <!-- Título -->
+ <h4 class="mb-3">Modificar o Eliminar cliente</h4>
+
+  <div class="row">
+
+    <!-- Columna izquierda -->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <input type="text" name="id" class="form-control" placeholder="ID" readonly>
+      </div>
+      <div class="mb-3">
+        <input type="text" name="dni" class="form-control" placeholder="DNI" required>
+      </div>
+      <div class="mb-3">
+        <input type="text" name="cuil" class="form-control" placeholder="CUIL" required>
+      </div>
+      <div class="mb-3">
+        <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
+      </div>
+      <div class="mb-3">
+        <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
+      </div>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <input type="text" name="sexo" class="form-control" placeholder="Sexo">
+      </div>
+      <div class="mb-3">
+        <input type="text" name="nacionalidad" class="form-control" placeholder="Nacionalidad">
+      </div>
+      <div class="mb-3">
+        <input type="date" name="fechaNacimiento" class="form-control" placeholder="Fecha Nacimiento">
+      </div>
+      <div class="mb-3">
+        <input type="text" name="direccion" class="form-control" placeholder="Dirección">
+      </div>
+      <div class="mb-3">
+        <input type="email" name="email" class="form-control" placeholder="Correo Electrónico">
+      </div>
+      <div class="mb-3">
+        <input type="tel" name="telefono" class="form-control" placeholder="Teléfono">
+      </div>
+    </div>
+  </div>
+  
+<!-- Botones centrados -->
+ <div class="contenedor-botones">
+	 <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm me-2">Modificar</button>
+	 <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
+ </div>
+ 
+</div>
+  
 </form>
 
   <jsp:include page="footer.jsp" />
   
 <!-- Hacer que al seleccionar una fila, los datos se copien a los inputs :: -->
-  <script>
-	function seleccionarFila(fila) {
-    var celdas = fila.getElementsByTagName("td");
-    var inputs = document.querySelectorAll("input");
+<script>
 
-    inputs[0].value = celdas[0].innerText; // ID
-    inputs[1].value = celdas[1].innerText; // DNI
-    inputs[2].value = celdas[2].innerText; // CUIL
-    inputs[3].value = celdas[3].innerText; // Nombre
-    inputs[4].value = celdas[4].innerText; // Apellido
-    inputs[5].value = celdas[5].innerText; // Sexo
-    inputs[6].value = celdas[6].innerText; // Nacionalidad
-    inputs[7].value = celdas[7].innerText; // Fecha Nacimiento
-    inputs[8].value = celdas[8].innerText; // Direccion
-    inputs[9].value = celdas[9].innerText; //Correo
-    inputs[10].value = celdas[10].innerText; // Telefono
-}
+	function seleccionarFila(radio) {
+	    const form = document.getElementById("formModificar");
+	    const datos = radio.dataset;
+	
+	    form.style.display = "block";
+	
+	    document.querySelector('input[name="id"]').value = datos.id;
+	    document.querySelector('input[name="dni"]').value = datos.dni;
+	    document.querySelector('input[name="cuil"]').value = datos.cuil;
+	    document.querySelector('input[name="nombre"]').value = datos.nombre;
+	    document.querySelector('input[name="apellido"]').value = datos.apellido;
+	    document.querySelector('input[name="sexo"]').value = datos.sexo;
+	    document.querySelector('input[name="nacionalidad"]').value = datos.nacionalidad;
+	    document.querySelector('input[name="fechaNacimiento"]').value = datos.fecha;
+	    document.querySelector('input[name="direccion"]').value = datos.direccion;
+	    document.querySelector('input[name="email"]').value = datos.email;
+	    document.querySelector('input[name="telefono"]').value = datos.telefono;
+	}
+
 </script>
-  
+
 </body>
 </html>

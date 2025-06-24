@@ -14,7 +14,7 @@
 </head>
 <body class= "bg-light">
 
-<jsp:include page="navbar.jsp"
+<jsp:include page="navbarAdmin.jsp"
 />
 
 <div class="container mt-5 mb-5 text-center">
@@ -22,7 +22,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
         
          <div class="col">
-      	  <a href="administracionClientes.jsp" class="text-decoration-none text-dark">
+      	  <a href="ServletCliente" class="text-decoration-none text-dark">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <i class="bi bi-people-fill fs-1 mb-2"></i>
