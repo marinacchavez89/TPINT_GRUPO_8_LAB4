@@ -123,30 +123,38 @@ public class ClienteDAOImpl implements ClienteDAO {
 		PreparedStatement statement;
         ResultSet rs;
         Connection conn = Conexion.getSQLConexion();
-        String sql = "SELECT * FROM cliente";
+        String sql = "SELECT c.*, n.desc_nacionalidad, d.calle, d.numero " +
+                "FROM cliente c " +
+                "INNER JOIN nacionalidad n ON c.id_nacionalidad = n.id_nacionalidad " +
+                "INNER JOIN direccion d ON c.id_direccion = d.id_direccion";
 
         try {
             statement = conn.prepareStatement(sql);
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                Cliente cliente = new Cliente();
-                cliente.setIdCliente(rs.getInt("ID_Cliente"));
-                cliente.setDni(rs.getString("Dni"));
-                cliente.setCuil(rs.getString("Cuil"));
-                cliente.setNombre(rs.getString("Nombre"));
-                cliente.setApellido(rs.getString("Apellido"));
-                cliente.setSexo(rs.getString("Sexo").charAt(0));
-                Nacionalidad nacionalidad= new Nacionalidad();
-                nacionalidad.setIdNacionalidad(rs.getInt("ID_Nacionalidad"));
+            	Cliente cliente = new Cliente();
+                cliente.setIdCliente(rs.getInt("id_cliente"));
+                cliente.setDni(rs.getString("dni"));
+                cliente.setCuil(rs.getString("cuil"));
+                cliente.setNombre(rs.getString("nombre"));
+                cliente.setApellido(rs.getString("apellido"));
+                cliente.setSexo(rs.getString("sexo").charAt(0)); //convierte String a char
+                cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+                cliente.setCorreoElectronico(rs.getString("correo_electronico"));
+                cliente.setTelefono(rs.getString("telefono"));
+                cliente.setEstado(rs.getBoolean("estado"));
+                
+                Nacionalidad nacionalidad = new Nacionalidad();
+                nacionalidad.setIdNacionalidad(rs.getInt("id_nacionalidad"));
+                nacionalidad.setDescripcion(rs.getString("desc_nacionalidad"));
                 cliente.setNacionalidad(nacionalidad);
-                cliente.setFechaNacimiento(rs.getDate("Fecha_Nacimiento"));
+                
                 Direccion direccion = new Direccion();
-                direccion.setIdDireccion(rs.getInt("ID_Direccion"));
+                direccion.setIdDireccion(rs.getInt("id_direccion"));
+                direccion.setCalle(rs.getString("calle"));
+                direccion.setNumero(rs.getString("numero"));
                 cliente.setDireccion(direccion);
-                cliente.setCorreoElectronico(rs.getString("Correo_Electronico"));
-                cliente.setTelefono(rs.getString("Telefono"));
-                cliente.setEstado(rs.getBoolean("Estado"));
 
                 clientes.add(cliente);
             }

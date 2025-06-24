@@ -22,30 +22,63 @@
     });
 </script>
 
-
-
 </head>
 <body>
 
 <jsp:include page="navbar.jsp"/>  
 
+<form action="ServletCliente" method="post">
 <div class="tabla-contenedor">
- <table id="table" class="tabla">
- <thead>
-  <tr>
-  	<th>ID</th>
-    <th>DNI</th>
-    <th>CUIL</th>
-    <th>Nombre</th>
-    <th>Apellido</th>
-    <th>Sexo</th>
-    <th>Nacionalidad</th>
-    <th>Fecha Nacimiento</th>
-    <th>Direccion</th>
-    <th>Correo Electronico</th>
-    <th>Telefono</th>
-  </tr>
- </thead>
+ <table id="tablaClientes" class="tabla">
+ 
+<thead>
+    <tr>
+      <th>ID</th>
+      <th>DNI</th>
+      <th>CUIL</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Sexo</th>
+      <th>Nacionalidad</th>
+      <th>Fecha Nacimiento</th>
+      <th>Direccion</th>
+      <th>Correo Electronico</th>
+      <th>Telefono</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% 
+    List<Cliente> clientes = (List<Cliente>) request.getAttribute("clientes");
+    if (clientes != null) {
+        for (Cliente c : clientes) {
+%>
+    <tr onclick="seleccionarFila(this)">
+        <td><%= c.getIdCliente() %></td>
+        <td><%= c.getDni() %></td>
+        <td><%= c.getCuil() %></td>
+        <td><%= c.getNombre() %></td>
+        <td><%= c.getApellido() %></td>
+        <td><%= c.getSexo() %></td>
+		<td><%= c.getNacionalidad().getDescripcion() %></td>        
+		<td><%= c.getFechaNacimiento() %></td>
+		<td><%= c.getDireccion().getCalle() + " " + c.getDireccion().getNumero() %></td>
+        <td><%= c.getCorreoElectronico() %></td>
+        <td><%= c.getTelefono() %></td>
+    </tr>
+<%
+        }
+    }
+%>
+  </tbody>
+  </table>
+</div>
+
+<!-- Inputs debajo de la tabla -->
+<div class="tabla-contenedor mt-3">
+  <table class="tabla">
+
+    
+
                    
   <tr>
 	<td><input type="text" name="id" class="form-control" readonly></td>
@@ -60,18 +93,40 @@
 	<td><input type="email" name="email" class="form-control"></td>
  	<td><input type="tel" name="telefono" class="form-control"></td>
  </tr>
-                   
-  </table>
- </div>
- 
+</table>
+</div>
+
+
 <div class="contenedor-botones">
   <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Agregar</button>
   <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm">Modificar</button>
   <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
-  <button type="submit" name="accion" value="Listar" class="btn btn-secondary btn-sm">Listar</button>
   <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
 </div>
 
+</form>
+
   <jsp:include page="footer.jsp" />
+  
+<!-- Hacer que al seleccionar una fila, los datos se copien a los inputs :: -->
+  <script>
+	function seleccionarFila(fila) {
+    var celdas = fila.getElementsByTagName("td");
+    var inputs = document.querySelectorAll("input");
+
+    inputs[0].value = celdas[0].innerText; // ID
+    inputs[1].value = celdas[1].innerText; // DNI
+    inputs[2].value = celdas[2].innerText; // CUIL
+    inputs[3].value = celdas[3].innerText; // Nombre
+    inputs[4].value = celdas[4].innerText; // Apellido
+    inputs[5].value = celdas[5].innerText; // Sexo
+    inputs[6].value = celdas[6].innerText; // Nacionalidad
+    inputs[7].value = celdas[7].innerText; // Fecha Nacimiento
+    inputs[8].value = celdas[8].innerText; // Direccion
+    inputs[9].value = celdas[9].innerText; //Correo
+    inputs[10].value = celdas[10].innerText; // Telefono
+}
+</script>
+  
 </body>
 </html>
