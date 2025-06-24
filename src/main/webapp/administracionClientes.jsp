@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, entidades.Cliente" %>
+<%@ page import="entidades.Nacionalidad, entidades.Direccion, entidades.Localidad" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +17,7 @@
 
    <script type="text/javascript">
     $(document).ready(function() {
-        $('#table').DataTable();
+        $('#tablaClientes').DataTable();
            
     });
 </script>
