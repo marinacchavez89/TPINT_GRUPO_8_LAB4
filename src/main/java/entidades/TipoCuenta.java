@@ -35,12 +35,6 @@ public class TipoCuenta {
 		return "TipoCuenta idTipoCuenta: " + idTipoCuenta + ", descripcion: " + descripcion ;
 	}
 	
-	
-	
-	
-	
-	
-	
 }
 
 	
