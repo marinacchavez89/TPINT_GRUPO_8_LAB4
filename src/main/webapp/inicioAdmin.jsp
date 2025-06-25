@@ -33,17 +33,6 @@
     </div>
 
     <div class="col">
-      <a href="ServletCuenta" class="text-decoration-none text-dark">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <i class="bi bi-person-circle fs-1 mb-2"></i>
-            <h5 class="card-title">Gestión de Usuarios</h5>
-          </div>
-        </div>
-      </a>
-    </div>
-
-    <div class="col">
       <a href="administracionCuentas.jsp" class="text-decoration-none text-dark">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
