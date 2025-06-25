@@ -33,7 +33,7 @@
     </div>
 
     <div class="col">
-      <a href="administracionUsuarios.jsp" class="text-decoration-none text-dark">
+      <a href="ServletCuenta" class="text-decoration-none text-dark">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <i class="bi bi-person-circle fs-1 mb-2"></i>

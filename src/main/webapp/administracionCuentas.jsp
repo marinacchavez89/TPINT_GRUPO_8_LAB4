@@ -27,6 +27,7 @@
 
 <jsp:include page="navbar.jsp"/>  
 
+ <form action="ServletCuentas" method="post">
 
 <div class="tabla-contenedor">
  <table id="table" class="tabla">
@@ -52,7 +53,7 @@
                    
   </table>
  </div>
- 
+ </form>
 <div class="contenedor-botones">
   <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Agregar</button>
   <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm">Modificar</button>
