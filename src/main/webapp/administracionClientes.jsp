@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, entidades.Cliente" %>
+<%@ page import="entidades.PaisResidencia" %>
 <%@ page import="entidades.Nacionalidad, entidades.Direccion, entidades.Localidad" %>
 <!DOCTYPE html>
 <html>
@@ -121,6 +122,34 @@
       <div class="mb-3">
         <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
       </div>
+      <div class="mb-3">
+	  <select name="paisResidencia" id="paisResidencia" class="form-select" onchange="cargarProvincias(this.value)">
+	    <option value="">Seleccione país de residencia</option>
+	    <%
+	        List<PaisResidencia> paisesResidencia = (List<PaisResidencia>) request.getAttribute("listaPaises");
+	        if (paisesResidencia != null) {
+	            for (PaisResidencia p : paisesResidencia) {
+	    %>
+	                <option value="<%= p.getIdPaisResidencia() %>"><%= p.getDescripcion() %></option>
+	    <%
+	            }
+	        }
+	    %>
+	</select>
+	</div>
+	
+	<div class="mb-3">
+	  <select name="provincia" id="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
+	    <option value="">Seleccione provincia</option>
+	  </select>
+	</div>
+	
+	<div class="mb-3">
+	  <select name="localidad" id="localidad" class="form-select">
+	    <option value="">Seleccione localidad</option>
+	  </select>
+	</div>
+	  
     </div>
 
     <!-- Columna derecha -->
@@ -129,8 +158,20 @@
         <input type="text" name="sexo" class="form-control" placeholder="Sexo">
       </div>
       <div class="mb-3">
-        <input type="text" name="nacionalidad" class="form-control" placeholder="Nacionalidad">
-      </div>
+	  <select name="nacionalidad" class="form-select" required>
+	    <option value="">Seleccione nacionalidad</option>
+	    <%
+	      List<Nacionalidad> listaNacionalidadesModif = (List<Nacionalidad>) request.getAttribute("listaNacionalidades");
+	      if (listaNacionalidadesModif != null) {
+	        for (Nacionalidad n : listaNacionalidadesModif) {
+	    %>
+	        <option value="<%= n.getIdNacionalidad() %>"><%= n.getDescripcion() %></option>
+	    <%
+	        }
+	      }
+	    %>
+	  </select>
+	  </div>
       <div class="mb-3">
         <input type="date" name="fechaNacimiento" class="form-control" placeholder="Fecha Nacimiento">
       </div>
@@ -156,7 +197,7 @@
 
 <form action="ServletCliente" method="post" id="formAgregar" style="display: none;">
 
-	<div class="tabla-contenedor mt-3">
+<div class="tabla-contenedor mt-3">
   <h4 class="mb-3">Agregar nuevo cliente</h4>
 
   <div class="row">
@@ -174,16 +215,53 @@
       <div class="mb-3">
         <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
       </div>
-    </div>
+      <div class="mb-3">
+	  <select name="paisResidencia" id="paisResidencia" class="form-select" onchange="cargarProvincias(this.value)">
+	    <option value="">Seleccione país de residencia</option>
+	    <%
+	      List<PaisResidencia> paisesResidenciaAgregar = (List<PaisResidencia>) request.getAttribute("listaPaises");
+	      for (PaisResidencia p : paisesResidenciaAgregar) {
+	    %>
+	      <option value="<%= p.getIdPaisResidencia() %>"><%= p.getDescripcion() %></option>
+	    <%
+	      }
+	    %>
+	  </select>
+	</div>
+	
+	<div class="mb-3">
+	  <select name="provincia" id="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
+	    <option value="">Seleccione provincia</option>
+	  </select>
+	</div>
+	
+	<div class="mb-3">
+	  <select name="localidad" id="localidad" class="form-select">
+	    <option value="">Seleccione localidad</option>
+	  </select>
+	</div>
+</div>
 
     <!-- Columna derecha -->
     <div class="col-md-6">
       <div class="mb-3">
         <input type="text" name="sexo" class="form-control" placeholder="Sexo">
       </div>
-      <div class="mb-3">
-        <input type="text" name="nacionalidad" class="form-control" placeholder="Nacionalidad">
-      </div>
+     <div class="mb-3">
+	  <select name="nacionalidad" class="form-select" required>
+	    <option value="">Seleccione nacionalidad</option>
+	    <%
+	      List<Nacionalidad> nacionalidades = (List<Nacionalidad>) request.getAttribute("listaNacionalidades");
+	      if (nacionalidades != null) {
+	        for (Nacionalidad n : nacionalidades) {
+	    %>
+	        <option value="<%= n.getIdNacionalidad() %>"><%= n.getDescripcion() %></option>
+	    <%
+	        }
+	      }
+	    %>
+	  </select>
+	</div>
       <div class="mb-3">
         <input type="date" name="fechaNacimiento" class="form-control" placeholder="Fecha Nacimiento">
       </div>
@@ -247,6 +325,32 @@
 	   const inputs = formAgregar.querySelectorAll('input');
 	   inputs.forEach(input => input.value = '');
 	 }
+	
+	function cargarProvincias(idPais) {
+	    fetch('ServletProvincias?idPais=' + idPais)
+	        .then(response => response.json())
+	        .then(data => {
+	            const provinciaSelect = document.getElementById("provincia");
+	            provinciaSelect.innerHTML = '<option value="">Seleccione provincia</option>';
+	            data.forEach(prov => {
+	                provinciaSelect.innerHTML += `<option value="${prov.idProvincia}">${prov.nombre}</option>`;
+	            });
+	            // Limpia localidades
+	            document.getElementById("localidad").innerHTML = '<option value="">Seleccione localidad</option>';
+	        });
+	}
+
+	function cargarLocalidades(idProvincia) {
+	    fetch('ServletLocalidades?idProvincia=' + idProvincia)
+	        .then(response => response.json())
+	        .then(data => {
+	            const localidadSelect = document.getElementById("localidad");
+	            localidadSelect.innerHTML = '<option value="">Seleccione localidad</option>';
+	            data.forEach(loc => {
+	                localidadSelect.innerHTML += `<option value="${loc.idLocalidad}">${loc.nombre}</option>`;
+	            });
+	        });
+	}
 
 </script>
 

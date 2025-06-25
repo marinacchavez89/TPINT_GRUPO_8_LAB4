@@ -3,6 +3,7 @@ package controlador;
 import entidades.Cliente;
 import entidades.Direccion;
 import entidades.Nacionalidad;
+import entidades.PaisResidencia;
 import negocio.ClienteNegocio;
 import negocioImpl.ClienteNegocioImpl;
 
@@ -12,18 +13,33 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
+import negocio.NacionalidadNegocio;
+import negocioImpl.NacionalidadNegocioImpl;
+import negocio.PaisResidenciaNegocio;
+import negocioImpl.PaisResidenciaNegocioImpl;
+
 @WebServlet("/ServletCliente")
 public class ServletCliente extends HttpServlet {
 
     private ClienteNegocio clienteNegocio = new ClienteNegocioImpl();
+    private NacionalidadNegocio nacionalidadNegocio = new NacionalidadNegocioImpl();
+    private PaisResidenciaNegocio paisNegocio = new PaisResidenciaNegocioImpl();
+    //private ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         List<Cliente> listaClientes = clienteNegocio.listarClientes();
+        List<Nacionalidad> listaNacionalidades = nacionalidadNegocio.obtenerTodas();
+        List<PaisResidencia> listaPaises = paisNegocio.obtenerTodos();
+        //List<Provincia> listaProvincias = provinciaNegocio.obtenerTodas();
+        //request.setAttribute("listaProvincias", listaProvincias);
+
 
         request.setAttribute("clientes", listaClientes);
+        request.setAttribute("listaNacionalidades", listaNacionalidades);
+        request.setAttribute("listaPaises", listaPaises);
 
         // Manda los datos al JSP para mostrar
         request.getRequestDispatcher("administracionClientes.jsp").forward(request, response);
