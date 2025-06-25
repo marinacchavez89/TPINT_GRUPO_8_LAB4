@@ -89,7 +89,7 @@ public class CuentaDAOImpl implements CuentaDAO {
 		PreparedStatement statement;
         Connection conn = Conexion.getSQLConexion();
         boolean eliminado = false;
-		String sql = "DELETE FROM cuente WHERE nro_cuenta = ?";
+		String sql = "DELETE FROM cuenta WHERE nro_cuenta = ?";
 		try {
             statement = (PreparedStatement) conn.prepareStatement(sql);
             statement.setInt(1, nroCuenta);
@@ -116,8 +116,10 @@ public class CuentaDAOImpl implements CuentaDAO {
 		PreparedStatement statement;
         ResultSet rs;
         Connection conn = Conexion.getSQLConexion();
-        String sql = "SELECT c.id_cliente, c.fecha_creacion, tc. desc_tipo_cuenta, c.nro_cuenta,c.cbu, c.saldo"
-        		+"From cuenta c INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta";
+        String sql = "SELECT c.nro_cuenta, c.id_cliente, c.fecha_creacion, c.id_tipo_cuenta, " +
+                "tc.desc_tipo_cuenta, c.cbu, c.saldo, c.estado " +
+                "FROM cuenta c " +
+                "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta";
 
 
         try {
@@ -135,8 +137,8 @@ public class CuentaDAOImpl implements CuentaDAO {
                 
                 TipoCuenta tipocuenta = new TipoCuenta();
                 tipocuenta.setIdTipoCuenta(rs.getInt("id_tipo_cuenta"));
-                tipocuenta.setDescripcion(rs.getString("desc_tipo_cuenta"));           
-
+                tipocuenta.setDescripcion(rs.getString("desc_tipo_cuenta")); 
+                cuenta.setTipoCuenta(tipocuenta);
                 cuentas.add(cuenta);
             	}
             
