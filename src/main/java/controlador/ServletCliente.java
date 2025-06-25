@@ -48,7 +48,8 @@ public class ServletCliente extends HttpServlet {
         cliente.setCuil(request.getParameter("cuil"));
         cliente.setNombre(request.getParameter("nombre"));
         cliente.setApellido(request.getParameter("apellido"));
-        cliente.setSexo(request.getParameter("sexo").charAt(0));
+        String sexoStr = request.getParameter("sexo");
+        cliente.setSexo((sexoStr != null && !sexoStr.isEmpty()) ? sexoStr.charAt(0) : ' ');
 
         // Nacionalidad
         Nacionalidad nacionalidad = new Nacionalidad();

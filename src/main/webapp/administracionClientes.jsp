@@ -89,11 +89,15 @@
 </div>
 
 <div class="contenedor-botones">
-  <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Agregar</button>  
+  <!--<button type="submit" name="accion" value="Agregar"  class="btn btn-success btn-sm">Agregar</button>-->
+  <button type="button" onclick="mostrarFormularioAgregar()" class="btn btn-success btn-sm">Agregar</button>  
   <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
 </div>
+</form>
 
-<div class="tabla-contenedor mt-3" id="formModificar" style="display: none;">
+<form action="ServletCliente" method="post" id="formModificar" style="display: none;">
+
+<div class="tabla-contenedor mt-3">
 
  <!-- Título -->
  <h4 class="mb-3">Modificar o Eliminar cliente</h4>
@@ -146,11 +150,65 @@
  <div class="contenedor-botones">
 	 <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm me-2">Modificar</button>
 	 <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
- </div>
- 
+ </div> 
 </div>
-  
 </form>
+
+<form action="ServletCliente" method="post" id="formAgregar" style="display: none;">
+
+	<div class="tabla-contenedor mt-3">
+  <h4 class="mb-3">Agregar nuevo cliente</h4>
+
+  <div class="row">
+    <!-- Columna izquierda -->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <input type="text" name="dni" class="form-control" placeholder="DNI" required>
+      </div>
+      <div class="mb-3">
+        <input type="text" name="cuil" class="form-control" placeholder="CUIL" required>
+      </div>
+      <div class="mb-3">
+        <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
+      </div>
+      <div class="mb-3">
+        <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
+      </div>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <input type="text" name="sexo" class="form-control" placeholder="Sexo">
+      </div>
+      <div class="mb-3">
+        <input type="text" name="nacionalidad" class="form-control" placeholder="Nacionalidad">
+      </div>
+      <div class="mb-3">
+        <input type="date" name="fechaNacimiento" class="form-control" placeholder="Fecha Nacimiento">
+      </div>
+      <div class="mb-3">
+        <input type="text" name="direccion" class="form-control" placeholder="Dirección">
+      </div>
+      <div class="mb-3">
+        <input type="email" name="email" class="form-control" placeholder="Correo Electrónico">
+      </div>
+      <div class="mb-3">
+        <input type="tel" name="telefono" class="form-control" placeholder="Teléfono">
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón Agregar -->
+  <div class="contenedor-botones">
+    <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Guardar</button>
+  </div>
+</div>
+
+</form>
+
+  
+
 
   <jsp:include page="footer.jsp" />
   
@@ -158,6 +216,7 @@
 <script>
 
 	function seleccionarFila(radio) {
+		document.getElementById("formAgregar").style.display = "none";
 	    const form = document.getElementById("formModificar");
 	    const datos = radio.dataset;
 	
@@ -175,6 +234,19 @@
 	    document.querySelector('input[name="email"]').value = datos.email;
 	    document.querySelector('input[name="telefono"]').value = datos.telefono;
 	}
+	
+	function mostrarFormularioAgregar() {
+	   // Oculta el de modificar si estaba abierto
+	   document.getElementById("formModificar").style.display = "none";
+	
+	   // Limpia todos los campos del formulario de agregar
+	   const formAgregar = document.getElementById("formAgregar");
+	   formAgregar.style.display = "block";
+	
+	   // Limpieza de campos (puede mejorarse si ponés un `id` al form o inputs)
+	   const inputs = formAgregar.querySelectorAll('input');
+	   inputs.forEach(input => input.value = '');
+	 }
 
 </script>
 
