@@ -14,8 +14,7 @@
 </head>
 <body class= "bg-light">
 
-<jsp:include page="navbarAdmin.jsp"
-/>
+<jsp:include page="navbarAdmin.jsp"/>
 
 <div class="container mt-5 mb-5 text-center">
         <h2 class="mb-4">Panel de Administración</h2>
@@ -33,7 +32,7 @@
     </div>
 
     <div class="col">
-      <a href="administracionCuentas.jsp" class="text-decoration-none text-dark">
+      <a href="ServletCuenta" class="text-decoration-none text-dark">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <i class="bi bi-bank fs-1 mb-2"></i>

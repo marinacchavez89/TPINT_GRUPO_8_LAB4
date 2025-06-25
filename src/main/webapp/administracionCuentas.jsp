@@ -19,7 +19,7 @@
 
 <body>
 
-<jsp:include page="navbar.jsp" />
+<jsp:include page="navbarAdmin.jsp"/>
 
 <form action="ServletCuenta" method="post">
   <div class="tabla-contenedor">
