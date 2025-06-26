@@ -265,9 +265,18 @@
       <div class="mb-3">
         <input type="date" name="fechaNacimiento" class="form-control" placeholder="Fecha Nacimiento">
       </div>
-      <div class="mb-3">
+      <!--<div class="mb-3">
         <input type="text" name="direccion" class="form-control" placeholder="Dirección">
-      </div>
+      </div>-->
+      <div class="mb-3">
+	  	<input type="text" name="calle" class="form-control" placeholder="Calle" required>
+	  </div>
+	  <div class="mb-3">
+	  	<input type="text" name="numero" class="form-control" placeholder="Número" required>
+	  </div>
+	  <div class="mb-3">
+	  	<input type="text" name="codigoPostal" class="form-control" placeholder="Código Postal" required>
+	  </div>
       <div class="mb-3">
         <input type="email" name="email" class="form-control" placeholder="Correo Electrónico">
       </div>

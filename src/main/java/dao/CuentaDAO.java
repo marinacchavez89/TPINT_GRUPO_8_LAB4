@@ -1,7 +1,6 @@
 package dao;
 
 import entidades.Cuenta;
-import entidades.TipoCuenta;
 import java.util.List;
 
 public interface CuentaDAO {

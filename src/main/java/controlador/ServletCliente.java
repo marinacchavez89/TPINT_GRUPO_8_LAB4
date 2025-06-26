@@ -8,6 +8,7 @@ import entidades.PaisResidencia;
 import entidades.Provincia;
 import negocio.ClienteNegocio;
 import negocioImpl.ClienteNegocioImpl;
+import negocioImpl.DireccionNegocioImpl;
 import negocioImpl.LocalidadNegocioImpl;
 
 import javax.servlet.ServletException;
@@ -24,6 +25,7 @@ import negocioImpl.PaisResidenciaNegocioImpl;
 import negocio.ProvinciaNegocio;
 import negocioImpl.ProvinciaNegocioImpl;
 import negocio.LocalidadNegocio;
+import negocio.DireccionNegocio;
 
 @WebServlet("/ServletCliente")
 public class ServletCliente extends HttpServlet {
@@ -32,6 +34,7 @@ public class ServletCliente extends HttpServlet {
     private NacionalidadNegocio nacionalidadNegocio = new NacionalidadNegocioImpl();
     private PaisResidenciaNegocio paisNegocio = new PaisResidenciaNegocioImpl();
     private ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImpl();
+    private DireccionNegocio direccionNegocio = new DireccionNegocioImpl();
     private LocalidadNegocio localidadNegocio = new LocalidadNegocioImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -122,9 +125,9 @@ public class ServletCliente extends HttpServlet {
         }
 
         // Direccion
-        Direccion direccion = new Direccion();
+        /*Direccion direccion = new Direccion();
         direccion.setIdDireccion( parseInt(request.getParameter("direccion")) );
-        cliente.setDireccion(direccion);
+        cliente.setDireccion(direccion);*/
 
         cliente.setCorreoElectronico(request.getParameter("email"));
         cliente.setTelefono(request.getParameter("telefono"));
@@ -134,6 +137,27 @@ public class ServletCliente extends HttpServlet {
 
         switch (accion) {
             case "Agregar":
+            	Direccion direccion = new Direccion();
+                direccion.setCalle(request.getParameter("calle"));
+                direccion.setNumero(request.getParameter("numero"));
+                direccion.setCodigoPostal(request.getParameter("codigoPostal"));
+                
+                Localidad localidad = new Localidad();
+                localidad.setIdLocalidad(parseInt(request.getParameter("localidad")));
+                direccion.setLocalidad(localidad);
+                
+                int idDireccion = direccionNegocio.agregarDireccion(direccion);
+                if (idDireccion > 0) {
+                    direccion.setIdDireccion(idDireccion);
+                    cliente.setDireccion(direccion);
+                    resultado = clienteNegocio.agregarCliente(cliente);
+                } else {
+                    System.out.println("⚠️ No se pudo insertar la dirección, no se agrega el cliente.");
+                    resultado = false;
+                }
+                direccion.setIdDireccion(idDireccion);
+                
+                cliente.setDireccion(direccion);
                 resultado = clienteNegocio.agregarCliente(cliente);
                 break;
             case "Modificar":
