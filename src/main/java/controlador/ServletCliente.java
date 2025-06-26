@@ -6,6 +6,7 @@ import entidades.Localidad;
 import entidades.Nacionalidad;
 import entidades.PaisResidencia;
 import entidades.Provincia;
+import entidades.Usuario;
 import negocio.ClienteNegocio;
 import negocioImpl.ClienteNegocioImpl;
 import negocioImpl.DireccionNegocioImpl;
@@ -26,6 +27,8 @@ import negocio.ProvinciaNegocio;
 import negocioImpl.ProvinciaNegocioImpl;
 import negocio.LocalidadNegocio;
 import negocio.DireccionNegocio;
+import negocio.UsuarioNegocio;
+import negocioImpl.UsuarioNegocioImpl;
 
 @WebServlet("/ServletCliente")
 public class ServletCliente extends HttpServlet {
@@ -153,9 +156,30 @@ public class ServletCliente extends HttpServlet {
                     direccion.setIdDireccion(idDireccionNueva);
                     cliente.setDireccion(direccion);
                     resultado = clienteNegocio.agregarCliente(cliente);
+     
+                    if(resultado) {
+                    	int idClienteGenerado = clienteNegocio.obtenerIdXDni(cliente.getDni());
+           
+                    	if(idClienteGenerado>0) {
+                    	Usuario nuevoUsuario = new Usuario();                       
+                    	nuevoUsuario.setIdCliente(idClienteGenerado);
+                    	nuevoUsuario.setNombreUsuario(cliente.getDni());
+                        nuevoUsuario.setContrasena(cliente.getDni());                        
+                        nuevoUsuario.setTipoUsuario("cliente");
+                        nuevoUsuario.setEstado(true);
+
+                        
+ 
+                        UsuarioNegocio usuarioNegocio = new UsuarioNegocioImpl();
+                        boolean usuarioOk = usuarioNegocio.agregarUsuario(nuevoUsuario);
+                        if (!usuarioOk) {
+                            System.out.println("⚠️ Usuario no se pudo agregar.");
+                        }
+                    }
                 } else {
                     System.out.println("⚠️ No se pudo insertar la dirección, no se agrega el cliente.");
                     resultado = false;
+                }
                 }
                 break;
             case "Modificar":
