@@ -139,13 +139,13 @@
 	</div>
 	
 	<div class="mb-3">
-	  <select name="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
+	  <select name="provincia" class="form-select">
 	    <option value="">Seleccione provincia</option>
 	  </select>
 	</div>
 	
 	<div class="mb-3">
-	  <select name="localidad" id="localidad" class="form-select">
+	  <select name="localidad" class="form-select">
 	    <option value="">Seleccione localidad</option>
 	  </select>
 	</div>
@@ -230,13 +230,13 @@
 	</div>
 	
 	<div class="mb-3">
-	  <select name="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
+	  <select name="provincia" class="form-select">
 	    <option value="">Seleccione provincia</option>
 	  </select>
 	</div>
 	
 	<div class="mb-3">
-	  <select name="localidad" id="localidad" class="form-select">
+	  <select name="localidad" class="form-select">
 	    <option value="">Seleccione localidad</option>
 	  </select>
 	</div>
@@ -330,30 +330,44 @@
 </script>
 
 <script>
-  // URL base exclusivamente del servlet que devuelve <option>…</option> y se generan el resto de opciones
   const servletBase = '<%= request.getContextPath() %>/ServletCliente';
 
-  // Listener en TODOS los selects de país (tanto en Alta como Modificación) (Si... usaba un form en vez de los dos y estuve 2 horas asi)
+  // Cuando cambie el país, recargo el listado de provincias y limpio las localidades
   $('select[name="paisResidencia"]').on('change', function() {
-    const $pais   = $(this);
-    const idPais  = $pais.val();
-    // busco el select de provincias que está en el mismo <form>
-    const $prov   = $pais.closest('form').find('select[name="provincia"]');
+    const idPais = $(this).val();
+    const $provSelect = $(this).closest('form').find('select[name="provincia"]');
+    const $locSelect  = $(this).closest('form').find('select[name="localidad"]');
 
-    // Reseteo
-    $prov.html('<option value="">-- Seleccione provincia --</option>');
+    // Reset
+    $provSelect.html('<option value="">-- Seleccione provincia --</option>');
+    $locSelect.html('<option value="">-- Seleccione localidad --</option>');
+
     if (!idPais) return;
 
-    // Llamada AJAX
     $.get(servletBase, { idPais: idPais })
-     .done(function(htmlOptions) {
-       $prov.append(htmlOptions);
-     })
-     .fail(function(err) {
-       console.error('Error cargando provincias:', err);
-     });
+      .done(html => $provSelect.append(html))
+      .fail(err => console.error('Error cargando provincias:', err));
   });
 </script>
+<script>
+  const servletBases = '<%= request.getContextPath() %>/ServletCliente';
+
+  // Cuando cambie la provincia, recargo el listado de localidades
+  $('select[name="provincia"]').on('change', function() {
+    const idProv = $(this).val();
+    const $locSelect = $(this).closest('form').find('select[name="localidad"]');
+
+    // Reset
+    $locSelect.html('<option value="">-- Seleccione localidad --</option>');
+
+    if (!idProv) return;
+
+    $.get(servletBases, { idProvincia: idProv })
+      .done(html => $locSelect.append(html))
+      .fail(err => console.error('Error cargando localidades:', err));
+  });
+</script>
+
 
 
 
