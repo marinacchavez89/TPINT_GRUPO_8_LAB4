@@ -85,7 +85,7 @@ public class CuentaDAOImpl implements CuentaDAO {
 		PreparedStatement statement;
         Connection conn = Conexion.getSQLConexion();
         boolean eliminado = false;
-		String sql = "DELETE FROM cuenta WHERE nro_cuenta = ?";
+        String sql = "UPDATE cuenta SET estado = FALSE WHERE nro_cuenta = ?";
 		try {
             statement = (PreparedStatement) conn.prepareStatement(sql);
             statement.setInt(1, nroCuenta);

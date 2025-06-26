@@ -23,7 +23,7 @@
 						<h3>Inicio de Sesión</h3>
 					</div>
 					<div class="card-body">
-						<form action="LoginServlet" method="post">
+						<form action="ServletLogin" method="post">
 							<div class="mb-3">
 								<label for="usuario" class="form-label">Usuario:</label> <input
 									type="text" name="usuario" class="form-control" required>

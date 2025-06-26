@@ -12,4 +12,9 @@ public class UsuarioNegocioImpl implements UsuarioNegocio{
 	public boolean agregarUsuario(Usuario usuario) {
 		return usuarioDAO.agregarUsuario(usuario);
 	}
+	
+	@Override
+    public Usuario autenticarUsuario(String nombreUsuario, String contrasena) {
+		 return usuarioDAO.obtenerUsuarioPorCredenciales(nombreUsuario, contrasena);
+    }
 }

@@ -167,19 +167,17 @@ public class ServletCliente extends HttpServlet {
                         nuevoUsuario.setContrasena(cliente.getDni());                        
                         nuevoUsuario.setTipoUsuario("cliente");
                         nuevoUsuario.setEstado(true);
-
-                        
  
                         UsuarioNegocio usuarioNegocio = new UsuarioNegocioImpl();
                         boolean usuarioOk = usuarioNegocio.agregarUsuario(nuevoUsuario);
-                        if (!usuarioOk) {
-                            System.out.println("⚠️ Usuario no se pudo agregar.");
-                        }
-                    }
-                } else {
-                    System.out.println("⚠️ No se pudo insertar la dirección, no se agrega el cliente.");
-                    resultado = false;
-                }
+	                        if (!usuarioOk) {
+	                            System.out.println("⚠️ Usuario no se pudo agregar.");
+	                        }
+                    	}
+	                } else {
+	                    System.out.println("⚠️ No se pudo insertar la dirección, no se agrega el cliente.");
+	                    resultado = false;
+	                }
                 }
                 break;
             case "Modificar":

@@ -88,7 +88,6 @@ public class ServletCuenta extends HttpServlet {
 
 		switch (accion) {
 			case "Agregar":
-				cuentaNegocio.agregarCuenta(cuenta);
 				resultado = cuentaNegocio.agregarCuenta(cuenta);
 				break;
 			case "Modificar":

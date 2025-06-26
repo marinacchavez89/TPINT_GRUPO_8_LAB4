@@ -91,28 +91,41 @@ public class ClienteDAOImpl implements ClienteDAO {
 	
 	@Override
 	public boolean eliminar(int idCliente) {
-		PreparedStatement statement;
-        Connection conn = Conexion.getSQLConexion();
-        boolean eliminado = false;
-		String sql = "DELETE FROM cliente WHERE ID_Cliente = ?";
-		try {
-            statement = conn.prepareStatement(sql);
-            statement.setInt(1, idCliente);
+	    PreparedStatement statement = null;
+	    Connection conn = Conexion.getSQLConexion();
+	    boolean actualizado = false; // Renamed for clarity, as it's an update, not a delete
 
-            if (statement.executeUpdate() > 0) {
-                conn.commit();
-                eliminado = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+	    // SQL to logically delete the client by setting their 'estado' to FALSE
+	    String sql = "UPDATE cliente SET estado = FALSE WHERE ID_Cliente = ?";
 
-        return eliminado;
+	    try {
+	        statement = conn.prepareStatement(sql);
+	        statement.setInt(1, idCliente);
+
+	        // Execute the update. If more than 0 rows are affected, it was successful.
+	        if (statement.executeUpdate() > 0) {
+	            conn.commit();
+	            actualizado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            // Rollback the transaction in case of an error
+	            conn.rollback();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    } finally {
+	        // It's good practice to close the statement and connection
+	        try {
+	            if (statement != null) statement.close();
+	            if (conn != null) conn.close(); // Only if you manage connections here
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return actualizado;
 	}
 	
 	@Override
@@ -163,8 +176,9 @@ public class ClienteDAOImpl implements ClienteDAO {
                 + "INNER JOIN direccion d ON c.id_direccion = d.id_direccion "
                 + "INNER JOIN localidad l ON d.id_localidad = l.id_localidad "
                 + "INNER JOIN provincia p ON l.id_provincia = p.id_provincia "
-                + "INNER JOIN pais_residencia pr ON p.id_pais_residencia = pr.id_pais_residencia";
-
+                + "INNER JOIN pais_residencia pr ON p.id_pais_residencia = pr.id_pais_residencia "
+                + "WHERE c.estado = 1";
+        
         try {
             statement = conn.prepareStatement(sql);
             rs = statement.executeQuery();
