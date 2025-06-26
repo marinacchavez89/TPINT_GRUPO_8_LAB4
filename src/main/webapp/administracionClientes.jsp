@@ -123,7 +123,7 @@
         <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
       </div>
       <div class="mb-3">
-	  <select name="paisResidencia" id="paisResidencia" class="form-select" onchange="cargarProvincias(this.value)">
+	  <select name="paisResidencia" class="form-select")">
 	    <option value="">Seleccione país de residencia</option>
 	    <%
 	        List<PaisResidencia> paisesResidencia = (List<PaisResidencia>) request.getAttribute("listaPaises");
@@ -139,7 +139,7 @@
 	</div>
 	
 	<div class="mb-3">
-	  <select name="provincia" id="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
+	  <select name="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
 	    <option value="">Seleccione provincia</option>
 	  </select>
 	</div>
@@ -216,7 +216,7 @@
         <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
       </div>
       <div class="mb-3">
-	  <select name="paisResidencia" id="paisResidencia" class="form-select" onchange="cargarProvincias(this.value)">
+	  <select name="paisResidencia" class="form-select">
 	    <option value="">Seleccione país de residencia</option>
 	    <%
 	      List<PaisResidencia> paisesResidenciaAgregar = (List<PaisResidencia>) request.getAttribute("listaPaises");
@@ -230,7 +230,7 @@
 	</div>
 	
 	<div class="mb-3">
-	  <select name="provincia" id="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
+	  <select name="provincia" class="form-select" onchange="cargarLocalidades(this.value)">
 	    <option value="">Seleccione provincia</option>
 	  </select>
 	</div>
@@ -325,34 +325,37 @@
 	   const inputs = formAgregar.querySelectorAll('input');
 	   inputs.forEach(input => input.value = '');
 	 }
-	
-	function cargarProvincias(idPais) {
-	    fetch('ServletProvincias?idPais=' + idPais)
-	        .then(response => response.json())
-	        .then(data => {
-	            const provinciaSelect = document.getElementById("provincia");
-	            provinciaSelect.innerHTML = '<option value="">Seleccione provincia</option>';
-	            data.forEach(prov => {
-	                provinciaSelect.innerHTML += `<option value="${prov.idProvincia}">${prov.nombre}</option>`;
-	            });
-	            // Limpia localidades
-	            document.getElementById("localidad").innerHTML = '<option value="">Seleccione localidad</option>';
-	        });
-	}
 
-	function cargarLocalidades(idProvincia) {
-	    fetch('ServletLocalidades?idProvincia=' + idProvincia)
-	        .then(response => response.json())
-	        .then(data => {
-	            const localidadSelect = document.getElementById("localidad");
-	            localidadSelect.innerHTML = '<option value="">Seleccione localidad</option>';
-	            data.forEach(loc => {
-	                localidadSelect.innerHTML += `<option value="${loc.idLocalidad}">${loc.nombre}</option>`;
-	            });
-	        });
-	}
 
 </script>
+
+<script>
+  // URL base exclusivamente del servlet que devuelve <option>…</option> y se generan el resto de opciones
+  const servletBase = '<%= request.getContextPath() %>/ServletCliente';
+
+  // Listener en TODOS los selects de país (tanto en Alta como Modificación) (Si... usaba un form en vez de los dos y estuve 2 horas asi)
+  $('select[name="paisResidencia"]').on('change', function() {
+    const $pais   = $(this);
+    const idPais  = $pais.val();
+    // busco el select de provincias que está en el mismo <form>
+    const $prov   = $pais.closest('form').find('select[name="provincia"]');
+
+    // Reseteo
+    $prov.html('<option value="">-- Seleccione provincia --</option>');
+    if (!idPais) return;
+
+    // Llamada AJAX
+    $.get(servletBase, { idPais: idPais })
+     .done(function(htmlOptions) {
+       $prov.append(htmlOptions);
+     })
+     .fail(function(err) {
+       console.error('Error cargando provincias:', err);
+     });
+  });
+</script>
+
+
 
 </body>
 </html>

@@ -4,6 +4,7 @@ import entidades.Cliente;
 import entidades.Direccion;
 import entidades.Nacionalidad;
 import entidades.PaisResidencia;
+import entidades.Provincia;
 import negocio.ClienteNegocio;
 import negocioImpl.ClienteNegocioImpl;
 
@@ -11,12 +12,15 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import negocio.NacionalidadNegocio;
 import negocioImpl.NacionalidadNegocioImpl;
 import negocio.PaisResidenciaNegocio;
 import negocioImpl.PaisResidenciaNegocioImpl;
+import negocio.ProvinciaNegocio;
+import negocioImpl.ProvinciaNegocioImpl;
 
 @WebServlet("/ServletCliente")
 public class ServletCliente extends HttpServlet {
@@ -24,12 +28,27 @@ public class ServletCliente extends HttpServlet {
     private ClienteNegocio clienteNegocio = new ClienteNegocioImpl();
     private NacionalidadNegocio nacionalidadNegocio = new NacionalidadNegocioImpl();
     private PaisResidenciaNegocio paisNegocio = new PaisResidenciaNegocioImpl();
-    //private ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImpl();
+    private ProvinciaNegocio provinciaNegocio = new ProvinciaNegocioImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	 String idPaisParam = request.getParameter("idPais");
+         if (idPaisParam != null) {
+             // 1) Si vienen idPais, respondemos solo las <option> para provincias
+             int idPais = Integer.parseInt(idPaisParam);
+             List<Provincia> provincias = provinciaNegocio.obtenerPorIdPaisResidencia(idPais);
 
+             response.setContentType("text/html; charset=UTF-8");
+             PrintWriter out = response.getWriter();
+             for (Provincia pr : provincias) {
+                 out.printf("<option value=\"%d\">%s</option>%n",
+                            pr.getIdProvincia(),
+                            pr.getNombreProvincia());
+             }
+             return;
+         }
         List<Cliente> listaClientes = clienteNegocio.listarClientes();
         List<Nacionalidad> listaNacionalidades = nacionalidadNegocio.obtenerTodas();
         List<PaisResidencia> listaPaises = paisNegocio.obtenerTodos();
@@ -40,7 +59,9 @@ public class ServletCliente extends HttpServlet {
         request.setAttribute("clientes", listaClientes);
         request.setAttribute("listaNacionalidades", listaNacionalidades);
         request.setAttribute("listaPaises", listaPaises);
-
+        request.setAttribute("listaProvincias",List.of());
+        request.setAttribute("paisSeleccionado", null);
+        
         // Manda los datos al JSP para mostrar
         request.getRequestDispatcher("administracionClientes.jsp").forward(request, response);
     }
