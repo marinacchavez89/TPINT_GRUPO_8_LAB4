@@ -8,5 +8,6 @@ public interface ClienteNegocio {
 	public boolean eliminarCliente(int idCliente);
 	public boolean modificarCliente(Cliente cliente);
 	public Cliente obtenerClienteXId(int idCliente);
+	public int obtenerIdXDni(String dni);
 	public List<Cliente> listarClientes();
 }

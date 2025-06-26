@@ -31,6 +31,11 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 	}
 	
 	@Override
+	public int obtenerIdXDni(String dni) {
+		return clienteDAO.obtenerIdXDni(dni);
+	}
+	
+	@Override
 	public List<Cliente> listarClientes(){
 		return clienteDAO.listar();
 	}

@@ -116,6 +116,24 @@ public class ClienteDAOImpl implements ClienteDAO {
 	}
 	
 	@Override
+	public int obtenerIdXDni(String dni) {
+		PreparedStatement statement;
+        Connection conn = Conexion.getSQLConexion();
+	    String sql = "SELECT id_cliente FROM cliente WHERE dni = ?";
+	    try{
+	    	statement = conn.prepareStatement(sql);
+	        statement.setString(1, dni);
+	        ResultSet rs = statement.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("id_cliente");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return 0;
+	}
+	
+	@Override
 	public Cliente obtenerXId(int idCliente) {
 		return null;
 		

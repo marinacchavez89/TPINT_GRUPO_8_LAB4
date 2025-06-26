@@ -8,5 +8,6 @@ public interface ClienteDAO {
 	public boolean eliminar(int idCliente);
 	public boolean modificar(Cliente cliente);
 	public Cliente obtenerXId(int idCliente);
+	public int obtenerIdXDni(String dni);
 	public List<Cliente> listar();
 }
