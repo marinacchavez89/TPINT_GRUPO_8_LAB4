@@ -12,8 +12,16 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	private CuentaDAO cuentaDAO= new CuentaDAOImpl();
 	
 	@Override
-	public boolean agregarCuenta(Cuenta cuenta, int idCliente, TipoCuenta idTipoCuenta) {
-		return cuentaDAO.agregarCuenta(cuenta, idCliente, idTipoCuenta);
+	public boolean agregarCuenta(Cuenta cuenta) {
+	    int cuentasActivas = cuentaDAO.contarCuentasActivasPorCliente(cuenta.getIdCliente());
+	    
+	    if (cuentasActivas >= 3) {
+	        return false; //no deja mas de 3 cuentas
+	    }
+
+	    cuenta.setSaldo(10000);// fuerza el monto inicial 
+
+	    return cuentaDAO.agregarCuenta(cuenta);
 	}
 
 	@Override
@@ -29,6 +37,17 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	@Override
 	public List<Cuenta> listarCuentas() {
 		return cuentaDAO.listarCuentas();
+	}
+
+	@Override
+	public int obtenerProximoNumeroCuenta() {
+	    return cuentaDAO.obtenerProximoNumeroCuenta();
+	}
+
+	@Override
+	public int obtenerCantidadCuentasActivas(int idCliente) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

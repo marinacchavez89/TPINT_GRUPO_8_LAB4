@@ -41,13 +41,14 @@ public class ServletCuenta extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		List<Cuenta> listaCuentas = cuentaNegocio.listarCuentas();
 	    request.setAttribute("cuentas", listaCuentas);
 	    
-	   List<TipoCuenta> tiposCuenta = tipoCuentaNegocio.listar();
-	    
+	    List<TipoCuenta> tiposCuenta = tipoCuentaNegocio.listar();
 	    request.setAttribute("tiposCuenta", tiposCuenta);
+	    
+	    int proximoNroCuenta = cuentaNegocio.obtenerProximoNumeroCuenta();
+		request.setAttribute("proximoNroCuenta", proximoNroCuenta);
 	    
 	    request.getRequestDispatcher("administracionCuentas.jsp").forward(request, response);
 	}
@@ -56,7 +57,6 @@ public class ServletCuenta extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String accion = request.getParameter("accion");
 		if (accion == null) {
 			response.sendRedirect("ServletCuenta");
@@ -64,9 +64,12 @@ public class ServletCuenta extends HttpServlet {
 		}
 
 		Cuenta cuenta = new Cuenta();
+		
+		if (!"Agregar".equals(accion)) {
+	        cuenta.setNroCuenta(parseInt(request.getParameter("numeroCuenta")));
+	    }
 
-		cuenta.setNroCuenta(parseInt(request.getParameter("numeroCuenta")));
-		cuenta.setIdCliente(parseInt(request.getParameter("cliente")));		
+		cuenta.setIdCliente(parseInt(request.getParameter("idCliente")));		
 		cuenta.setCBU(request.getParameter("cbu"));
 		cuenta.setSaldo(Float.parseFloat(request.getParameter("saldo")));
 		cuenta.setEstado(true);
@@ -81,13 +84,12 @@ public class ServletCuenta extends HttpServlet {
 		tipo.setIdTipoCuenta(parseInt(request.getParameter("tipoCuenta")));
 		cuenta.setTipoCuenta(tipo);
 
-
-
 		boolean resultado = false;
 
 		switch (accion) {
 			case "Agregar":
-				resultado = cuentaNegocio.agregarCuenta(cuenta, cuenta.getIdCliente(), tipo);
+				cuentaNegocio.agregarCuenta(cuenta);
+				resultado = cuentaNegocio.agregarCuenta(cuenta);
 				break;
 			case "Modificar":
 				resultado = cuentaNegocio.modificarCuenta(cuenta);

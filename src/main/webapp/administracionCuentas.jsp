@@ -10,6 +10,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       $('#tablaCuentas').DataTable();
@@ -66,7 +67,7 @@
   </div>
 
   <div class="contenedor-botones">
-    <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Agregar</button>
+    <button type="button" onClick="mostrarFormularioAgregarCuenta()" class="btn btn-success btn-sm">Agregar</button>
     <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
   </div>
 
@@ -117,6 +118,52 @@
   </div>
 </form>
 
+<form action="ServletCuenta" method="post" id="formAgregarCuenta" style="display: none;">
+  <div class="tabla-contenedor mt-3">
+    <h4 class="mb-3">Agregar Cuenta</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+ 		 <input type="number" name="proximoNroCuenta" class="form-control" id="proximoNro" 
+        	 value="<%= request.getAttribute("proximoNroCuenta") %>" readonly>
+		</div>
+        <div class="mb-3">
+          <input type="number" min="0" name="idCliente" class="form-control" placeholder="ID Cliente" required>
+        </div>
+        <div class="mb-3">
+          <input type="date" name="fechaCreacion" class="form-control" placeholder="Fecha Creación" required>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <select name="tipoCuenta" class="form-select" required>
+            <option value="">Seleccione tipo de cuenta</option>
+            <%
+              if (tiposCuenta != null) {
+                for (TipoCuenta tipo : tiposCuenta) {
+            %>
+              <option value="<%= tipo.getIdTipoCuenta() %>"><%= tipo.getDescripcion() %></option>
+            <%
+                }
+              }
+            %>
+          </select>
+        </div>
+        <div class="mb-3">
+          <input type="text" name="cbu" class="form-control" placeholder="CBU" required>
+        </div>
+        <div class="mb-3">
+          <input type="number" name="saldo" class="form-control" value="10000.0" readonly>
+        </div>
+      </div>
+    </div>
+
+    <div class="contenedor-botones">
+      <button type="submit" name="accion" value="Agregar" class="btn btn-success btn-sm">Guardar</button>
+    </div>
+  </div>
+</form>
+
 <jsp:include page="footer.jsp" />
 
 <script>
@@ -133,6 +180,88 @@
     document.querySelector('input[name="cbu"]').value = datos.cbu;
     document.querySelector('input[name="saldo"]').value = datos.saldo;
   }
+  
+  function mostrarFormularioAgregarCuenta() {
+	   document.getElementById("formModificarCuenta").style.display = "none";
+	   const formAgregarCuenta = document.getElementById("formAgregarCuenta");
+	   formAgregarCuenta.style.display = "block";
+	
+	   // Limpieza de campos menos el numero de cuenta y saldo
+	  const inputs = formAgregarCuenta.querySelectorAll('input');
+     inputs.forEach(input => {
+   	  if (input.name === "saldo") {
+   	      input.value = "10000.0"; // monto fijo
+   	  } else if (input.name !== "proximoNroCuenta") {
+   	      input.value = '';
+   	  }
+     });
+ }
+  
+  ///// VALIDACIONES EN LOS FORM CON SWEET ALERT //////////
+   document.addEventListener("DOMContentLoaded", function () {
+    // para MODIFICAR cuenta
+    const formModificar = document.querySelector('form[action="ServletCuenta"]:not(#formAgregarCuenta)');
+    const btnModificar = formModificar.querySelector('button[name="accion"][value="Modificar"]');
+
+    if (btnModificar) {
+      btnModificar.addEventListener("click", function (e) {
+        const cbu = formModificar.querySelector('input[name="cbu"]').value.trim();
+        const fechaStr = formModificar.querySelector('input[name="fechaCreacion"]').value;
+
+        if (!/^\d+$/.test(cbu) || parseInt(cbu) <= 0) {
+          e.preventDefault();
+          Swal.fire({ icon: 'error', title: 'CBU inválido',
+            text: 'El CBU debe ser un número mayor a 0.'
+          });
+          return;
+        }
+
+        const fecha = new Date(fechaStr);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        if (fecha > hoy) {
+          e.preventDefault();
+          Swal.fire({ icon: 'error', title: 'Fecha no válida',
+            text: 'La fecha de creación no puede ser futura.'
+          });
+          return;
+        }
+      });
+    }
+
+    // para AGREGAR cuenta
+    const formAgregar = document.getElementById("formAgregarCuenta");
+    const btnAgregar = formAgregar.querySelector('button[name="accion"][value="Agregar"]');
+
+    if (btnAgregar) {
+      btnAgregar.addEventListener("click", function (e) {
+        const cbu = formAgregar.querySelector('input[name="cbu"]').value.trim();
+        const fechaStr = formAgregar.querySelector('input[name="fechaCreacion"]').value;
+
+        if (!/^\d+$/.test(cbu) || parseInt(cbu) <= 0) {
+          e.preventDefault();
+          Swal.fire({ icon: 'error', title: 'CBU inválido',
+            text: 'El CBU debe ser un número mayor a 0.'
+          });
+          return;
+        }
+
+        const fecha = new Date(fechaStr);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        if (fecha > hoy) {
+          e.preventDefault();
+          Swal.fire({ icon: 'error',title: 'Fecha no válida',
+        	  text: 'La fecha de creación no puede ser futura.'
+          });
+          return;
+        }
+      });
+    }
+  });
+  
 </script>
 
 </body>
