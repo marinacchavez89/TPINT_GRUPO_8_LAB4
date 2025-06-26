@@ -102,8 +102,8 @@ public class ServletCliente extends HttpServlet {
 
         Cliente cliente = new Cliente();
 
-        // Recuperar valores del formulario
-        cliente.setIdCliente( parseInt(request.getParameter("id")) );
+        // Recuperar valores del formulario (siempre se recuperan todos, el switch decide qué hacer)
+        cliente.setIdCliente( parseInt(request.getParameter("id")) ); // Se recupera el ID del cliente
         cliente.setDni(request.getParameter("dni"));
         cliente.setCuil(request.getParameter("cuil"));
         cliente.setNombre(request.getParameter("nombre"));
@@ -121,14 +121,25 @@ public class ServletCliente extends HttpServlet {
             java.util.Date fecha = java.sql.Date.valueOf(request.getParameter("fechaNacimiento"));
             cliente.setFechaNacimiento(fecha);
         } catch (Exception e) {
+            // Manejar el error si la fecha no es válida, quizás con un mensaje al usuario
             e.printStackTrace();
+            System.out.println("⚠️ Fecha de nacimiento inválida.");
         }
 
-        // Direccion
-        /*Direccion direccion = new Direccion();
-        direccion.setIdDireccion( parseInt(request.getParameter("direccion")) );
-        cliente.setDireccion(direccion);*/
+        // Direccion - Se crea el objeto Dirección con los datos del formulario, incluyendo Localidad
+        Direccion direccion = new Direccion();
+        direccion.setIdDireccion(parseInt(request.getParameter("direccionId"))); // ID de la dirección (EXISTENTE)
+        direccion.setCalle(request.getParameter("calle"));
+        direccion.setNumero(request.getParameter("numero"));
+        direccion.setCodigoPostal(request.getParameter("codigoPostal"));
 
+        Localidad localidad = new Localidad();
+        localidad.setIdLocalidad(parseInt(request.getParameter("localidad")));
+        // No necesitamos poblar Provincia y PaisResidencia en Localidad aquí para la operación,
+        // ya que solo necesitamos el ID de la Localidad para la Dirección.
+        direccion.setLocalidad(localidad); // Se asocia la localidad a la dirección
+
+        // Otros campos
         cliente.setCorreoElectronico(request.getParameter("email"));
         cliente.setTelefono(request.getParameter("telefono"));
         cliente.setEstado(true); // o según lógica
@@ -137,31 +148,27 @@ public class ServletCliente extends HttpServlet {
 
         switch (accion) {
             case "Agregar":
-            	Direccion direccion = new Direccion();
-                direccion.setCalle(request.getParameter("calle"));
-                direccion.setNumero(request.getParameter("numero"));
-                direccion.setCodigoPostal(request.getParameter("codigoPostal"));
-                
-                Localidad localidad = new Localidad();
-                localidad.setIdLocalidad(parseInt(request.getParameter("localidad")));
-                direccion.setLocalidad(localidad);
-                
-                int idDireccion = direccionNegocio.agregarDireccion(direccion);
-                if (idDireccion > 0) {
-                    direccion.setIdDireccion(idDireccion);
+            	int idDireccionNueva = direccionNegocio.agregarDireccion(direccion);
+                if (idDireccionNueva > 0) {
+                    direccion.setIdDireccion(idDireccionNueva);
                     cliente.setDireccion(direccion);
                     resultado = clienteNegocio.agregarCliente(cliente);
                 } else {
                     System.out.println("⚠️ No se pudo insertar la dirección, no se agrega el cliente.");
                     resultado = false;
                 }
-                direccion.setIdDireccion(idDireccion);
-                
-                cliente.setDireccion(direccion);
-                resultado = clienteNegocio.agregarCliente(cliente);
                 break;
             case "Modificar":
-                resultado = clienteNegocio.modificarCliente(cliente);
+            	boolean modDireccion = direccionNegocio.modificarDireccion(direccion);
+
+                // 2. Modificar el Cliente (solo si la dirección se actualizó correctamente)
+                if (modDireccion) {
+                    cliente.setDireccion(direccion); // Asignar la dirección modificada al cliente
+                    resultado = clienteNegocio.modificarCliente(cliente);
+                } else {
+                    System.out.println("⚠️ No se pudo modificar la dirección, no se actualiza el cliente.");
+                    resultado = false;
+                }
                 break;
             case "Eliminar":
                 resultado = clienteNegocio.eliminarCliente(cliente.getIdCliente());

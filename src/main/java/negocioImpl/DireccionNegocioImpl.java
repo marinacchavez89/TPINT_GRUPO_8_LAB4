@@ -13,4 +13,9 @@ public class DireccionNegocioImpl implements DireccionNegocio {
 	public int agregarDireccion(Direccion direccion) {
 		return direccionDao.agregarDireccion(direccion);
 	}
+	
+	@Override
+	public boolean modificarDireccion(Direccion direccion) {
+	    return direccionDao.modificarDireccion(direccion);
+	}
 }

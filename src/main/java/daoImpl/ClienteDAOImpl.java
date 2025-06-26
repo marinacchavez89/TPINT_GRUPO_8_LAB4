@@ -4,7 +4,10 @@ import dao.ClienteDAO;
 import dominio.Conexion;
 import entidades.Cliente;
 import entidades.Direccion;
+import entidades.Localidad;
 import entidades.Nacionalidad;
+import entidades.PaisResidencia;
+import entidades.Provincia;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -50,38 +53,40 @@ public class ClienteDAOImpl implements ClienteDAO {
 	
 	@Override
 	public boolean modificar(Cliente cliente) {
-		PreparedStatement statement;
-		Connection conn = Conexion.getSQLConexion();
-		boolean modificado= false;		
-		String sql = "UPDATE cliente SET Cuil = ?, Nombre = ?, Apellido = ?, Sexo = ?, ID_Nacionalidad = ?, Fecha_Nacimiento = ?, ID_Direccion = ?, Correo_Electronico = ?, Telefono = ?, Estado = ? WHERE Dni = ?";
-		try {
-            statement = conn.prepareStatement(sql);
-            statement.setString(1, cliente.getCuil());
-            statement.setString(2, cliente.getNombre());
-            statement.setString(3, cliente.getApellido());
-            statement.setString(4, String.valueOf(cliente.getSexo()));
-            statement.setInt(5, cliente.getNacionalidad().getIdNacionalidad());
-            statement.setDate(6, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
-            statement.setInt(7, cliente.getDireccion().getIdDireccion());
-            statement.setString(8, cliente.getCorreoElectronico());
-            statement.setString(9, cliente.getTelefono());
-            statement.setBoolean(10, cliente.isEstado());
-            statement.setString(11, cliente.getDni());
+	    PreparedStatement statement;
+	    Connection conn = Conexion.getSQLConexion();
+	    boolean modificado = false;
 
-            if (statement.executeUpdate() > 0) {
-                conn.commit();
-                modificado = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+	    // Modificar: La condición WHERE debe ser por ID_Cliente para asegurar la unicidad y permitir cambio de DNI.
+	    String sql = "UPDATE cliente SET Cuil = ?, Nombre = ?, Apellido = ?, Sexo = ?, ID_Nacionalidad = ?, Fecha_Nacimiento = ?, ID_Direccion = ?, Correo_Electronico = ?, Telefono = ?, Estado = ?, Dni = ? WHERE ID_Cliente = ?";
+	    try {
+	        statement = conn.prepareStatement(sql);
+	        statement.setString(1, cliente.getCuil());
+	        statement.setString(2, cliente.getNombre());
+	        statement.setString(3, cliente.getApellido());
+	        statement.setString(4, String.valueOf(cliente.getSexo()));
+	        statement.setInt(5, cliente.getNacionalidad().getIdNacionalidad());
+	        statement.setDate(6, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
+	        statement.setInt(7, cliente.getDireccion().getIdDireccion());
+	        statement.setString(8, cliente.getCorreoElectronico());
+	        statement.setString(9, cliente.getTelefono());
+	        statement.setBoolean(10, cliente.isEstado());
+	        statement.setString(11, cliente.getDni()); // DNI ahora se actualiza como un campo más
+	        statement.setInt(12, cliente.getIdCliente()); // Condición WHERE por ID_Cliente
 
-        return modificado;		        
+	        if (statement.executeUpdate() > 0) {
+	            conn.commit();
+	            modificado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            conn.rollback();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	    return modificado;
 	}
 	
 	@Override
@@ -123,10 +128,24 @@ public class ClienteDAOImpl implements ClienteDAO {
 		PreparedStatement statement;
         ResultSet rs;
         Connection conn = Conexion.getSQLConexion();
-        String sql = "SELECT c.*, n.desc_nacionalidad, d.calle, d.numero " +
+        /*String sql = "SELECT c.*, n.desc_nacionalidad, d.calle, d.numero " +
                 "FROM cliente c " +
                 "INNER JOIN nacionalidad n ON c.id_nacionalidad = n.id_nacionalidad " +
-                "INNER JOIN direccion d ON c.id_direccion = d.id_direccion";
+                "INNER JOIN direccion d ON c.id_direccion = d.id_direccion";*/
+        
+        String sql = "SELECT "
+                + "c.*, "
+                + "n.desc_nacionalidad, "
+                + "d.calle, d.numero, d.codigo_postal, "
+                + "l.id_localidad, l.nombre_localidad, "
+                + "p.id_provincia, p.nombre_pcia, "
+                + "pr.id_pais_residencia, pr.desc_pais_residencia "
+                + "FROM cliente c "
+                + "INNER JOIN nacionalidad n ON c.id_nacionalidad = n.id_nacionalidad "
+                + "INNER JOIN direccion d ON c.id_direccion = d.id_direccion "
+                + "INNER JOIN localidad l ON d.id_localidad = l.id_localidad "
+                + "INNER JOIN provincia p ON l.id_provincia = p.id_provincia "
+                + "INNER JOIN pais_residencia pr ON p.id_pais_residencia = pr.id_pais_residencia";
 
         try {
             statement = conn.prepareStatement(sql);
@@ -150,10 +169,27 @@ public class ClienteDAOImpl implements ClienteDAO {
                 nacionalidad.setDescripcion(rs.getString("desc_nacionalidad"));
                 cliente.setNacionalidad(nacionalidad);
                 
+                PaisResidencia paisResidencia = new PaisResidencia();
+                paisResidencia.setIdPaisResidencia(rs.getInt("id_pais_residencia"));
+                paisResidencia.setDescripcion(rs.getString("desc_pais_residencia"));
+
+                Provincia provincia = new Provincia();
+                provincia.setIdProvincia(rs.getInt("id_provincia"));
+                provincia.setNombreProvincia(rs.getString("nombre_pcia"));
+                provincia.setPaisResidencia(paisResidencia);
+
+                Localidad localidad = new Localidad();
+                localidad.setIdLocalidad(rs.getInt("id_localidad"));
+                localidad.setNombreLocalidad(rs.getString("nombre_localidad"));
+                localidad.setProvincia(provincia);
+
                 Direccion direccion = new Direccion();
                 direccion.setIdDireccion(rs.getInt("id_direccion"));
                 direccion.setCalle(rs.getString("calle"));
                 direccion.setNumero(rs.getString("numero"));
+                direccion.setCodigoPostal(rs.getString("codigo_postal"));
+                direccion.setLocalidad(localidad);
+
                 cliente.setDireccion(direccion);
 
                 clientes.add(cliente);

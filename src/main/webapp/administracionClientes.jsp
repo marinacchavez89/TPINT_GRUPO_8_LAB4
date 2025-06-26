@@ -65,7 +65,14 @@
       data-sexo="<%= c.getSexo() %>"
       data-nacionalidad="<%= c.getNacionalidad().getIdNacionalidad() %>"
       data-fecha="<%= c.getFechaNacimiento() %>"
+      data-pais="<%= c.getDireccion().getLocalidad().getProvincia().getPaisResidencia().getIdPaisResidencia() %>"
+	  data-provincia="<%= c.getDireccion().getLocalidad().getProvincia().getIdProvincia() %>"
+	  data-localidad="<%= c.getDireccion().getLocalidad().getIdLocalidad() %>"
       data-direccion="<%= c.getDireccion().getIdDireccion() %>"
+      data-direccionid="<%= c.getDireccion().getIdDireccion() %>"
+      data-calle="<%= c.getDireccion().getCalle() %>"
+      data-numero="<%= c.getDireccion().getNumero() %>"
+      data-codigopostal="<%= c.getDireccion().getCodigoPostal() %>"
       data-email="<%= c.getCorreoElectronico() %>"
       data-telefono="<%= c.getTelefono() %>">
   </td>
@@ -175,9 +182,19 @@
       <div class="mb-3">
         <input type="date" name="fechaNacimiento" class="form-control" placeholder="Fecha Nacimiento">
       </div>
-      <div class="mb-3">
+      <!--<div class="mb-3">
         <input type="text" name="direccion" class="form-control" placeholder="Dirección">
-      </div>
+      </div>-->
+      <input type="hidden" name="direccionId" class="form-control">
+		<div class="mb-3">
+		  <input type="text" name="calle" class="form-control" placeholder="Calle">
+		</div>
+		<div class="mb-3">
+		  <input type="text" name="numero" class="form-control" placeholder="Número">
+		</div>
+		<div class="mb-3">
+		  <input type="text" name="codigoPostal" class="form-control" placeholder="Código Postal">
+		</div>
       <div class="mb-3">
         <input type="email" name="email" class="form-control" placeholder="Correo Electrónico">
       </div>
@@ -299,27 +316,77 @@
 
   <jsp:include page="footer.jsp" />
   
-<!-- Hacer que al seleccionar una fila, los datos se copien a los inputs :: -->
+<!-- Hacer que al seleccionar una fila, los datos se copien a los inputs: -->
 <script>
 
 	function seleccionarFila(radio) {
 		document.getElementById("formAgregar").style.display = "none";
 	    const form = document.getElementById("formModificar");
 	    const datos = radio.dataset;
-	
+		
+	 	// Para depuración, SIEMPRE es útil ver los datos que se leen:
+        console.log("Datos del radio seleccionado:", datos);
+	    
 	    form.style.display = "block";
 	
-	    document.querySelector('input[name="id"]').value = datos.id;
-	    document.querySelector('input[name="dni"]').value = datos.dni;
-	    document.querySelector('input[name="cuil"]').value = datos.cuil;
-	    document.querySelector('input[name="nombre"]').value = datos.nombre;
-	    document.querySelector('input[name="apellido"]').value = datos.apellido;
-	    document.querySelector('input[name="sexo"]').value = datos.sexo;
-	    document.querySelector('input[name="nacionalidad"]').value = datos.nacionalidad;
-	    document.querySelector('input[name="fechaNacimiento"]').value = datos.fecha;
-	    document.querySelector('input[name="direccion"]').value = datos.direccion;
-	    document.querySelector('input[name="email"]').value = datos.email;
-	    document.querySelector('input[name="telefono"]').value = datos.telefono;
+	    // Asignación de campos directos (usan form.querySelector para asegurar el formulario correcto)
+	    form.querySelector('input[name="id"]').value = datos.id;
+	    form.querySelector('input[name="dni"]').value = datos.dni;
+	    form.querySelector('input[name="cuil"]').value = datos.cuil;
+	    form.querySelector('input[name="nombre"]').value = datos.nombre;
+	    form.querySelector('input[name="apellido"]').value = datos.apellido;
+	    form.querySelector('input[name="sexo"]').value = datos.sexo;
+	    form.querySelector('select[name="nacionalidad"]').value = datos.nacionalidad; // Es un select, pero se setea directo si la opción ya existe
+	    form.querySelector('input[name="fechaNacimiento"]').value = datos.fecha;
+
+        // Campos de Dirección y Contacto (ahora usan form.querySelector)
+	    form.querySelector('input[name="direccionId"]').value = datos.direccionid;
+		form.querySelector('input[name="calle"]').value = datos.calle;
+		form.querySelector('input[name="numero"]').value = datos.numero;
+		form.querySelector('input[name="codigoPostal"]').value = datos.codigopostal;
+	    form.querySelector('input[name="email"]').value = datos.email;
+	    form.querySelector('input[name="telefono"]').value = datos.telefono;
+
+	 	// --- Lógica para cargar y seleccionar País, Provincia y Localidad (esta es la lógica ÚNICA y correcta) ---
+	    const paisSelect = form.querySelector('select[name="paisResidencia"]');
+	    const provinciaSelect = form.querySelector('select[name="provincia"]');
+	    const localidadSelect = form.querySelector('select[name="localidad"]');
+
+	    // 1. Setear el país de residencia.
+        // Esto solo lo setea, no dispara el evento 'change'. Por eso necesitamos cargar manualmente.
+	    paisSelect.value = datos.pais;
+
+	    // 2. Limpiar opciones anteriores en provincias y localidades
+	    provinciaSelect.innerHTML = '<option value="">-- Seleccione provincia --</option>';
+	    localidadSelect.innerHTML = '<option value="">-- Seleccione localidad --</option>';
+
+	    // Si hay un país seleccionado, cargar las provincias para ese país
+	    if (datos.pais) {
+	        $.get('<%= request.getContextPath() %>/ServletCliente', { idPais: datos.pais })
+	            .done(function (htmlProvincias) {
+                    // Añadir las provincias al select
+	                provinciaSelect.innerHTML += htmlProvincias;
+	                // 3. Setear la provincia seleccionada (una vez que las opciones estén cargadas)
+	                provinciaSelect.value = datos.provincia;
+
+	                // 4. Si hay una provincia seleccionada, cargar las localidades para esa provincia
+	                if (datos.provincia) {
+	                    $.get('<%= request.getContextPath() %>/ServletCliente', { idProvincia: datos.provincia })
+	                        .done(function (htmlLocalidades) {
+                                // Añadir las localidades al select
+	                            localidadSelect.innerHTML += htmlLocalidades;
+	                            // 5. Setear la localidad seleccionada (una vez que las opciones estén cargadas)
+	                            localidadSelect.value = datos.localidad;
+	                        })
+	                        .fail(function () {
+	                            console.error('Error cargando localidades');
+	                        });
+	                }
+	            })
+	            .fail(function () {
+	                console.error('Error cargando provincias');
+	            });
+	    }
 	}
 	
 	function mostrarFormularioAgregar() {
@@ -333,6 +400,8 @@
 	   // Limpieza de campos (puede mejorarse si ponés un `id` al form o inputs)
 	   const inputs = formAgregar.querySelectorAll('input');
 	   inputs.forEach(input => input.value = '');
+	   // También limpia los selects
+	   formAgregar.querySelectorAll('select').forEach(select => select.value = '');
 	 }
 
 
