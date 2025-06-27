@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="validarSesion.jsp" %>
+
 <%@ page import="java.util.*, entidades.Cliente" %>
 <%@ page import="entidades.PaisResidencia" %>
 <%@ page import="entidades.Nacionalidad, entidades.Direccion, entidades.Localidad" %>
@@ -27,6 +29,7 @@
 <body>
 
 <jsp:include page="navbarAdmin.jsp"/>
+<jsp:include page="bienvenidaUsuario.jsp" />
 
 <form action="ServletCliente" method="post">
 <div class="tabla-contenedor">

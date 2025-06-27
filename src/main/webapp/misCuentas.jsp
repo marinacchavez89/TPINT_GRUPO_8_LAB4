@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ include file="validarSesion.jsp" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +14,9 @@
 </head>
 <body>
 
+
 <jsp:include page="navbar.jsp"/>
+<jsp:include page="bienvenidaUsuario.jsp"/>
 
 <div class="container mt-5 mb-5">
         <div class="row mb-3">

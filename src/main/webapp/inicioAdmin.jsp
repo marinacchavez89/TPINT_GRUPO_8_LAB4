@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="validarSesion.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +16,7 @@
 <body class= "bg-light">
 
 <jsp:include page="navbarAdmin.jsp"/>
+<jsp:include page="bienvenidaUsuario.jsp"/>
 
 <div class="container mt-5 mb-5 text-center">
         <h2 class="mb-4">Panel de Administración</h2>
