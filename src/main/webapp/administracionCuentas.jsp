@@ -49,7 +49,7 @@
           <td>
             <input type="radio" name="cuentaSeleccionada" onclick="seleccionarCuenta(this)"
               data-nro="<%= c.getNroCuenta() %>"
-              data-cliente="<%= c.getIdCliente() %>"
+              data-idCliente="<%= c.getIdCliente() %>"
               data-fecha="<%= c.getFechaCreación() %>"
               data-tipo="<%= c.getIdTipoCuenta().getIdTipoCuenta() %>"
               data-cbu="<%= c.getCBU() %>"
@@ -82,7 +82,7 @@
           <input type="number" name="numeroCuenta" class="form-control" placeholder="Nro Cuenta" readonly>
         </div>
         <div class="mb-3">
-          <input type="number" name="cliente" class="form-control" placeholder="ID Cliente" required>
+          <input type="number" name="idCliente" class="form-control" placeholder="ID Cliente" required>
         </div>
         <div class="mb-3">
           <input type="date" name="fechaCreacion" class="form-control" placeholder="Fecha Creación" required>
@@ -177,7 +177,7 @@
     form.style.display = "block";
 
     document.querySelector('input[name="numeroCuenta"]').value = datos.nro;
-    document.querySelector('input[name="cliente"]').value = datos.cliente;
+    document.querySelector('input[name="idCliente"]').value = datos.idcliente;
     document.querySelector('input[name="fechaCreacion"]').value = datos.fecha;
     document.querySelector('select[name="tipoCuenta"]').value = datos.tipo;
     document.querySelector('input[name="cbu"]').value = datos.cbu;
