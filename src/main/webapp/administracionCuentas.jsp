@@ -281,8 +281,14 @@
 					  formModificar.appendChild(inputAccion);
 				
 					  formModificar.submit();
-	    	      }
-	    	      // Si el usuario cancela (o hace clic fuera del modal), no se hace nada
+			      }else {
+			        // Si el usuario cancela, no hacemos nada o mostramos un mensaje opcional
+			        Swal.fire(
+			            'Cancelado',
+			            'La eliminación ha sido cancelada.',
+			            'info'
+			        );
+    			   }	    	      
 	    	    });
 	    	  });
 	    	}
