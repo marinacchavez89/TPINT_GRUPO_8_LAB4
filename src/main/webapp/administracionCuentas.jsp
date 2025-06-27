@@ -17,6 +17,25 @@
   <script type="text/javascript">
     $(document).ready(function () {
       $('#tablaCuentas').DataTable();
+      
+      <%
+      String mensaje = (String) session.getAttribute("confirmacionMensaje");
+      String confirmacionTipo  = (String) session.getAttribute("confirmacionTipo");
+      if (mensaje != null && !mensaje.isEmpty()) {
+  	  %>
+      Swal.fire({
+          icon: '<%= confirmacionTipo  %>',
+          title: 'Operación Exitosa',
+          text: '<%= mensaje %>',
+          showConfirmButton: false,
+          timer: 2000
+      });
+      <%
+          session.removeAttribute("confirmacionMensaje");
+          session.removeAttribute("confirmacionTipo");
+      }
+      %>
+      
     });
   </script>
 </head>
@@ -73,8 +92,9 @@
     <button type="button" onClick="mostrarFormularioAgregarCuenta()" class="btn btn-success btn-sm">Agregar</button>
     <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
   </div>
-
-  <div class="tabla-contenedor mt-3" id="formModificarCuenta" style="display: none;">
+</form>
+<form action="ServletCuenta" method="post" id="formModificarCuenta" style="display: none;">
+  <div class="tabla-contenedor mt-3">
     <h4 class="mb-3">Modificar o Eliminar cuenta</h4>
     <div class="row">
       <div class="col-md-6">
@@ -118,6 +138,7 @@
       <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm me-2">Modificar</button>
       <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
     </div>
+  </div>  
   </div>
 </form>
 
@@ -172,9 +193,11 @@
 <script>
   function seleccionarCuenta(radio) {
     const form = document.getElementById("formModificarCuenta");
+    const formAgregar = document.getElementById("formAgregarCuenta");
     const datos = radio.dataset;
 
     form.style.display = "block";
+    formAgregar.style.display = "none";
 
     document.querySelector('input[name="numeroCuenta"]').value = datos.nro;
     document.querySelector('input[name="idCliente"]').value = datos.idcliente;
@@ -203,7 +226,7 @@
   ///// VALIDACIONES EN LOS FORM CON SWEET ALERT //////////
    document.addEventListener("DOMContentLoaded", function () {
     // para MODIFICAR cuenta
-    const formModificar = document.querySelector('form[action="ServletCuenta"]:not(#formAgregarCuenta)');
+    const formModificar = document.getElementById("formModificarCuenta");
     const btnModificar = formModificar.querySelector('button[name="accion"][value="Modificar"]');
 
     if (btnModificar) {
@@ -232,6 +255,37 @@
         }
       });
     }
+    
+    const btnEliminar = formModificar.querySelector('button[name="accion"][value="Eliminar"]');
+
+    if (btnEliminar) {
+	    	  btnEliminar.addEventListener("click", function (e) {
+	    	    e.preventDefault(); // PREVENIR el envío inmediato del formulario
+
+	    	    Swal.fire({
+	    	      title: '¿Estás segura/o?',
+	    	      text: "Vas a eliminar la cuenta seleccionada. ¡Esta acción es irreversible!",
+	    	      icon: 'warning',
+	    	      showCancelButton: true,
+	    	      confirmButtonColor: '#d33',
+	    	      cancelButtonColor: '#3085d6',
+	    	      confirmButtonText: 'Sí, ¡eliminar!',
+	    	      cancelButtonText: 'Cancelar'
+	    	    }).then((result) => {
+	    	      if (result.isConfirmed) {
+	    	          // Se envia el form, con un input hidden para que realice efectivamente el envio del form.
+					  const inputAccion = document.createElement("input");
+					  inputAccion.type = "hidden";
+					  inputAccion.name = "accion";
+					  inputAccion.value = "Eliminar";
+					  formModificar.appendChild(inputAccion);
+				
+					  formModificar.submit();
+	    	      }
+	    	      // Si el usuario cancela (o hace clic fuera del modal), no se hace nada
+	    	    });
+	    	  });
+	    	}
 
     // para AGREGAR cuenta
     const formAgregar = document.getElementById("formAgregarCuenta");

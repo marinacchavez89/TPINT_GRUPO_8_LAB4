@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import entidades.Cuenta;
 import entidades.TipoCuenta;
@@ -41,6 +42,7 @@ public class ServletCuenta extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				
 		List<Cuenta> listaCuentas = cuentaNegocio.listarCuentas();
 	    request.setAttribute("cuentas", listaCuentas);
 	    
@@ -58,6 +60,7 @@ public class ServletCuenta extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");
+		HttpSession session = request.getSession();
 		if (accion == null) {
 			response.sendRedirect("ServletCuenta");
 			return;
@@ -72,8 +75,9 @@ public class ServletCuenta extends HttpServlet {
 		cuenta.setIdCliente(parseInt(request.getParameter("idCliente")));		
 		cuenta.setCBU(request.getParameter("cbu"));
 		cuenta.setSaldo(Float.parseFloat(request.getParameter("saldo")));
-		cuenta.setEstado(true);
-
+		//cuenta.setEstado(true);
+		//Eliminamos el seteo del estado, solo será true cuando se agregue una cuenta...
+		
 		try {
 			cuenta.setFechaCreación(Date.valueOf(request.getParameter("fechaCreacion")));
 		} catch (Exception e) {
@@ -85,18 +89,31 @@ public class ServletCuenta extends HttpServlet {
 		cuenta.setTipoCuenta(tipo);
 
 		boolean resultado = false;
+		String mensaje = "";
 
 		switch (accion) {
 			case "Agregar":
+				cuenta.setEstado(true); // Solo al agregar.
 				resultado = cuentaNegocio.agregarCuenta(cuenta);
+				mensaje = resultado ? "Cuenta agregada correctamente." : "Error al agregar la cuenta.";
 				break;
 			case "Modificar":
 				resultado = cuentaNegocio.modificarCuenta(cuenta);
+				mensaje = resultado ? "Cuenta modificada correctamente." : "Error al modificar la cuenta.";
 				break;
 			case "Eliminar":
 				resultado = cuentaNegocio.eliminarCuenta(cuenta.getNroCuenta());
+				mensaje = resultado ? "Cuenta eliminada correctamente." : "Error al eliminar la cuenta.";
 				break;
 		}
+		
+		if (resultado) {
+            session.setAttribute("confirmacionMensaje", mensaje);
+            session.setAttribute("confirmacionTipo", "success");
+        } else {
+            session.setAttribute("confirmacionMensaje", mensaje);
+            session.setAttribute("confirmacionTipo", "error");
+        }
 
 		response.sendRedirect("ServletCuenta");
 	}

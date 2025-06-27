@@ -53,7 +53,7 @@ public class CuentaDAOImpl implements CuentaDAO {
 		Connection conn = Conexion.getSQLConexion();
 		boolean modificado= false;		
 		String sql = "UPDATE cuenta SET id_cliente = ?, fecha_creacion = ?, id_tipo_cuenta= ?, \r\n"
-				+ "cbu = ?, saldo = ?, estado = ? WHERE nro_cuenta = ?";
+				+ "cbu = ?, saldo = ? WHERE nro_cuenta = ?";
 		try {
 			statement = (PreparedStatement) conn.prepareStatement(sql);
 			statement.setInt(1, cuenta.getIdCliente());
@@ -61,8 +61,8 @@ public class CuentaDAOImpl implements CuentaDAO {
 			statement.setInt(3, cuenta.getIdTipoCuenta().getIdTipoCuenta());
 			statement.setString(4, cuenta.getCBU());
 			statement.setFloat(5, cuenta.getSaldo());
-			statement.setBoolean(6, cuenta.isEstado());
-			statement.setInt(7, cuenta.getNroCuenta());
+			//statement.setBoolean(6, cuenta.isEstado());
+			statement.setInt(6, cuenta.getNroCuenta());
 
             if (statement.executeUpdate() > 0) {
                 conn.commit();
