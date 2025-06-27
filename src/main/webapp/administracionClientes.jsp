@@ -9,22 +9,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <title>Administracion Clientes</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="css/estilos.css" rel="stylesheet">	
-
+<link href="css/estilos.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="https:cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" charset="utf8" src ="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
-
-   <script type="text/javascript">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+<script type="text/javascript">
     $(document).ready(function() {
         $('#tablaClientes').DataTable();
+        
+     	// --- CÓDIGO PARA MOSTRAR MENSAJES DE CONFIRMACIÓN ---
+        <%
+            String mensaje = (String) session.getAttribute("confirmacionMensaje");
+            String tipo = (String) session.getAttribute("confirmacionTipo");
+            if (mensaje != null && !mensaje.isEmpty()) {
+        %>
+            Swal.fire({
+                icon: '<%= tipo %>', // success, error, warning, info, question
+                title: 'Operación Exitosa',
+                text: '<%= mensaje %>',
+                showConfirmButton: false,
+                timer: 2000 // El cartel se cierra automáticamente después de 2 segundos
+            });
+        <%
+                // Limpiar los atributos de la sesión para que no se muestren de nuevo
+                session.removeAttribute("confirmacionMensaje");
+                session.removeAttribute("confirmacionTipo");
+            }
+        %>
            
     });
 </script>
-
 </head>
 <body>
 
@@ -210,7 +227,7 @@
 <!-- Botones centrados -->
  <div class="contenedor-botones">
 	 <button type="submit" name="accion" value="Modificar" class="btn btn-primary btn-sm me-2">Modificar</button>
-	 <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
+	 <button type="button" onclick="confirmarEliminar()" class="btn btn-danger btn-sm">Eliminar</button>
  </div> 
 </div>
 </form>
@@ -447,6 +464,53 @@
       .done(html => $locSelect.append(html))
       .fail(err => console.error('Error cargando localidades:', err));
   });
+  
+  function confirmarEliminar() {
+      // Obtenemos el formulario de modificar
+      const formModificar = document.getElementById("formModificar");
+      // Capturamos el ID del cliente que está en el campo oculto o readonly del formulario de modificar
+      const idClienteAEliminar = formModificar.querySelector('input[name="id"]').value;
+
+      if (!idClienteAEliminar) {
+          Swal.fire({
+              icon: 'warning',
+              title: 'Seleccione un cliente',
+              text: 'Por favor, seleccione un cliente de la tabla para eliminar.',
+              confirmButtonText: 'Entendido'
+          });
+          return;
+      }
+
+      Swal.fire({
+          title: '¿Estás seguro?',
+          text: `Vas a eliminar el cliente seleccionado. ¡Esta acción es irreversible!`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Sí, ¡eliminar!',
+          cancelButtonText: 'Cancelar'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Si el usuario confirma, se envía el formulario con la acción "Eliminar".
+              const hiddenInput = document.createElement('input');
+              hiddenInput.type = 'hidden';
+              hiddenInput.name = 'accion';
+              hiddenInput.value = 'Eliminar';
+              formModificar.appendChild(hiddenInput); // Añade el input oculto al formulario
+
+              formModificar.submit();
+          } else {
+              // Si el usuario cancela, no hacemos nada o mostramos un mensaje opcional
+              Swal.fire(
+                  'Cancelado',
+                  'La eliminación ha sido cancelada.',
+                  'info'
+              );
+          }
+      });
+  }
+  
 </script>
 
 

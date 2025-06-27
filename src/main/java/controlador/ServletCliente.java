@@ -97,6 +97,7 @@ public class ServletCliente extends HttpServlet {
             throws ServletException, IOException {
 
         String accion = request.getParameter("accion");
+        HttpSession session = request.getSession();
 
         if (accion == null) {
             response.sendRedirect("ServletCliente"); // redirige al listado
@@ -148,6 +149,7 @@ public class ServletCliente extends HttpServlet {
         cliente.setEstado(true); // o según lógica
 
         boolean resultado = false;
+        String mensajeExito = "";
 
         switch (accion) {
             case "Agregar":
@@ -172,11 +174,14 @@ public class ServletCliente extends HttpServlet {
                         boolean usuarioOk = usuarioNegocio.agregarUsuario(nuevoUsuario);
 	                        if (!usuarioOk) {
 	                            System.out.println("⚠️ Usuario no se pudo agregar.");
+	                            mensajeExito = "Error al agregar el cliente.";
 	                        }
                     	}
+                    	mensajeExito = "Cliente y usuario agregados correctamente.";
 	                } else {
 	                    System.out.println("⚠️ No se pudo insertar la dirección, no se agrega el cliente.");
 	                    resultado = false;
+	                    mensajeExito = "Error al agregar la dirección del cliente.";
 	                }
                 }
                 break;
@@ -184,17 +189,39 @@ public class ServletCliente extends HttpServlet {
             	boolean modDireccion = direccionNegocio.modificarDireccion(direccion);
 
                 // 2. Modificar el Cliente (solo si la dirección se actualizó correctamente)
-                if (modDireccion) {
-                    cliente.setDireccion(direccion); // Asignar la dirección modificada al cliente
+            	if (modDireccion) {
+                    cliente.setDireccion(direccion);
                     resultado = clienteNegocio.modificarCliente(cliente);
+                    if(resultado) {
+                        mensajeExito = "Cliente modificado correctamente.";
+                    } else {
+                        System.out.println("⚠️ No se pudo modificar el cliente.");
+                        mensajeExito = "Error al modificar el cliente.";
+                    }
                 } else {
                     System.out.println("⚠️ No se pudo modificar la dirección, no se actualiza el cliente.");
+                    mensajeExito = "Error al modificar la dirección del cliente.";
                     resultado = false;
                 }
                 break;
             case "Eliminar":
-                resultado = clienteNegocio.eliminarCliente(cliente.getIdCliente());
+            	resultado = clienteNegocio.eliminarCliente(cliente.getIdCliente());
+                if(resultado) {
+                    mensajeExito = "Cliente eliminado correctamente.";
+                } else {
+                    System.out.println("⚠️ No se pudo eliminar el cliente.");
+                    mensajeExito = "Error al eliminar el cliente.";
+                }
                 break;
+        }
+        
+        // Si la operación fue exitosa, guarda el mensaje en la sesión
+        if (resultado && !mensajeExito.isEmpty()) {
+            session.setAttribute("confirmacionMensaje", mensajeExito);
+            session.setAttribute("confirmacionTipo", "success"); // Para el tipo de SweetAlert
+        } else if (!resultado && !mensajeExito.isEmpty()) { // Si hubo un error pero hay un mensaje específico
+             session.setAttribute("confirmacionMensaje", "Ocurrió un error en la operación.");
+             session.setAttribute("confirmacionTipo", "error");
         }
 
         // Después de cualquier acción, redirige al listado

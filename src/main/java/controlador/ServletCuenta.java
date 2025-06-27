@@ -108,6 +108,4 @@ public class ServletCuenta extends HttpServlet {
 			return 0;
 		}
 	}
-	}
-
-
+}

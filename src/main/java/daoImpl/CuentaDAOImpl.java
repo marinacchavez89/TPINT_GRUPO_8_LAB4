@@ -115,7 +115,8 @@ public class CuentaDAOImpl implements CuentaDAO {
         String sql = "SELECT c.nro_cuenta, c.id_cliente, c.fecha_creacion, c.id_tipo_cuenta, " +
                 "tc.desc_tipo_cuenta, c.cbu, c.saldo, c.estado " +
                 "FROM cuenta c " +
-                "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta";
+                "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta " +
+                "WHERE c.estado = 1";
 
 
         try {
