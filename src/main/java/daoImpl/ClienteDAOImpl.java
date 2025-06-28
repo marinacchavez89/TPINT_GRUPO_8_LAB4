@@ -148,7 +148,73 @@ public class ClienteDAOImpl implements ClienteDAO {
 	
 	@Override
 	public Cliente obtenerXId(int idCliente) {
-		return null;
+		Cliente cliente = null;
+	    try {
+	        Connection conn = Conexion.getSQLConexion();
+	        String sql = "SELECT "
+	                + "c.*, "
+	                + "n.desc_nacionalidad, "
+	                + "d.calle, d.numero, d.codigo_postal, "
+	                + "l.id_localidad, l.nombre_localidad, "
+	                + "p.id_provincia, p.nombre_pcia, "
+	                + "pr.id_pais_residencia, pr.desc_pais_residencia "
+	                + "FROM cliente c "
+	                + "INNER JOIN nacionalidad n ON c.id_nacionalidad = n.id_nacionalidad "
+	                + "INNER JOIN direccion d ON c.id_direccion = d.id_direccion "
+	                + "INNER JOIN localidad l ON d.id_localidad = l.id_localidad "
+	                + "INNER JOIN provincia p ON l.id_provincia = p.id_provincia "
+	                + "INNER JOIN pais_residencia pr ON p.id_pais_residencia = pr.id_pais_residencia "
+	                + "WHERE c.estado = 1 AND c.id_cliente = ?";
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        stmt.setInt(1, idCliente);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            cliente = new Cliente();
+	            cliente.setIdCliente(rs.getInt("id_cliente"));
+	            cliente.setDni(rs.getString("dni"));
+	            cliente.setCuil(rs.getString("cuil"));
+	            cliente.setNombre(rs.getString("nombre"));
+	            cliente.setApellido(rs.getString("apellido"));
+	            cliente.setCorreoElectronico(rs.getString("correo_electronico"));
+	            cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+	            cliente.setTelefono(rs.getString("telefono"));
+	            cliente.setSexo(rs.getString("sexo").charAt(0));
+	          
+	            Direccion direccion = new Direccion();
+	            direccion.setIdDireccion(rs.getInt("id_direccion"));
+	            direccion.setCalle(rs.getString("calle"));
+	            direccion.setNumero(rs.getString("numero"));
+	            direccion.setCodigoPostal(rs.getString("codigo_postal"));
+	            
+	            Nacionalidad nacionalidad = new Nacionalidad();
+                nacionalidad.setIdNacionalidad(rs.getInt("id_nacionalidad"));
+                nacionalidad.setDescripcion(rs.getString("desc_nacionalidad"));
+                cliente.setNacionalidad(nacionalidad);
+
+	            Localidad localidad = new Localidad();
+	            localidad.setIdLocalidad(rs.getInt("id_localidad"));
+	            localidad.setNombreLocalidad(rs.getString("nombre_localidad"));
+
+	            Provincia provincia = new Provincia();
+	            provincia.setIdProvincia(rs.getInt("id_provincia"));
+	            provincia.setNombreProvincia(rs.getString("nombre_pcia"));
+
+	            PaisResidencia pais = new PaisResidencia();
+	            pais.setIdPaisResidencia(rs.getInt("id_pais_residencia"));
+	            pais.setDescripcion(rs.getString("desc_pais_residencia"));
+
+	            provincia.setPaisResidencia(pais);
+	            localidad.setProvincia(provincia);
+	            direccion.setLocalidad(localidad);
+	            cliente.setDireccion(direccion);
+	            
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return cliente;
 		
 	}
 	

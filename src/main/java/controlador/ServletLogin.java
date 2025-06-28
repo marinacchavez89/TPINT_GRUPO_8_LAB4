@@ -11,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import entidades.Usuario;
 import negocio.UsuarioNegocio;
 import negocioImpl.UsuarioNegocioImpl;
-
+import entidades.Cliente;
+import negocio.ClienteNegocio;
+import negocioImpl.ClienteNegocioImpl;
 
 /**
  * Servlet implementation class ServletLogin
@@ -21,6 +23,7 @@ public class ServletLogin extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
     private UsuarioNegocio usuarioNegocio = new UsuarioNegocioImpl();
+    private ClienteNegocio clienteNegocio = new ClienteNegocioImpl();
 
     public ServletLogin() {
         super();
@@ -35,6 +38,13 @@ public class ServletLogin extends HttpServlet {
         if (usuarioLogueado != null && usuarioLogueado.getEstado()) {
             HttpSession session = request.getSession();
             session.setAttribute("usuarioLogueado", usuarioLogueado);
+            
+        if (usuarioLogueado.getIdCliente() != null) {        
+            Cliente cliente = clienteNegocio.obtenerClienteXId(usuarioLogueado.getIdCliente());
+            if (cliente != null) {
+                session.setAttribute("clienteLogueado", cliente);
+            }
+        }    
 
             if ("admin".equalsIgnoreCase(usuarioLogueado.getTipoUsuario())) {
                 response.sendRedirect("inicioAdmin.jsp");
@@ -45,6 +55,7 @@ public class ServletLogin extends HttpServlet {
             request.setAttribute("mensajeError", "Usuario o contraseña incorrectos, o usuario inactivo.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
+        
     }
 
     // Opcional: Manejar peticiones GET si alguien intenta acceder al servlet directamente

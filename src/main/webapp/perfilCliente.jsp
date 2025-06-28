@@ -2,6 +2,26 @@
     pageEncoding="UTF-8"%>
     <%@ include file="validarSesion.jsp" %>
     
+    <%@ page import="entidades.Cliente" %>
+    <%@ page import="entidades.Usuario" %>
+    
+<%
+    Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
+    if (cliente == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    
+%>
+
+<%   
+	Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+    	if (usuario == null) {
+        	response.sendRedirect("login.jsp");
+        	return;
+    }
+%> 
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,36 +45,31 @@
      
       <div class="col-md-6">
         <label for="nombre">Nombre</label>
-        <input type="text" id="nombre">
+        <input type="text" id="nombre" value="<%= cliente.getNombre() %>" disabled>
 
         <label for="dni">DNI</label>
-        <input type="text" id="dni">
+        <input type="text" id="dni" value="<%= cliente.getDni() %>" disabled>
         
         <label for="usuario">Usuario</label>
-        <input type="text" id="usuario">
+        <input type="text" id="usuario" value= "<%= usuario.getNombreUsuario() %>" disabled>
         
         <label for="direccion">Dirección</label>
-        <input type="text" id="direccion">
+        <input type="text" id="direccion" value= "<%= cliente.getDireccion().getCalle() + " " + cliente.getDireccion().getNumero() %>" disabled>
         
         <label for="nacionalidad">Nacionalidad</label>
-		<select id="nacionalidad" class="form-select">
-		  <option value="argentina">Argentina</option>
-		  <option value="uruguay">Uruguay</option>
-		  <option value="chile">Chile</option>
-		</select>	    
+		<input type="text" id="nacionalidad" value= "<%= cliente.getNacionalidad().getDescripcion() %>" disabled>	    
 
         <label for="provincia">Provincia</label>
-		<select id="provincia" class="form-select">
-		  <option value="buenos_aires">Buenos Aires</option>
-		  <option value="cordoba">Córdoba</option>
-		  <option value="santafe">Santa Fe</option>
-		</select>
+		<input type="text" id="provincia" value= "<%= cliente.getDireccion().getLocalidad().getProvincia().getNombreProvincia() %>" disabled>
 		
+		<%
+    		String sexo = String.valueOf(cliente.getSexo());
+		%>
 		<label for="sexo">Género</label>
-		<select id="sexo" class="form-select">
-		  <option value="femenino">Femenino</option>
-		  <option value="masculino">Masculino</option>
-		  <option value="otro">Otro</option>
+		<select id="sexo" class="form-select" disabled>
+  			<option value="F" <%= sexo.equals("F") ? "selected" : "" %>>Femenino</option>
+  			<option value="M" <%= sexo.equals("M") ? "selected" : "" %>>Masculino</option>
+  			<option value="O" <%= sexo.equals("O") ? "selected" : "" %>>Otro</option>
 		</select>
                 
       </div>
@@ -62,33 +77,25 @@
 
       <div class="col-md-6">
         <label for="apellido">Apellido</label>
-        <input type="text" id="apellido">
+        <input type="text" id="apellido" value="<%= cliente.getApellido() %>" disabled>
         
         <label for="cuil">CUIL</label>
-        <input type="text" id="cuil">
+        <input type="text" id="cuil" value="<%= cliente.getCuil() %>" disabled>
         
         <label for="email">Email</label>
-        <input type="email" id="email">
+        <input type="email" id="email" value="<%= cliente.getCorreoElectronico() %>" disabled>
         
         <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono">
+        <input type="tel" id="telefono" value= "<%= cliente.getTelefono() %>" disabled>
         
         <label for="nacionalidad">Pais de Residencia</label>
-		<select id="nacionalidad" class="form-select">
-		  <option value="argentina">Argentina</option>
-		  <option value="uruguay">Uruguay</option>
-		  <option value="chile">Chile</option>
-		</select>
+		<input type="text" id="paisResidencia" value= "<%= cliente.getDireccion().getLocalidad().getProvincia().getPaisResidencia().getDescripcion() %>" disabled>
 		
 		<label for="localidad">Localidad</label>
-		<select id="localidad" class="form-select">
-		  <option value="la_plata">La Plata</option>
-		  <option value="cordoba_capital">Córdoba Capital</option>
-		  <option value="rosario">Rosario</option>
-		</select> 
+		<input type="text" id="localidad" value= "<%= cliente.getDireccion().getLocalidad().getNombreLocalidad() %>" disabled> 
 		
         <label for="fechaNacimiento">Fecha de Nacimiento</label>
-        <input type="date" id="fechaNacimiento">
+        <input type="date" id="fechaNacimiento" value= "<%= cliente.getFechaNacimiento() %>" disabled>
         
       </div>
     </div>
