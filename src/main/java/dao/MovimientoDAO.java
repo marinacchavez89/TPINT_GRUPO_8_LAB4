@@ -5,5 +5,5 @@ import entidades.Movimiento;
 
 public interface MovimientoDAO {
 
-	public List<Movimiento> obtenerXId(int idCliente);
+	public List<Movimiento> obtenerMovimientosXCuenta(int nroCuenta);
 }

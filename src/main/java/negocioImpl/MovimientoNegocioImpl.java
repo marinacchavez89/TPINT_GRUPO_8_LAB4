@@ -11,7 +11,7 @@ public class MovimientoNegocioImpl implements MovimientoNegocio {
 	private MovimientoDAO movimientoDAO = new MovimientoDAOImpl();
 	
 	@Override
-	public List<Movimiento> obtenerXId(int idCliente) {
-		return movimientoDAO.obtenerXId(idCliente);
+	public List<Movimiento> obtenerMovimientosXCuenta(int nroCuenta) {
+		return movimientoDAO.obtenerMovimientosXCuenta(nroCuenta);
 	}
 }

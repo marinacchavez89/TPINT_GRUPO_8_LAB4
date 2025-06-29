@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class MovimientoDAOImpl implements MovimientoDAO {
 
-	public List<Movimiento> obtenerXId (int idCliente) {
+	public List<Movimiento> obtenerMovimientosXCuenta(int nroCuenta){
 		
 	List<Movimiento> movimientos = new ArrayList<>();
 	
@@ -20,17 +20,11 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 	ResultSet rs;
 	Connection conn= Conexion.getSQLConexion();
 	
-	String sql = "SELECT m.id_movimiento AS idMovimiento, " +
-            "m.fecha AS fechaMovimiento, " +
-            "m.detalle AS detalle, " +
-            "m.importe AS importe, " +
-            "tm.desc_tipo_movimiento AS tipoMovimiento, " +
-            "m.nro_cuenta AS nroCuenta " +
-            "FROM movimiento m " +
-            "JOIN tipo_movimiento tm ON m.id_tipo_movimiento = tm.id_tipo_movimiento " +
-            "JOIN cuenta c ON m.nro_cuenta = c.nro_cuenta " +
-            "WHERE c.id_cliente = ? " +
-            "ORDER BY m.fecha DESC";
+	String sql = "SELECT m.id_movimiento, m.fecha, m.detalle, m.importe, " +
+				"tm.id_tipo_movimiento, tm.desc_tipo_movimiento "+ 
+				"FROM movimiento m " +
+				"JOIN tipo_movimiento tm ON m.id_tipo_movimiento = tm.id_tipo_movimiento " +
+				"WHERE m.nro_cuenta = ? ORDER BY m.fecha DESC";
 	
 		try {
 			statement= conn.prepareStatement(sql);
@@ -40,12 +34,12 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 				Movimiento movimiento = new Movimiento();
 				movimiento.setIdMovimiento(rs.getInt("id_movimiento"));
 				movimiento.setFecha(rs.getDate("fecha"));
+	            movimiento.setDetalle(rs.getString("detalle"));
 	            movimiento.setImporte(rs.getFloat("importe"));
-	            movimiento.setDetalle(rs.getString("descripcion"));
-
+	            
 	            TipoMovimiento tipoMovimiento = new TipoMovimiento();
 	            tipoMovimiento.setIdTipoMovimiento(rs.getInt("id_tipo_movimiento"));
-	            tipoMovimiento.setDescripcion(rs.getString("tipo_desc"));
+	            tipoMovimiento.setDescripcion(rs.getString("desc_tipo_movimiento"));
 	            movimiento.setTipoMovimiento(tipoMovimiento);
 
 	            Cuenta cuenta = new Cuenta();
