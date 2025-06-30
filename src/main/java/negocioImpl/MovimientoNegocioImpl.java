@@ -14,4 +14,8 @@ public class MovimientoNegocioImpl implements MovimientoNegocio {
 	public List<Movimiento> obtenerMovimientosXCuenta(int nroCuenta) {
 		return movimientoDAO.obtenerMovimientosXCuenta(nroCuenta);
 	}
+	
+	public List<Movimiento> obtenerMovimientosXCliente(int idCliente){
+		return movimientoDAO.obtenerMovimientosXCliente(idCliente);
+	}
 }
