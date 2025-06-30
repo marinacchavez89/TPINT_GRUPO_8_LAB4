@@ -182,4 +182,40 @@ public class CuentaDAOImpl implements CuentaDAO {
 
 	    return cantidad;
 	}
+	
+	
+	public List<Cuenta> obtenerXIdCliente (int idCliente) {
+		List<Cuenta> cuentasXCliente = new ArrayList<>();
+		
+		PreparedStatement statement;
+        ResultSet rs;
+        Connection conn = Conexion.getSQLConexion();
+        String sql = "SELECT c.nro_cuenta, c.fecha_creacion, c.id_tipo_cuenta, tc.desc_tipo_cuenta, c.cbu, c.saldo" +
+                "FROM cuenta c " +
+                "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta " +
+                "WHERE c.estado = 1";
+
+        try {
+            statement = (PreparedStatement) conn.prepareStatement(sql);
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+            	Cuenta cuenta = new Cuenta();
+            	cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
+                cuenta.setFechaCreación(rs.getDate("fecha_creacion"));
+                cuenta.setCBU(rs.getString("cbu"));
+                cuenta.setSaldo(rs.getFloat("saldo"));
+                
+                TipoCuenta tipocuenta = new TipoCuenta();
+                tipocuenta.setIdTipoCuenta(rs.getInt("id_tipo_cuenta"));
+                tipocuenta.setDescripcion(rs.getString("desc_tipo_cuenta")); 
+                cuenta.setTipoCuenta(tipocuenta);
+                cuentasXCliente.add(cuenta);
+            	}
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cuentasXCliente;
+	}
 }

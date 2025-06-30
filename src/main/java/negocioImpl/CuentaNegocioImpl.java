@@ -49,5 +49,10 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public List<Cuenta> obtenerXIdCliente (int idCliente) {
+		return cuentaDAO.obtenerXIdCliente(idCliente);
+	}
 
 }

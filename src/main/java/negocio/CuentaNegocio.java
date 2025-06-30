@@ -11,4 +11,5 @@ public interface CuentaNegocio {
 	public List<Cuenta> listarCuentas();
 	public int obtenerProximoNumeroCuenta();
 	public int obtenerCantidadCuentasActivas(int idCliente);
+	public List<Cuenta> obtenerXIdCliente (int idCliente);
 }

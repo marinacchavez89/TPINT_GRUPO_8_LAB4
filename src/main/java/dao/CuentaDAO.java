@@ -10,4 +10,5 @@ public interface CuentaDAO {
 	public List<Cuenta> listarCuentas();
 	public int obtenerProximoNumeroCuenta();
 	public int contarCuentasActivasPorCliente(int idCliente);
+	public List<Cuenta> obtenerXIdCliente (int idCliente);
 }
