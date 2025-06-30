@@ -1,3 +1,5 @@
+<%@ page import="entidades.Cuenta" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ include file="validarSesion.jsp" %>
@@ -21,29 +23,42 @@
 <div class="container mt-5 mb-5">
         <div class="row mb-3">
             <div class="col bank-heading text-center">
-                <h1>Movimientos de Cuentas </h1>
+                <h1>Mis Cuentas </h1>
             </div>
         </div>     
 
-        <form>
-            <div class="row mb-3">
+        <form method="get" action="ServletMisCuentas">
+            <div class="row">
                 <div class="col-md-6">
                     <label for="fechaInicio">Fecha de Inicio</label>
-                    <input type="date" class="form-control" id="fechaInicio" required>
+                    <input type="date" class="form-control" id="fechaInicio" >
                 </div>
                 <div class="col-md-6">
                     <label for="fechaFin">Fecha de Fin</label>
-                    <input type="date" class="form-control" id="fechaFin" required>
+                    <input type="date" class="form-control" id="fechaFin" >
                 </div>
             </div>
-            <div class="form-group">
+  
+            <div class="col-md-6">        
                 <label for="categoria">Seleccione Cuenta:</label>
-                <select class="form-control" id="categoria" required>
+                <select class="form-control" id="categoria" name="cuentaSeleccionada" required>
                     <option value="">Seleccione la cuenta</option>
-                    <option value="1">Caja de Ahorro</option>
-                    <option value="2">Cuenta Corriente</option>
+      				<%
+                        List<Cuenta> cuentas = (List<Cuenta>) request.getAttribute("cuentasDelCliente");
+                        String cuentaSeleccionada = (String) request.getAttribute("cuentaSeleccionada");
+
+                        if (cuentas != null) {
+                            for (Cuenta c : cuentas) {
+                               String selected = (cuentaSeleccionada != null && cuentaSeleccionada.equals(String.valueOf(c.getNroCuenta()))) ? "selected" : "";
+                    %>
+                        <option value="<%= c.getNroCuenta() %>">Cuenta Nº <%= c.getNroCuenta() %> - Saldo: $<%= c.getSaldo() %></option>
+                    <%
+                            }
+                        }
+                    %>
                 </select>
             </div>
+            
             <div class="row mt-3">
                 <div class="col">
                     <button type="submit" class="btn btn-primary">Buscar</button>
@@ -52,38 +67,61 @@
         </form>
 
         <hr>
+        <%
+        Cuenta cuentaDetalle = (entidades.Cuenta) request.getAttribute("cuentaDetalle");
+        if (cuentaDetalle != null) {
+    %>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5>Detalle de Cuenta Nº <%= cuentaDetalle.getNroCuenta() %></h5>
+            <p><strong>Tipo de Cuenta:</strong> <%= cuentaDetalle.getIdTipoCuenta().getDescripcion() %></p>
+            <p><strong>CBU:</strong> <%= cuentaDetalle.getCBU() %></p>
+            <p><strong>Saldo:</strong> $<%= cuentaDetalle.getSaldo() %></p>
+            <p><strong>Fecha de Creación:</strong> <%= cuentaDetalle.getFechaCreación() %></p>
+        </div>
+    </div>
+    <%
+        }
+    %>
 
-        <div class="row mb-3">
-            <div class="col">
-                <h2>Detalle de Cuentas</h2>
-                <table class="table table-striped text-center">
-                    <thead>
-                        <tr>
-                            <th>Número de Cuenta</th>
-                            <th>Fecha de Creación</th>
-                            <th>Tipo de Cuenta</th>
-                            <th>CBU</th>
-                            <th>Saldo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        	<td>Cuenta 001</td>
-                        	<td>05/06/2016</td>
-                        	<td>Caja de Ahorro</td>
-                            <td>12345678</td>
-                            <td>$10.000</td>
-                        </tr>
-                        <tr>
-                       	    <td>Cuenta 002</td>
-                       	    <td>06/06/2006</td>
-                       	    <td>Cuenta Corriente</td>
-                            <td>87654321</td>
-                            <td>$7.500</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        
+            <div class="table-responsive">
+                <h2>Movimientos</h2>
+                <table class="table table-bordered text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Detalle</th>
+                    <th>Importe</th>
+                    <th>Tipo</th>
+                    <th>Nro. Cuenta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    List<entidades.Movimiento> movimientos = (List<entidades.Movimiento>) request.getAttribute("movimientos");
+                    if (movimientos != null && !movimientos.isEmpty()) {
+                        for (entidades.Movimiento m : movimientos) {
+                %>
+                <tr>
+                    <td><%= m.getFecha() %></td>
+                    <td><%= m.getDetalle() %></td>
+                    <td>$<%= m.getImporte() %></td>
+                    <td><%= m.getTipoMovimiento().getDescripcion() %></td>
+                    <td><%= m.getCuenta().getNroCuenta() %></td>
+                </tr>
+                <%
+                        }
+                    } else {
+                %>
+                <tr>
+                    <td colspan="5">No hay movimientos para mostrar.</td>
+                </tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
         </div>
 
         <div class="row mt-3">

@@ -190,13 +190,11 @@ public class CuentaDAOImpl implements CuentaDAO {
 		PreparedStatement statement;
         ResultSet rs;
         Connection conn = Conexion.getSQLConexion();
-        String sql = "SELECT c.nro_cuenta, c.fecha_creacion, c.id_tipo_cuenta, tc.desc_tipo_cuenta, c.cbu, c.saldo" +
-                "FROM cuenta c " +
-                "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta " +
-                "WHERE c.estado = 1";
+        String sql = "select c.nro_cuenta, c.fecha_creacion, c.id_tipo_cuenta, tc.desc_tipo_cuenta, c.cbu, c.saldo from cuenta c inner join tipo_cuenta tc on c.id_tipo_cuenta = tc.id_tipo_cuenta where c.estado= 1 and c.id_cliente= ?" ;
 
         try {
             statement = (PreparedStatement) conn.prepareStatement(sql);
+            statement.setInt(1, idCliente);            
             rs = statement.executeQuery();
 
             while (rs.next()) {
