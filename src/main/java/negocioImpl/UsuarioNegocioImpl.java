@@ -17,4 +17,9 @@ public class UsuarioNegocioImpl implements UsuarioNegocio{
     public Usuario autenticarUsuario(String nombreUsuario, String contrasena) {
 		 return usuarioDAO.obtenerUsuarioPorCredenciales(nombreUsuario, contrasena);
     }
+
+	@Override
+	public int obtenerIdPorCliente(int idCliente) {
+	    return usuarioDAO.obtenerIdPorCliente(idCliente);
+	}
 }

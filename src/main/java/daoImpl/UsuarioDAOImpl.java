@@ -93,5 +93,24 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         }
         return usuario;
     }
+	
+	@Override
+	public int obtenerIdPorCliente(int idCliente) {
+	    int idUsuario = 0;
+	    Connection conn = Conexion.getSQLConexion();
+	    String sql = "SELECT id_usuario FROM usuario WHERE id_cliente = ?";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, idCliente);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            idUsuario = rs.getInt("id_usuario");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return idUsuario;
+	}
 }
 

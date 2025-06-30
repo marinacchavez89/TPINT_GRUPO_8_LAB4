@@ -20,8 +20,9 @@ public class ClienteDAOImpl implements ClienteDAO {
 		PreparedStatement statement;
 		Connection conn = Conexion.getSQLConexion();
 		boolean agregado= false;		
-		String sql = "INSERT INTO cliente (Dni, Cuil, Nombre, Apellido, Sexo, ID_Nacionalidad, Fecha_Nacimiento, ID_Direccion, Correo_Electronico, Telefono, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
+		String sql = "INSERT INTO cliente (Dni, Cuil, Nombre, Apellido, Sexo, ID_Nacionalidad, Fecha_Nacimiento, ID_Direccion, Correo_Electronico, Telefono, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				
 		try {
 			statement = conn.prepareStatement(sql);
             statement.setString(1, cliente.getDni());
@@ -34,7 +35,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             statement.setInt(8, cliente.getDireccion().getIdDireccion());
             statement.setString(9, cliente.getCorreoElectronico());
             statement.setString(10, cliente.getTelefono());
-            statement.setBoolean(11, cliente.isEstado());	
+            statement.setBoolean(11, cliente.isEstado());
 		
             if (statement.executeUpdate() > 0) {
                 conn.commit();
@@ -135,7 +136,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	    String sql = "SELECT id_cliente FROM cliente WHERE dni = ?";
 	    try{
 	    	statement = conn.prepareStatement(sql);
-	        statement.setString(1, dni);
+	        statement.setString(1, dni);	        
 	        ResultSet rs = statement.executeQuery();
 	        if (rs.next()) {
 	            return rs.getInt("id_cliente");
@@ -172,6 +173,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 	        if (rs.next()) {
 	            cliente = new Cliente();
 	            cliente.setIdCliente(rs.getInt("id_cliente"));
+	            cliente.setIdUsuario(rs.getInt("id_usuario"));
 	            cliente.setDni(rs.getString("dni"));
 	            cliente.setCuil(rs.getString("cuil"));
 	            cliente.setNombre(rs.getString("nombre"));
@@ -252,6 +254,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             while (rs.next()) {
             	Cliente cliente = new Cliente();
                 cliente.setIdCliente(rs.getInt("id_cliente"));
+                cliente.setIdUsuario(rs.getInt("id_usuario"));
                 cliente.setDni(rs.getString("dni"));
                 cliente.setCuil(rs.getString("cuil"));
                 cliente.setNombre(rs.getString("nombre"));
@@ -296,5 +299,23 @@ public class ClienteDAOImpl implements ClienteDAO {
             e.printStackTrace();
         }
         return clientes;
+	}
+	
+	@Override
+	public boolean setearUsuarioEnCliente(int idCliente, int idUsuario) {
+	    Connection conn = Conexion.getSQLConexion();
+	    String sql = "UPDATE cliente SET id_usuario = ? WHERE id_cliente = ?";
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, idUsuario);
+	        stmt.setInt(2, idCliente);
+	        if (stmt.executeUpdate() > 0) {
+	            conn.commit();
+	            return true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+	    }
+	    return false;
 	}
  }

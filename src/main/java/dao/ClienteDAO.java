@@ -10,4 +10,5 @@ public interface ClienteDAO {
 	public Cliente obtenerXId(int idCliente);
 	public int obtenerIdXDni(String dni);
 	public List<Cliente> listar();
+	public boolean setearUsuarioEnCliente(int idCliente, int idUsuario);
 }

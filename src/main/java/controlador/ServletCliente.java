@@ -158,31 +158,40 @@ public class ServletCliente extends HttpServlet {
                     direccion.setIdDireccion(idDireccionNueva);
                     cliente.setDireccion(direccion);
                     resultado = clienteNegocio.agregarCliente(cliente);
-     
-                    if(resultado) {
-                    	int idClienteGenerado = clienteNegocio.obtenerIdXDni(cliente.getDni());
-           
-                    	if(idClienteGenerado>0) {
-                    	Usuario nuevoUsuario = new Usuario();                       
-                    	nuevoUsuario.setIdCliente(idClienteGenerado);
-                    	nuevoUsuario.setNombreUsuario(cliente.getDni());
-                        nuevoUsuario.setContrasena(cliente.getDni());                        
-                        nuevoUsuario.setTipoUsuario("cliente");
-                        nuevoUsuario.setEstado(true);
- 
-                        UsuarioNegocio usuarioNegocio = new UsuarioNegocioImpl();
-                        boolean usuarioOk = usuarioNegocio.agregarUsuario(nuevoUsuario);
-	                        if (!usuarioOk) {
-	                            System.out.println("⚠️ Usuario no se pudo agregar.");
-	                            mensajeExito = "Error al agregar el cliente.";
-	                        }
-                    	}
-                    	mensajeExito = "Cliente y usuario agregados correctamente.";
-	                } else {
-	                    System.out.println("⚠️ No se pudo insertar la dirección, no se agrega el cliente.");
-	                    resultado = false;
-	                    mensajeExito = "Error al agregar la dirección del cliente.";
-	                }
+
+                    if (resultado) {
+                        int idClienteGenerado = clienteNegocio.obtenerIdXDni(cliente.getDni());
+
+                        if (idClienteGenerado > 0) {
+                            Usuario nuevoUsuario = new Usuario();
+                            nuevoUsuario.setIdCliente(idClienteGenerado);
+                            nuevoUsuario.setNombreUsuario(cliente.getDni());
+                            nuevoUsuario.setContrasena(cliente.getDni());
+                            nuevoUsuario.setTipoUsuario("cliente");
+                            nuevoUsuario.setEstado(true);
+
+                            UsuarioNegocio usuarioNegocio = new UsuarioNegocioImpl();
+                            boolean usuarioOk = usuarioNegocio.agregarUsuario(nuevoUsuario);
+
+                            if (usuarioOk) {
+                                //Obtener el id del usuario creado
+                                int idUsuarioGenerado = usuarioNegocio.obtenerIdPorCliente(idClienteGenerado);
+
+                                //Actualizar el cliente con su id_usuario
+                                clienteNegocio.setearUsuarioEnCliente(idClienteGenerado, idUsuarioGenerado);
+
+                                mensajeExito = "Cliente y usuario agregados correctamente.";
+                            } else {
+                                System.out.println("⚠️ Usuario no se pudo agregar.");
+                                mensajeExito = "Error al agregar el usuario.";
+                            }
+                        }
+                    } else {
+                        System.out.println("⚠️ No se pudo insertar el cliente.");
+                        mensajeExito = "Error al agregar el cliente.";
+                    }
+                } else {
+                    mensajeExito = "Error al agregar la dirección del cliente.";
                 }
                 break;
             case "Modificar":

@@ -14,6 +14,7 @@ public class Cliente {
 	private String correoElectronico;
 	private String telefono;
 	private boolean estado= true;
+	private int idUsuario;
 	
 	//constructores
 	public Cliente() {
@@ -109,5 +110,13 @@ public class Cliente {
 	}
 	public void setEstado(boolean estado) {
 		this.estado = estado;
-	}	
+	}
+	
+	public int getIdUsuario() {
+	    return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+	    this.idUsuario = idUsuario;
+	}
 }

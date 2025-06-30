@@ -10,4 +10,5 @@ public interface ClienteNegocio {
 	public Cliente obtenerClienteXId(int idCliente);
 	public int obtenerIdXDni(String dni);
 	public List<Cliente> listarClientes();
+	boolean setearUsuarioEnCliente(int idCliente, int idUsuario);
 }

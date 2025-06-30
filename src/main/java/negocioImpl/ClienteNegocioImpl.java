@@ -39,4 +39,9 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 	public List<Cliente> listarClientes(){
 		return clienteDAO.listar();
 	}
+	
+	@Override
+	public boolean setearUsuarioEnCliente(int idCliente, int idUsuario) {
+	    return clienteDAO.setearUsuarioEnCliente(idCliente, idUsuario);
+	}
 }
