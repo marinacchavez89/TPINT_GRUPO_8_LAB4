@@ -47,8 +47,9 @@ create table cliente (
     correo_electronico VARCHAR(100),
     telefono VARCHAR(20),
     estado BOOLEAN default true,
-    foreign key (id_direccion) references direccion(id_direccion),
-    foreign key (id_nacionalidad) references nacionalidad(id_nacionalidad)
+    FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion),
+    FOREIGN KEY (id_nacionalidad) REFERENCES nacionalidad(id_nacionalidad),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 
 create table tipo_cuenta (
@@ -68,12 +69,23 @@ create table cuenta (
     foreign key (id_tipo_cuenta) references tipo_cuenta(id_tipo_cuenta)
 );
 
+CREATE TABLE transferencia (
+    id_transferencia INT PRIMARY KEY AUTO_INCREMENT,
+    fecha DATETIME NOT NULL,
+    nro_cuenta_origen INT NOT NULL,
+    nro_cuenta_destino INT NOT NULL,
+    importe DECIMAL(10,2) NOT NULL CHECK (importe > 0),
+    FOREIGN KEY (nro_cuenta_origen) REFERENCES cuenta(nro_cuenta),
+    FOREIGN KEY (nro_cuenta_destino) REFERENCES cuenta(nro_cuenta),
+    CHECK (nro_cuenta_origen <> nro_cuenta_destino)
+);
+
 create table usuario (
     id_usuario INT primary key auto_increment,
-    id_cliente INT,
+    id_cliente INT NULL,
     nombre_usuario VARCHAR(50) not null,
     contrasena VARCHAR(100) not null,
-    es_admin BOOLEAN default false,
+    tipo_usuario ENUM('admin', 'cliente') NOT NULL DEFAULT 'cliente',
     estado BOOLEAN default true,
     foreign key (id_cliente) references cliente(id_cliente)
 );
