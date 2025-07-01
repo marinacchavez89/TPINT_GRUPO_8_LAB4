@@ -19,17 +19,20 @@
 <div class="perfil-container">
  <div class="perfil-card">
   <h2 class="text-center mb-4">Solicitar Préstamo</h2>
-  <form class="perfil-form">
+  <form action="ServletPrestamo" method="post" class="perfil-form">
     <div class="row">
-      <div class="col-md-12">
-        <label for="nombre">Monto</label>
-        <input type="number" id="nombre">
-
-        <label for="dni">Cuotas</label>
-        <input type="number" id="dni">
-
-        <label for="cuil">Cuenta de depósito</label>
-        <input type="text" id="cuil">
+      <div class="mb-3">
+        <label for="monto" class="form-label">Monto</label>
+        <input type="number" name="monto" id="monto" class="form-control" required>
+      </div>
+       <div class="mb-3">
+        <label for="cuotas" class="form-label">Cuotas</label>
+        <input type="number" name="cuotas" id="cuotas" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="cuenta" class="form-label">Cuenta de depósito</label>
+        <input type="text" name="cuenta" id="cuenta" class="form-control" required>
+      </div>
       </div>
     </div>
   </form>
