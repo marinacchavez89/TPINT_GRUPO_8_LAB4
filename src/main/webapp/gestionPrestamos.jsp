@@ -19,14 +19,37 @@
 <jsp:include page="navbar.jsp"/>
 <jsp:include page="bienvenidaUsuario.jsp"/>
 
-<div class="container mt-5  mb-5">
-   <h2 class="mb-4 text-center">Gestión de Préstamos</h2>
-    <div class="list-group col-6 mx-auto">
-        <a href="solicitudPrestamo.jsp" class="list-group-item list-group-item-action">Solicitar Préstamo</a>
-        <a href="misPrestamos.jsp" class="list-group-item list-group-item-action">Mis Préstamos</a>
-    </div>
+<main>
+<div class="container mt-5  mb-5 text-center">
+   <h2 class="mb-4">Gestión de Préstamos</h2>
+   <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+   
+   <div class="col">
+       <a href="ServletPrestamos" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <i class="bi bi-file-earmark-plus fs-1 mb-2"></i>
+              <h5 class="card-title">Solicitar Préstamo</h5>
+            </div>
+          </div>
+       </a>
+   </div>
+   
+    <div class="col">
+       <a href="misPrestamos.jsp" class="text-decoration-none text-dark">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <i class="bi bi-list-check fs-1 mb-2"></i>
+              <h5 class="card-title">Mis Préstamos</h5>
+            </div>
+          </div>
+       </a>
+    </div>  
+
+  </div>
 </div>
- 
+</main>
+      
  <div class="text-center mt-5 mb-5">
     <form action="inicioCliente.jsp" method="get">
       <input type="submit" class="btn-volver" value="Volver">

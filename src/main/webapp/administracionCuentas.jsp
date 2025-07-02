@@ -99,18 +99,22 @@
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
+          <label for="numeroCuenta">Número de Cuenta</label>
           <input type="number" name="numeroCuenta" class="form-control" placeholder="Nro Cuenta" readonly>
         </div>
         <div class="mb-3">
+          <label for="idCliente">ID Cliente</label>
           <input type="number" name="idCliente" class="form-control" placeholder="ID Cliente" required>
         </div>
         <div class="mb-3">
+           <label for="fechaCreacion">Fecha de Creación</label>
           <input type="date" name="fechaCreacion" class="form-control" placeholder="Fecha Creación" required>
         </div>
       </div>
 
       <div class="col-md-6">
         <div class="mb-3">
+          <label for="tipoCuenta">Tipo de Cuenta</label>
           <select name="tipoCuenta" class="form-control" required>
             <option value="">Seleccione un tipo</option>
             <%
@@ -126,9 +130,11 @@
           </select>
         </div>
         <div class="mb-3">
+          <label for="cbu">CBU</label>
           <input type="text" name="cbu" class="form-control" placeholder="CBU" required>
         </div>
         <div class="mb-3">
+          <label for="saldo">Saldo</label>
           <input type="number" name="saldo" class="form-control" placeholder="Saldo" readonly>
         </div>
       </div>
@@ -148,18 +154,22 @@
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
+         <label for="numeroCuenta">Número de Cuenta</label>
  		 <input type="number" name="proximoNroCuenta" class="form-control" id="proximoNro" 
         	 value="<%= request.getAttribute("proximoNroCuenta") %>" readonly>
 		</div>
         <div class="mb-3">
+          <label for="idCliente">ID Cliente</label>
           <input type="number" min="0" name="idCliente" class="form-control" placeholder="ID Cliente" required>
         </div>
         <div class="mb-3">
+          <label for="fechaCreacion">Fecha de Creación</label>
           <input type="date" name="fechaCreacion" class="form-control" placeholder="Fecha Creación" required>
         </div>
       </div>
       <div class="col-md-6">
         <div class="mb-3">
+          <label for="tipoCuenta">Tipo de Cuenta</label>
           <select name="tipoCuenta" class="form-select" required>
             <option value="">Seleccione tipo de cuenta</option>
             <%
@@ -174,9 +184,11 @@
           </select>
         </div>
         <div class="mb-3">
+          <label for="cbu">CBU</label>
           <input type="text" name="cbu" class="form-control" placeholder="CBU" required>
         </div>
         <div class="mb-3">
+          <label for="saldo">Saldo</label>
           <input type="number" name="saldo" class="form-control" value="10000.0" readonly>
         </div>
       </div>
