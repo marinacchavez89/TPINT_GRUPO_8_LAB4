@@ -98,4 +98,38 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 		return movimientos; 
 	}
 	
+	public boolean agregarMovimiento (Movimiento movimiento) {
+		
+		PreparedStatement statement;
+		Connection conn= Conexion.getSQLConexion();
+		boolean agregado = false;
+		
+		String sql = "INSERT INTO movimiento (fecha,detalle,importe,id_tipo_movimiento,nro_cuenta) VALUES (?,?,?,?,?)";
+		
+		try {
+			statement = (PreparedStatement) conn.prepareStatement(sql);
+			statement.setDate(1, new java.sql.Date(movimiento.getFecha().getTime()));
+			statement.setString(2, movimiento.getDetalle());
+			statement.setFloat(3, movimiento.getImporte());
+			statement.setInt(4, movimiento.getTipoMovimiento().getIdTipoMovimiento());
+			statement.setInt(5, movimiento.getCuenta().getNroCuenta());
+			
+		
+			if(statement.executeUpdate() > 0) {
+				conn.commit();
+				agregado = true;
+		}
+		
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		    try {
+		        conn.rollback();
+		    } catch (SQLException ex) {
+		        ex.printStackTrace();
+		    }
+		}
+		
+		
+		return agregado;
+	}
 }
