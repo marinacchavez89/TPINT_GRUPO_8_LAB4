@@ -15,7 +15,13 @@ public class MovimientoNegocioImpl implements MovimientoNegocio {
 		return movimientoDAO.obtenerMovimientosXCuenta(nroCuenta);
 	}
 	
+	@Override
 	public List<Movimiento> obtenerMovimientosXCliente(int idCliente){
 		return movimientoDAO.obtenerMovimientosXCliente(idCliente);
+	}
+	
+	@Override
+	public boolean agregarMovimiento (Movimiento movimiento) {
+		return movimientoDAO.agregarMovimiento(movimiento);
 	}
 }
