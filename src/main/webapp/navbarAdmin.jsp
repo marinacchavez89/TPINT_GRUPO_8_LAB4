@@ -16,7 +16,7 @@
                     <a class="nav-link" href="ServletCliente">Administración Clientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="ServletCuenta">Administracón Cuentas</a>
+                    <a class="nav-link" href="ServletCuenta">Administración Cuentas</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Administración Préstamos</a>
