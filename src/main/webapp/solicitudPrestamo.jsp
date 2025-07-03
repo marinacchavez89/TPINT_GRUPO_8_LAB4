@@ -30,7 +30,7 @@
  <div class="perfil-card">
   <h2 class="text-center mb-4">Solicitar Préstamo</h2>
   
-  <form action="ServletPrestamo" method="post" class="perfil-form">
+  <form action="ServletPrestamos" method="post" class="perfil-form">
     <div class="row">
       <div class="mb-3">
         <label for="monto" class="form-label">Monto Solicitado</label>

@@ -12,13 +12,13 @@ public class Prestamo {
     private int plazoPago;
     private double importeAPagar;
     private int cantidadCuotas;
-    private boolean estado;
+    private int estado;
 
     public  Prestamo() {}
     
     
     public Prestamo(int idPrestamo, int idCliente, int nroCuenta, Date fechaAlta, double importePedido, int plazoPago,
-			double importeAPagar, int cantidadCuotas, boolean estado) {
+			double importeAPagar, int cantidadCuotas, int estado) {
 		super();
 		this.idPrestamo = idPrestamo;
 		this.idCliente = idCliente;
@@ -97,11 +97,11 @@ public class Prestamo {
         this.cantidadCuotas = cantidadCuotas;
     }
 
-    public boolean isEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 
