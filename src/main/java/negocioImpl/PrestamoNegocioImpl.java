@@ -12,4 +12,9 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
     public boolean solicitarPrestamo(Prestamo prestamo) {
         return prestamoDao.insert(prestamo);
     }
+
+	@Override
+	public boolean modificarEstadoPrestamo(Prestamo prestamo, int estado) {
+		return prestamoDao.modificarEstado(prestamo, estado);
+	}
 }

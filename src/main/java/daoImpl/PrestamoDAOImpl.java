@@ -35,4 +35,32 @@ public class PrestamoDAOImpl implements PrestamoDAO {
         }
         return estado;
     }
+
+	@Override
+	public boolean modificarEstado(Prestamo prestamo, int estado) { //El estado viene según se apruebe/rechaze el préstamo
+		PreparedStatement statement;
+	    Connection conn = Conexion.getSQLConexion();
+	    boolean modificado = false;
+
+	    // Modificar: La condición WHERE debe ser por ID_Cliente para asegurar la unicidad y permitir cambio de DNI.
+	    String sql = "UPDATE prestamo SET estado = ? WHERE id_prestamo = ?";
+	    try {
+	        statement = conn.prepareStatement(sql);
+	        statement.setInt(1, estado);
+	        statement.setInt(2, prestamo.getIdPrestamo());
+	        
+	        if (statement.executeUpdate() > 0) {
+	            conn.commit();
+	            modificado = true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            conn.rollback();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	    return modificado;
+	}
 }
