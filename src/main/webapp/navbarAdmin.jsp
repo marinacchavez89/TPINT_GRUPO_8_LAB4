@@ -19,7 +19,7 @@
                     <a class="nav-link" href="ServletCuenta">Administración Cuentas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Administración Préstamos</a>
+                    <a class="nav-link" href="autorizarPrestamo.jsp">Administración Préstamos</a>
                 </li>
                 <% 
         			if (session.getAttribute("usuarioLogueado") != null) {
