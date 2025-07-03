@@ -21,9 +21,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Administración Préstamos</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-warning" href="CerrarSesion">Cerrar Sesión</a>
-                </li>
+                <% 
+        			if (session.getAttribute("usuarioLogueado") != null) {
+			    %>
+			        <li class="nav-item">
+			            <a class="nav-link text-warning" href="CerrarSesion">Cerrar Sesión</a>
+			        </li>
+			    <%
+			        }
+			    %>
             </ul>
         </div>
     </div>
