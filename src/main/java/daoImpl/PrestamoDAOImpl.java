@@ -69,27 +69,30 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 	    return modificado;
 	}
 	@Override
-	public Prestamo obtenerPorId(int idPrestamo) {
-		Prestamo prestamo = null;
-		Connection conn = Conexion.getSQLConexion();
-		PreparedStatement statement = conn.prepareStatement(sql);
-	    String sql = "SELECT * FROM prestamos WHERE id_prestamo = ?";
-	    try (ResultSet rs = statement.executeQuery()) {
-            prestamo.setIdPrestamo(rs.getInt("id_prestamo"));
-            prestamo.setIdCliente(rs.getInt("id_cliente"));
-            prestamo.setNroCuenta(rs.getInt("nro_cuenta"));
-            prestamo.setImportePedido(rs.getDouble("importe_pedido"));
-            prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
-            prestamo.setFechaAlta(rs.getDate("fecha_alta"));
-            prestamo.setImporteAPagar(rs.getDouble("importe_a_pagar"));
-            prestamo.setEstado(rs.getInt("estado"));
-	    }
-	    catch (SQLException e)
-	    {
-	    	e.printStackTrace();
-	    }
-		return prestamo;
-		
-	}
+    public Prestamo obtenerPorId(int idPrestamo) {
+        Prestamo prestamo = null;
+        String sql = "SELECT * FROM prestamos WHERE id_prestamo = ?";
+        try (Connection conn = Conexion.getSQLConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idPrestamo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    prestamo = new Prestamo();
+                    prestamo.setIdPrestamo(rs.getInt("id_prestamo"));
+                    prestamo.setIdCliente(rs.getInt("id_cliente"));
+                    prestamo.setNroCuenta(rs.getInt("nro_cuenta"));
+                    prestamo.setImportePedido(rs.getDouble("importe_pedido"));
+                    prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
+                    prestamo.setFechaAlta(rs.getDate("fecha_alta"));
+                    prestamo.setImporteAPagar(rs.getDouble("importe_a_pagar"));
+                    prestamo.setEstado(rs.getInt("estado"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return prestamo;
+    }
 }
 //FALTA LISTAR PENDIENTES Y LISTAR POR CLIENTE
