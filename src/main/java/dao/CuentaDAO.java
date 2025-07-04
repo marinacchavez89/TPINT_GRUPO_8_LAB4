@@ -11,4 +11,7 @@ public interface CuentaDAO {
 	public int obtenerProximoNumeroCuenta();
 	public int contarCuentasActivasPorCliente(int idCliente);
 	public List<Cuenta> obtenerXIdCliente (int idCliente);
+	Cuenta obtenerPorNroCuenta(int nroCuenta);
+    boolean actualizarEstadoCuenta(Cuenta cuenta);
+	public List<Cuenta> listarCuentasFiltradas(Boolean estado, int idCliente);
 }

@@ -55,4 +55,19 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 		return cuentaDAO.obtenerXIdCliente(idCliente);
 	}
 
+	@Override
+	public boolean cambiarEstadoCuenta(int nroCuenta) {
+		Cuenta cuenta = cuentaDAO.obtenerPorNroCuenta(nroCuenta);
+        if (cuenta != null) {
+            cuenta.setEstado(!cuenta.isEstado());
+            return cuentaDAO.actualizarEstadoCuenta(cuenta);
+        }
+		return false;
+	}
+
+	@Override
+	public List<Cuenta> listarCuentasFiltradas(Boolean estado, int idCliente) {
+		return cuentaDAO.listarCuentasFiltradas(estado, idCliente);
+	}
+
 }

@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="validarSesion.jsp" %>
 
@@ -44,7 +45,32 @@
 <jsp:include page="navbarAdmin.jsp"/>
 <jsp:include page="bienvenidaUsuario.jsp" />
 
-<form action="ServletCuenta" method="post">
+
+<!-- Filtros -->
+<div class="container mt-4 mb-3">
+  <form action="ServletCuenta" method="get" class="row g-3 align-items-end">
+    <div class="col-md-3">
+      <label for="filtroEstado" class="form-label">Estado</label>
+      <select name="filtroEstado" id="filtroEstado" class="form-select">
+        <option value="">-- Todos --</option>
+        <option value="true" <%= "true".equals(request.getParameter("filtroEstado")) ? "selected" : "" %>>Habilitadas</option>
+        <option value="false" <%= "false".equals(request.getParameter("filtroEstado")) ? "selected" : "" %>>Inhabilitadas</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="idCliente" class="form-label">ID Cliente</label>
+      <input type="number" name="idCliente" id="idCliente" class="form-control" placeholder="Ej: 1001"
+             value="<%= request.getParameter("idCliente") != null ? request.getParameter("idCliente") : "" %>">
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+  		<button type="submit" class="btn btn-primary w-50">Aplicar </button>
+  		<a href="ServletCuenta" class="btn btn-secondary w-50 text-center">Limpiar</a>
+	</div>
+
+  </form>
+</div>
+
+
   <div class="tabla-contenedor">
     <table id="tablaCuentas" class="tabla">
       <thead>
@@ -56,6 +82,7 @@
           <th>Tipo de Cuenta</th>
           <th>CBU</th>
           <th>Saldo</th>
+          <th>Estado</th>
         </tr>
       </thead>
       <tbody>
@@ -80,6 +107,15 @@
           <td><%= c.getIdTipoCuenta().getDescripcion() %></td>
           <td><%= c.getCBU() %></td>
           <td><%= c.getSaldo() %></td>
+          <td> <!-- esto es el botón de habilitar/inhabilitar -->
+          	 <form action="ServletCuenta" method="post">
+			  <input type="hidden" name="accion" value="CambiarEstado">
+			  <input type="hidden" name="nroCuenta" value="<%= c.getNroCuenta() %>">
+		      <button type="submit" class="btn btn-sm <%= c.isEstado() ? "btn-danger" : "btn-success" %>">
+		       <%= c.isEstado() ? "Inhabilitar" : "Habilitar" %>
+		      </button>
+ 			 </form>
+          </td>
         </tr>
         <% }
           }
@@ -92,7 +128,7 @@
     <button type="button" onClick="mostrarFormularioAgregarCuenta()" class="btn btn-success btn-sm">Agregar</button>
     <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
   </div>
-</form>
+
 <form action="ServletCuenta" method="post" id="formModificarCuenta" style="display: none;">
   <div class="tabla-contenedor mt-3">
     <h4 class="mb-3">Modificar o Eliminar cuenta</h4>
@@ -145,7 +181,6 @@
       <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">Eliminar</button>
     </div>
   </div>  
-  </div>
 </form>
 
 <form action="ServletCuenta" method="post" id="formAgregarCuenta" style="display: none;">

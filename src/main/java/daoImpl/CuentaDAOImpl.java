@@ -115,8 +115,7 @@ public class CuentaDAOImpl implements CuentaDAO {
         String sql = "SELECT c.nro_cuenta, c.id_cliente, c.fecha_creacion, c.id_tipo_cuenta, " +
                 "tc.desc_tipo_cuenta, c.cbu, c.saldo, c.estado " +
                 "FROM cuenta c " +
-                "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta " +
-                "WHERE c.estado = 1";
+                "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta ";
 
 
         try {
@@ -215,5 +214,94 @@ public class CuentaDAOImpl implements CuentaDAO {
             e.printStackTrace();
         }
         return cuentasXCliente;
+	}
+
+	@Override
+	public Cuenta obtenerPorNroCuenta(int nroCuenta) {
+		Cuenta cuenta = null;
+	    String sql = "SELECT * FROM cuenta WHERE nro_cuenta = ?";
+	    try (Connection conn = Conexion.getSQLConexion();
+	         PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sql)) {
+	        stmt.setInt(1, nroCuenta);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            cuenta = new Cuenta();
+	            cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
+	            cuenta.setEstado(rs.getBoolean("estado"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return cuenta;
+	}
+
+	@Override
+	public boolean actualizarEstadoCuenta(Cuenta cuenta) {
+		 String sql = "UPDATE cuenta SET estado = ? WHERE nro_cuenta = ?";
+		    try (Connection conn = Conexion.getSQLConexion();
+		         PreparedStatement stmt = (PreparedStatement) conn.prepareStatement(sql)) {
+		        stmt.setBoolean(1, cuenta.isEstado());
+		        stmt.setInt(2, cuenta.getNroCuenta());
+		        if (stmt.executeUpdate() > 0) {
+		            conn.commit();
+		            return true;
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        try {
+		            Conexion.getSQLConexion().rollback();
+		        } catch (SQLException ex) {
+		            ex.printStackTrace();
+		        }
+		    }
+		    return false;
+	}
+
+	@Override
+	public List<Cuenta> listarCuentasFiltradas(Boolean estado, int idCliente) {
+		List<Cuenta> cuentas = new ArrayList<>();
+	    PreparedStatement statement;
+	    ResultSet rs;
+	    Connection conn = Conexion.getSQLConexion();
+
+	    StringBuilder sql = new StringBuilder("SELECT c.nro_cuenta, c.id_cliente, c.fecha_creacion, c.id_tipo_cuenta, " +
+	            "tc.desc_tipo_cuenta, c.cbu, c.saldo, c.estado " +
+	            "FROM cuenta c " +
+	            "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta WHERE 1=1 ");
+
+	    if (estado != null) {
+	        sql.append(" AND c.estado = ").append(estado ? "1" : "0");
+	    }
+
+	    if (idCliente > 0) {
+	        sql.append(" AND c.id_cliente = ").append(idCliente);
+	    }
+
+	    try {
+	        statement = (PreparedStatement) conn.prepareStatement(sql.toString());
+	        rs = statement.executeQuery();
+
+	        while (rs.next()) {
+	            Cuenta cuenta = new Cuenta();
+	            cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
+	            cuenta.setIdCliente(rs.getInt("id_cliente"));
+	            cuenta.setFechaCreación(rs.getDate("fecha_creacion"));
+	            cuenta.setCBU(rs.getString("cbu"));
+	            cuenta.setSaldo(rs.getFloat("saldo"));
+	            cuenta.setEstado(rs.getBoolean("estado"));
+
+	            TipoCuenta tipo = new TipoCuenta();
+	            tipo.setIdTipoCuenta(rs.getInt("id_tipo_cuenta"));
+	            tipo.setDescripcion(rs.getString("desc_tipo_cuenta"));
+	            cuenta.setTipoCuenta(tipo);
+
+	            cuentas.add(cuenta);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return cuentas;
 	}
 }

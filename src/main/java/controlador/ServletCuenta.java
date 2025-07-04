@@ -42,8 +42,20 @@ public class ServletCuenta extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-				
-		List<Cuenta> listaCuentas = cuentaNegocio.listarCuentas();
+		String filtroEstado = request.getParameter("filtroEstado");
+	    String idClienteStr = request.getParameter("idCliente");
+	    
+	    List<Cuenta> listaCuentas;
+
+	    if ((filtroEstado != null && !filtroEstado.isEmpty()) || (idClienteStr != null && !idClienteStr.isEmpty())) {
+	        Boolean estado = (filtroEstado != null && !filtroEstado.isEmpty()) ? Boolean.parseBoolean(filtroEstado) : null;
+	        int idCliente = (idClienteStr != null && !idClienteStr.isEmpty()) ? Integer.parseInt(idClienteStr) : 0;
+
+	        listaCuentas = cuentaNegocio.listarCuentasFiltradas(estado, idCliente);
+	    } else {
+	        listaCuentas = cuentaNegocio.listarCuentas();
+	    }
+
 	    request.setAttribute("cuentas", listaCuentas);
 	    
 	    List<TipoCuenta> tiposCuenta = tipoCuentaNegocio.listar();
@@ -65,6 +77,23 @@ public class ServletCuenta extends HttpServlet {
 			response.sendRedirect("ServletCuenta");
 			return;
 		}
+		
+		 //  Evitamos todo el procesamiento para cambiar estado
+	    if ("CambiarEstado".equals(accion)) {
+	        int nroCuenta = parseInt(request.getParameter("nroCuenta"));
+	        boolean exito = cuentaNegocio.cambiarEstadoCuenta(nroCuenta);
+
+	        if (exito) {
+	            session.setAttribute("confirmacionMensaje", "Estado de cuenta actualizado correctamente.");
+	            session.setAttribute("confirmacionTipo", "success");
+	        } else {
+	            session.setAttribute("confirmacionMensaje", "Error al actualizar el estado de la cuenta.");
+	            session.setAttribute("confirmacionTipo", "error");
+	        }
+
+	        response.sendRedirect("ServletCuenta");
+	        return; 
+	    }
 
 		Cuenta cuenta = new Cuenta();
 		
