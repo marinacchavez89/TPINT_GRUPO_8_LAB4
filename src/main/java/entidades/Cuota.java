@@ -8,13 +8,13 @@ public class Cuota {
 	private int numero_cuota;
 	private float monto;
 	private Date fecha_pago;
-	private boolean estado;
+	private int estado;
 	
 	public Cuota() {
 		
 	}
 	
-	public Cuota(int id_cuota, int id_prestamo, int numero_cuota, float monto, Date fecha_pago, boolean estado) {
+	public Cuota(int id_cuota, int id_prestamo, int numero_cuota, float monto, Date fecha_pago, int estado) {
 		super();
 		this.id_cuota = id_cuota;
 		this.id_prestamo = id_prestamo;
@@ -54,10 +54,10 @@ public class Cuota {
 	public void setFechaPago(Date fecha_pago) {
 		this.fecha_pago = fecha_pago;
 	}
-	public boolean isEstado() {
+	public int getEstado() {
 		return estado;
 	}
-	public void setEstado(boolean estado) {
+	public void setEstado(int estado) {
 		this.estado = estado;
 	}
 }

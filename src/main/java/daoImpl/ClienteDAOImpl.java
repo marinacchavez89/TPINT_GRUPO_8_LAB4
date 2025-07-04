@@ -17,14 +17,18 @@ public class ClienteDAOImpl implements ClienteDAO {
 	
 	@Override
 	public boolean agregar(Cliente cliente) {
-		PreparedStatement statement;
-		Connection conn = Conexion.getSQLConexion();
-		boolean agregado= false;		
 		
 		String sql = "INSERT INTO cliente (Dni, Cuil, Nombre, Apellido, Sexo, ID_Nacionalidad, Fecha_Nacimiento, ID_Direccion, Correo_Electronico, Telefono, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				
+		PreparedStatement statement = null;
+		boolean agregado= false;		
+		Connection conn = null;
+		ResultSet rsKKeys = null;
 		try {
-			statement = conn.prepareStatement(sql);
+			conn = Conexion.getSQLConexion();
+			conn.setAutoCommit(false);
+			
+			statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, cliente.getDni());
             statement.setString(2, cliente.getCuil());
             statement.setString(3, cliente.getNombre());
