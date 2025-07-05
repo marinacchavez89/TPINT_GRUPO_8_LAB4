@@ -28,6 +28,7 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 	
 		try {
 			statement= conn.prepareStatement(sql);
+			statement.setInt(1,nroCuenta); // faltaba enviar el parametro nroCuenta al '?'
 			rs= statement.executeQuery();
 			
 			while(rs.next()) {
@@ -71,6 +72,8 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 		
 			try {
 				statement= conn.prepareStatement(sql);
+				
+				statement.setInt(1, idCliente); // idem anterior. Faltaba enviar parametro idCliente al '?'
 				rs= statement.executeQuery();
 				
 				while(rs.next()) {
@@ -99,16 +102,17 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 	}
 	
 	public boolean agregarMovimiento (Movimiento movimiento) {
+		String sql = "INSERT INTO movimiento (fecha,detalle,importe,id_tipo_movimiento,nro_cuenta) VALUES (?,?,?,?,?)";
 		
 		PreparedStatement statement;
 		Connection conn= Conexion.getSQLConexion();
 		boolean agregado = false;
 		
-		String sql = "INSERT INTO movimiento (fecha,detalle,importe,id_tipo_movimiento,nro_cuenta) VALUES (?,?,?,?,?)";
 		
 		try {
 			statement = (PreparedStatement) conn.prepareStatement(sql);
-			statement.setDate(1, new java.sql.Date(movimiento.getFecha().getTime()));
+			
+			statement.setDate(1, new java.sql.Date(movimiento.getFecha().getTime())); // revisar esta linea si falla la fecha
 			statement.setString(2, movimiento.getDetalle());
 			statement.setFloat(3, movimiento.getImporte());
 			statement.setInt(4, movimiento.getTipoMovimiento().getIdTipoMovimiento());

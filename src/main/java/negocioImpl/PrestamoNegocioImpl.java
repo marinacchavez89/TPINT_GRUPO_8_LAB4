@@ -7,7 +7,6 @@ import java.util.List;
 import dao.PrestamoDAO;
 import daoImpl.PrestamoDAOImpl;
 import negocio.PrestamoNegocio;
-import dao.PrestamoDAO;
 
 public abstract class PrestamoNegocioImpl implements PrestamoNegocio {
     private PrestamoDAO prestamoDao = new PrestamoDAOImpl();
@@ -33,3 +32,6 @@ public List<Prestamo> listarPrestamosPendientes()
 		return prestamoDao.listarPorCliente(idCliente);
 	}
 }
+//falta desarrollar autorizar prestamo. Pero hay que hacer movimientos
+
+//Instanciar movimientos
