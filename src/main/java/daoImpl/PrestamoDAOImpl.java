@@ -23,7 +23,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
         try {
             conn = Conexion.getSQLConexion();
 /**CORREGIR ESTE INSERT. !!!!!!!!!!!!!!!!!!!!*/
-            String query = "INSERT INTO prestamos (id_cliente, nro_cuenta, importe_pedido, cantidad_cuotas, fecha_alta, importe_a_pagar, estado) VALUES (?, ?, ?, ?, ?, NOW(), 1)";
+            String query = "INSERT INTO prestamo (id_cliente, nro_cuenta, importe_pedido, cantidad_cuotas, fecha_alta, importe_a_pagar, estado) VALUES (?, ?, ?, ?, ?, NOW(), 1)";
             stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, prestamo.getIdCliente());
@@ -73,7 +73,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 	@Override
     public Prestamo obtenerPorId(int idPrestamo) {
         Prestamo prestamo = null;
-        String sql = "SELECT * FROM prestamos WHERE id_prestamo = ?";
+        String sql = "SELECT * FROM prestamo WHERE id_prestamo = ?";
         try (Connection conn = Conexion.getSQLConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -99,7 +99,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 	@Override
 	public List<Prestamo> listarPendientes(){
 		List<Prestamo> lista = new ArrayList<>();
-		String sql = "SELECT * FROM prestamos WHERE estado = 1 ORDER BY fecha_alta";
+		String sql = "SELECT * FROM prestamo WHERE estado = 1 ORDER BY fecha_alta";
 		
         Connection conn = null;
         PreparedStatement stmt=null;
@@ -130,7 +130,7 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 	@Override
 	 public List<Prestamo> listarPorCliente(int idCliente) {
         List<Prestamo> lista = new ArrayList<>();
-        String sql = "SELECT * FROM prestamos WHERE id_cliente = ? ORDER BY fecha_alta";
+        String sql = "SELECT * FROM prestamo WHERE id_cliente = ? ORDER BY fecha_alta";
         try (Connection conn = Conexion.getSQLConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idCliente);

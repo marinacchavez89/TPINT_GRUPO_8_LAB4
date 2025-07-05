@@ -9,4 +9,6 @@ import entidades.Prestamo;
 public interface PrestamoNegocio {
     boolean solicitarPrestamo(Prestamo prestamo);
     public boolean modificarEstadoPrestamo(Prestamo prestamo, int estado);
+	List<Prestamo> listarPrestamosPorCliente(int idCliente);
+	List<Prestamo> listarPrestamosPendientes();
 }

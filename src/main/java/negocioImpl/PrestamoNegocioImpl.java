@@ -1,9 +1,13 @@
 package negocioImpl;
 
 import entidades.Prestamo;
+
+import java.util.List;
+
 import dao.PrestamoDAO;
 import daoImpl.PrestamoDAOImpl;
 import negocio.PrestamoNegocio;
+import dao.PrestamoDAO;
 
 public abstract class PrestamoNegocioImpl implements PrestamoNegocio {
     private PrestamoDAO prestamoDao = new PrestamoDAOImpl();
@@ -16,5 +20,16 @@ public abstract class PrestamoNegocioImpl implements PrestamoNegocio {
 	@Override
 	public boolean modificarEstadoPrestamo(Prestamo prestamo, int estado) {
 		return prestamoDao.modificarEstado(prestamo, estado);
+	}
+	@Override
+public List<Prestamo> listarPrestamosPendientes()
+{
+		return prestamoDao.listarPendientes(); // solo lista los -1
+		
+}
+	@Override
+	public List <Prestamo> listarPrestamosPorCliente(int idCliente)
+	{
+		return prestamoDao.listarPorCliente(idCliente);
 	}
 }
