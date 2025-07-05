@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dao.PrestamoDAO;
 import entidades.Prestamo;
@@ -94,5 +96,50 @@ public class PrestamoDAOImpl implements PrestamoDAO {
         }
         return prestamo;
     }
+	@Override
+	public List<Prestamo> listarPendientes(){
+		List<Prestamo> lista = new ArrayList<>();
+		String sql = "SELECT * FROM prestamos WHERE estado = 1 ORDER BY fecha_alta";
+		
+        Connection conn = null;
+        PreparedStatement stmt=null;
+		ResultSet rs = null;
+		try {
+			conn = Conexion.getSQLConexion();
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while(rs.next())
+			{
+				Prestamo prestamo = new Prestamo();
+                prestamo.setIdPrestamo(rs.getInt("id_prestamo"));
+                prestamo.setIdCliente(rs.getInt("id_cliente"));
+                prestamo.setNroCuenta(rs.getInt("nro_cuenta"));
+                prestamo.setImportePedido(rs.getDouble("importe_pedido"));
+                prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
+                prestamo.setFechaAlta(rs.getDate("fecha_alta"));
+                prestamo.setImporteAPagar(rs.getDouble("importe_a_pagar"));
+                prestamo.setEstado(rs.getInt("estado"));
+                lista.add(prestamo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
+	@Override
+	public List<Prestamo> listarPorCliente(int idCliente)
+	{
+		List<Prestamo> listarCliente(int idCliente)
+		{
+			String sql = "SELECT * FROM prestamos WHERE id_cliente = ? ORDER BY fecha_alta";
+
+		}
+		
+		
+		
+		
+		return null;
+	}
 }
 //FALTA LISTAR PENDIENTES Y LISTAR POR CLIENTE
