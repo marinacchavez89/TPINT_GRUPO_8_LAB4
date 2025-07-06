@@ -2,6 +2,7 @@ package daoImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import dao.CuotaDAO;
@@ -44,6 +45,33 @@ public class CuotaDAOImpl implements CuotaDAO {
             }
         }
         return agregado;
+	}
+	@Override
+	public Cuota obtenerPorId(int idCuota) {
+	    Cuota cuota = null;
+	    String query = "SELECT id_cuota, id_prestamo, numero_cuota, monto, fecha_pago, estado FROM cuota WHERE id_cuota = ?";
+	    
+	    try (Connection conn = Conexion.getSQLConexion();
+	         PreparedStatement stmt = conn.prepareStatement(query)) {
+	        
+	        stmt.setInt(1, idCuota);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            cuota = new Cuota();
+	            cuota.setIdCuota(rs.getInt("id_cuota"));
+	            cuota.setIdPrestamo(rs.getInt("id_prestamo"));
+	            cuota.setNumeroCuota(rs.getInt("numero_cuota"));
+	            cuota.setMonto(rs.getFloat("monto"));
+	            cuota.setFechaPago(rs.getDate("fecha_pago"));
+	            cuota.setEstado(rs.getInt("estado"));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return cuota;
 	}
 
 }
