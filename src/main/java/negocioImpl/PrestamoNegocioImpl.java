@@ -1,16 +1,29 @@
 package negocioImpl;
 
+import entidades.Cuenta;
+import entidades.Cuota;
+import entidades.Movimiento;
 import entidades.Prestamo;
+import entidades.TipoMovimiento;
 
+import java.util.Date;
 import java.util.List;
 
+import dao.CuotaDAO;
+import dao.MovimientoDAO;
 import dao.PrestamoDAO;
+import daoImpl.CuotaDAOImpl;
+import daoImpl.MovimientoDAOImpl;
 import daoImpl.PrestamoDAOImpl;
 import negocio.PrestamoNegocio;
 
 public abstract class PrestamoNegocioImpl implements PrestamoNegocio {
     private PrestamoDAO prestamoDao = new PrestamoDAOImpl();
+    private MovimientoDAO movDao = new MovimientoDAOImpl();
+    private CuotaDAO cuotaDao = new CuotaDAOImpl();
 
+    
+    
     @Override
     public boolean solicitarPrestamo(Prestamo prestamo) {
         return prestamoDao.insert(prestamo);
@@ -21,16 +34,51 @@ public abstract class PrestamoNegocioImpl implements PrestamoNegocio {
 		return prestamoDao.modificarEstado(prestamo, estado);
 	}
 	@Override
-public List<Prestamo> listarPrestamosPendientes()
-{
+	public List<Prestamo> listarPrestamosPendientes()
+	{
 		return prestamoDao.listarPendientes(); // solo lista los -1
 		
-}
+	}
 	@Override
 	public List <Prestamo> listarPrestamosPorCliente(int idCliente)
 	{
 		return prestamoDao.listarPorCliente(idCliente);
 	}
+	@Override
+	public boolean autorizarPrestamo(int idPrestamo) {
+		// en primera instancia obtenemos el prestamo
+		Prestamo p = prestamoDao.obtenerPorId(idPrestamo);
+		if(p == null) return false; // el prestamo no existe o no nos retornan nada
+		if(!prestamoDao.modificarEstado(p, 2)) return false; // suponemos al prestamo como APROBADO
+		// registramos un deposito como movimiento
+		
+		Movimiento movimiento = new Movimiento();
+		
+		movimiento.setFecha(new Date());// HOY y AHORA. Si falla fecha revisar
+		movimiento.setCuenta(p.getNroCuenta());
+		movimiento.setDetalle("Deposito prestamo " + idPrestamo);
+		movimiento.setImporte((float)p.getImportePedido());
+		movimiento.setTipoMovimiento(new TipoMovimiento(2, "Alta de Prestamo"));//
+		movDao.agregarMovimiento(movimiento);
+		if(!movDao.agregarMovimiento(movimiento)) return false;
+		
+		
+		// generacion de las cuotas
+		for(int x = 1; x <= p.getCantidadCuotas(); x++) {
+			Cuota cuota = new Cuota();
+			cuota.setIdPrestamo(idPrestamo);
+			cuota.setNumeroCuota(x);
+			cuota.setMonto((float) p.getImporteAPagar());
+			cuota.setFechaPago(null);
+			cuota.setEstado(1);// SUPONGMAOS QUE ES PENDIENTE. no es string
+			if(!cuotaDao.agregar(cuota)) return false;
+		}
+		return true;
+	}
+	
+	
+	
+	
 }
 //falta desarrollar autorizar prestamo. Pero hay que hacer movimientos
 

@@ -27,6 +27,10 @@ public class Cuenta{
 		this.estado = estado;
 	}
 	
+	public Cuenta (int nroCuenta)
+	{
+		this.nroCuenta = nroCuenta;
+	}
 	//getter y setter
 	public int getNroCuenta() {
 		return nroCuenta;

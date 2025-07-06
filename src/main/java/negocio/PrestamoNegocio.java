@@ -11,4 +11,6 @@ public interface PrestamoNegocio {
     public boolean modificarEstadoPrestamo(Prestamo prestamo, int estado);
 	List<Prestamo> listarPrestamosPorCliente(int idCliente);
 	List<Prestamo> listarPrestamosPendientes();
+	boolean autorizarPrestamo(int idPrestamo);
+	// falta boolean rechazarPrestamo (int idPrestamo);
 }

@@ -24,6 +24,15 @@ public class Movimiento {
 		this.importe = importe;
 		this.tipoMovimiento = tipoMovimiento;
 	}
+	
+	public Movimiento(Date fecha, int nroCuenta, String detalle, float importe, TipoMovimiento tipoMovimiento)
+	{
+	    this.fecha = fecha;
+	    this.cuenta = new Cuenta(nroCuenta);    
+	    this.detalle = detalle;
+	    this.importe = importe;
+	    this.tipoMovimiento = tipoMovimiento;
+	}
 
 
 	public int getIdMovimiento() {
@@ -48,6 +57,11 @@ public class Movimiento {
 
 	public void setCuenta(Cuenta cuenta) {
 		this.cuenta = cuenta;
+	}
+	
+	public void setCuenta(int nroCuenta)
+	{
+		this.cuenta = new Cuenta(nroCuenta);
 	}
 
 	public String getDetalle() {
