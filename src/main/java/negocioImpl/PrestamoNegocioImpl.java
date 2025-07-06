@@ -76,7 +76,9 @@ public abstract class PrestamoNegocioImpl implements PrestamoNegocio {
 		return true;
 	}
 	
+	// public boolean rechazarPrestamo(int idPrestamo){}
 	
+	// public boolean pagarCuota (int idCuota, int nroCuenta){}
 	
 	
 }
