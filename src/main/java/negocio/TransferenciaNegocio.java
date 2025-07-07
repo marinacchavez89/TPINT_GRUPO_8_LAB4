@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TransferenciaNegocio {
 
+	public boolean registrarTransferencia(Transferencia transferencia);
 }

@@ -17,7 +17,7 @@ import daoImpl.MovimientoDAOImpl;
 import daoImpl.PrestamoDAOImpl;
 import negocio.PrestamoNegocio;
 
-public abstract class PrestamoNegocioImpl implements PrestamoNegocio {
+public class PrestamoNegocioImpl implements PrestamoNegocio {
     private PrestamoDAO prestamoDao = new PrestamoDAOImpl();
     private MovimientoDAO movDao = new MovimientoDAOImpl();
     private CuotaDAO cuotaDao = new CuotaDAOImpl();
