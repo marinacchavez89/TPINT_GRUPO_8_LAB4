@@ -48,7 +48,7 @@
     </div>
 
     <div class="col">
-      <a href="transferencias.jsp" class="text-decoration-none text-dark">
+      <a href="ServletTransferencias" class="text-decoration-none text-dark">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
             <i class="bi bi-arrow-left-right fs-1 mb-2"></i>
