@@ -68,7 +68,7 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 					"FROM movimiento m " +
 					"JOIN tipo_movimiento tm ON m.id_tipo_movimiento = tm.id_tipo_movimiento " +
 					"JOIN cuenta c ON m.nro_cuenta = c.nro_cuenta " +
-					"WHERE m.nro_cuenta = ? ORDER BY m.fecha DESC";
+					"WHERE c.id_cliente = ? ORDER BY m.fecha DESC";
 		
 			try {
 				statement= conn.prepareStatement(sql);
