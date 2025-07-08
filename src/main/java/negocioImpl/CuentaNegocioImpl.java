@@ -36,6 +36,10 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 
 	@Override
 	public boolean modificarCuenta(Cuenta cuenta) {
+		Cuenta existente = cuentaDAO.obtenerPorCBU(cuenta.getCBU());
+		if (existente != null && existente.getNroCuenta() != cuenta.getNroCuenta()) {
+		     return false; //existe otro CBU igual
+	    }
 		return cuentaDAO.modificarCuenta(cuenta);
 	}
 

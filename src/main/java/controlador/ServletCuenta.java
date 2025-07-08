@@ -131,15 +131,17 @@ public class ServletCuenta extends HttpServlet {
 				        } else {
 				            mensaje = "Error: El cliente ya tiene 3 cuentas activas.";
 				        }
-				    } else {
-				        mensaje = "Cuenta agregada correctamente.";
-				    }
-				   
-				//mensaje = resultado ? "Cuenta agregada correctamente." : "Error al agregar la cuenta.";
+				 } else {
+				      mensaje = "Cuenta agregada correctamente.";
+				   }
 				break;
 			case "Modificar":
 				resultado = cuentaNegocio.modificarCuenta(cuenta);
-				mensaje = resultado ? "Cuenta modificada correctamente." : "Error al modificar la cuenta.";
+				if (!resultado) {
+			        mensaje = "Error al modificar la cuenta: el CBU ingresado ya existe.";
+			    } else {
+			        mensaje = "Cuenta modificada correctamente.";
+			    }
 				break;
 			case "Eliminar":
 				resultado = cuentaNegocio.eliminarCuenta(cuenta.getNroCuenta());
