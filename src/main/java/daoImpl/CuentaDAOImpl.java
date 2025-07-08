@@ -118,7 +118,6 @@ public class CuentaDAOImpl implements CuentaDAO {
                 "FROM cuenta c " +
                 "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta ";
 
-
         try {
             statement = (PreparedStatement) conn.prepareStatement(sql);
             rs = statement.executeQuery();
@@ -228,6 +227,7 @@ public class CuentaDAOImpl implements CuentaDAO {
 	        if (rs.next()) {
 	            cuenta = new Cuenta();
 	            cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
+	            cuenta.setIdCliente(rs.getInt("id_cliente"));
 	            cuenta.setEstado(rs.getBoolean("estado"));
 	        }
 	    } catch (SQLException e) {

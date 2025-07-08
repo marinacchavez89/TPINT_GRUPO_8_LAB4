@@ -67,11 +67,19 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	@Override
 	public boolean cambiarEstadoCuenta(int nroCuenta) {
 		Cuenta cuenta = cuentaDAO.obtenerPorNroCuenta(nroCuenta);
-        if (cuenta != null) {
-            cuenta.setEstado(!cuenta.isEstado());
-            return cuentaDAO.actualizarEstadoCuenta(cuenta);
-        }
-		return false;
+		
+		 if (cuenta == null) {
+		        return false;
+		    }
+		 
+		 if (!cuenta.isEstado()) {
+		        int activas = cuentaDAO.contarCuentasActivasPorCliente(cuenta.getIdCliente());
+		        if (activas >= 3) {
+		            return false; //tiene 3 cuentas activas
+		        }
+		    }
+		 cuenta.setEstado(!cuenta.isEstado());
+		 return  cuentaDAO.actualizarEstadoCuenta(cuenta);
 	}
 
 	@Override
