@@ -69,5 +69,10 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	public List<Cuenta> listarCuentasFiltradas(Boolean estado, int idCliente) {
 		return cuentaDAO.listarCuentasFiltradas(estado, idCliente);
 	}
+	
+	@Override
+	public Cuenta obtenerPorCBU(String cbu) {
+	    return cuentaDAO.obtenerPorCBU(cbu);
+	}
 
 }

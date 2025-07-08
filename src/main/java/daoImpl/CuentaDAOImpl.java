@@ -5,13 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
 
 import dao.CuentaDAO;
 import dominio.Conexion;
 import entidades.Cuenta;
 import entidades.TipoCuenta;
+import dominio.Conexion;
+
 
 public class CuentaDAOImpl implements CuentaDAO {
 	
@@ -304,4 +305,65 @@ public class CuentaDAOImpl implements CuentaDAO {
 
 	    return cuentas;
 	}
+	
+	@Override
+	public boolean actualizarSaldo(Cuenta cuenta) {
+	    boolean exito = false;
+	    PreparedStatement stmt = null;
+	    Connection conn = null;
+
+	    try {
+	        conn = Conexion.getSQLConexion();
+	        String query = "UPDATE cuenta SET saldo = ? WHERE nro_cuenta = ?";
+	        stmt = (PreparedStatement) conn.prepareStatement(query);
+	        stmt.setFloat(1, cuenta.getSaldo());
+	        stmt.setInt(2, cuenta.getNroCuenta());
+
+	        int filas = stmt.executeUpdate();
+	        exito = (filas > 0);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (stmt != null) stmt.close();
+	            if (conn != null) conn.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return exito;
+	}
+	
+	public Cuenta obtenerPorCBU(String cbu) {
+		Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    Cuenta cuenta = null;
+	    
+	    try {
+	        conn = Conexion.getSQLConexion();
+	        stmt = conn.prepareStatement("SELECT * FROM cuenta WHERE CBU = ?");
+	        stmt.setString(1, cbu);
+	        rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            cuenta = new Cuenta();
+	            cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
+	            cuenta.setCBU(rs.getString("cbu"));
+	            cuenta.setSaldo(rs.getFloat("saldo"));
+	            cuenta.setEstado(rs.getBoolean("estado"));
+	            
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    finally {
+	        try { if (rs != null) rs.close(); } catch (Exception e) {}
+	        try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+	        try { if (conn != null) conn.close(); } catch (Exception e) {}
+	    }
+
+	    return cuenta;
+	}
+
 }

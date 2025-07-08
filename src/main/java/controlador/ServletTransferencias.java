@@ -3,6 +3,7 @@ package controlador;
 import entidades.*;
 import negocio.*;
 import negocioImpl.*;
+import excepciones.SaldoInsuficienteException;
 
 import java.util.List;
 import java.io.IOException;
@@ -61,8 +62,53 @@ public class ServletTransferencias extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+		HttpSession session = request.getSession();
+	    Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
+		
+	    if (cliente == null) {
+	        response.sendRedirect("login.jsp");
+	        return;
+	    }
+	    
+	    try {
+	        int cuentaOrigen = Integer.parseInt(request.getParameter("cuentaOrigen"));
+	        String cbuDestino = request.getParameter("cbuDestino");
+	        float importe = Float.parseFloat(request.getParameter("monto"));
+	        
+	     // Buscamos la cuenta destino por su CBU
+	        Cuenta cuentaDestinoObj = cuentaNegocio.obtenerPorCBU(cbuDestino);
+	        if (cuentaDestinoObj == null) {
+	            request.setAttribute("mensajeError", "No se encontró ninguna cuenta con ese CBU.");
+	        } else {
 
+	        Transferencia transferencia = new Transferencia();
+	        transferencia.setNroCuentaOrigen(cuentaOrigen);
+	        transferencia.setNroCuentaDestino(cuentaDestinoObj.getNroCuenta());
+	        transferencia.setImporte(importe);
+	        
+	        
+	        boolean exito = transferenciaNegocio.registrarTransferencia(transferencia);
+
+	        if (exito) {
+	            request.setAttribute("mensajeExito", "Transferencia realizada con éxito.");
+	        } else {
+	            request.setAttribute("mensajeError", "Ocurrió un error al procesar la transferencia.");
+	        }
+	      }
+
+	    } catch (SaldoInsuficienteException e) {
+	        request.setAttribute("mensajeError", "Saldo insuficiente para realizar la transferencia.");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        request.setAttribute("mensajeError", "Error inesperado al procesar la transferencia.");
+	    }
+	    
+	 // Volvemos a cargar las cuentas para mostrar nuevamente el formulario
+	    int idCliente = cliente.getIdCliente();
+	    List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(idCliente);
+	    request.setAttribute("cuentasDelCliente", cuentas);
+
+	    request.getRequestDispatcher("transferencias.jsp").forward(request, response);
+	}
 }
+
