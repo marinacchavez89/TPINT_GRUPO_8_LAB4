@@ -21,6 +21,7 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 	
 	@Override
 	public boolean registrarTransferencia(Transferencia transferencia) {
+		
 		PreparedStatement statement;
 		Connection conn = Conexion.getSQLConexion();
 		boolean registrado = false;
@@ -51,4 +52,5 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 		
 		return registrado;
 		}
+
 }

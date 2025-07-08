@@ -44,7 +44,9 @@ public class TransferenciaNegocioImpl implements TransferenciaNegocio {
         }
         
         // 1. validar saldo
+        System.out.println("[NEGOCIO] Validación de saldo OK");
         if (cuentaOrigen.getSaldo() < importe) {
+        	System.out.println("[NEGOCIO] Saldo insuficiente: " + cuentaOrigen.getSaldo() + " < " + importe);
             throw new SaldoInsuficienteException();
         }
 
@@ -53,9 +55,11 @@ public class TransferenciaNegocioImpl implements TransferenciaNegocio {
         cuentaDestino.setSaldo(cuentaDestino.getSaldo() + importe);       
         cuentaDAO.actualizarSaldo(cuentaOrigen);
         cuentaDAO.actualizarSaldo(cuentaDestino);
+        System.out.println("[NEGOCIO] Actualización de saldos ejecutada");
 
 		
 		// 3. Registrar movimientos
+        System.out.println("[NEGOCIO] Movimientos registrados");
 
 	    Movimiento movDebito = new Movimiento();
 	    movDebito.setFecha(new Date());
@@ -76,11 +80,12 @@ public class TransferenciaNegocioImpl implements TransferenciaNegocio {
 	    tmCredito.setIdTipoMovimiento(3);
 	    movCredito.setTipoMovimiento(tmCredito);
 	    movimientoDAO.agregarMovimiento(movCredito);
-
+             
 	    // 4. Registrar la transferencia
 	    transferencia.setFecha(new Date());
 	    boolean resultado = transferenciaDAO.registrarTransferencia(transferencia);
-
+	    
+	    System.out.println("[NEGOCIO] Transferencia registrada en BD: " + resultado);
 	    return resultado;
 	}
 	

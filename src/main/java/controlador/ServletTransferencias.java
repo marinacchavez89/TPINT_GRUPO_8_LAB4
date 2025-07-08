@@ -62,6 +62,7 @@ public class ServletTransferencias extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("[SERVLET] Entró al doPost de ServletTransferencias");
 		HttpSession session = request.getSession();
 	    Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
 		
@@ -74,6 +75,11 @@ public class ServletTransferencias extends HttpServlet {
 	        int cuentaOrigen = Integer.parseInt(request.getParameter("cuentaOrigen"));
 	        String cbuDestino = request.getParameter("cbuDestino");
 	        float importe = Float.parseFloat(request.getParameter("monto"));
+	        
+	     //  Acá van los println para verificar que llegaron los datos del formulario
+	        System.out.println("[SERVLET] cuentaOrigen: " + cuentaOrigen);
+	        System.out.println("[SERVLET] cbuDestino: " + cbuDestino);
+	        System.out.println("[SERVLET] importe: " + importe);
 	        
 	     // Buscamos la cuenta destino por su CBU
 	        Cuenta cuentaDestinoObj = cuentaNegocio.obtenerPorCBU(cbuDestino);
@@ -88,6 +94,7 @@ public class ServletTransferencias extends HttpServlet {
 	        
 	        
 	        boolean exito = transferenciaNegocio.registrarTransferencia(transferencia);
+	        System.out.println("[SERVLET] Resultado de registrarTransferencia: " + exito);
 
 	        if (exito) {
 	            request.setAttribute("mensajeExito", "Transferencia realizada con éxito.");
@@ -97,6 +104,7 @@ public class ServletTransferencias extends HttpServlet {
 	      }
 
 	    } catch (SaldoInsuficienteException e) {
+	    	System.out.println("[SERVLET] SaldoInsuficienteException atrapada");
 	        request.setAttribute("mensajeError", "Saldo insuficiente para realizar la transferencia.");
 	    } catch (Exception e) {
 	        e.printStackTrace();

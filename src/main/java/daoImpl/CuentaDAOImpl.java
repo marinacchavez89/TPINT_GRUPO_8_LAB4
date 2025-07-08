@@ -229,6 +229,8 @@ public class CuentaDAOImpl implements CuentaDAO {
 	            cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
 	            cuenta.setIdCliente(rs.getInt("id_cliente"));
 	            cuenta.setEstado(rs.getBoolean("estado"));
+	            cuenta.setCBU(rs.getString("cbu")); 
+	            cuenta.setSaldo(rs.getFloat("saldo")); 
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -320,32 +322,40 @@ public class CuentaDAOImpl implements CuentaDAO {
 	        stmt.setInt(2, cuenta.getNroCuenta());
 
 	        int filas = stmt.executeUpdate();
-	        exito = (filas > 0);
+	        if (filas > 0) {
+	            conn.commit(); // COMMIT AGREGADO P LA BD
+	            exito = true;
+	        }
+	        
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (stmt != null) stmt.close();
-	            if (conn != null) conn.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
+	     try {
+            if (conn != null) conn.rollback();
+        } 
+	    catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-	    return exito;
-	}
+    return exito;
+}
 	
 	public Cuenta obtenerPorCBU(String cbu) {
-		Connection conn = null;
-	    PreparedStatement stmt = null;
-	    ResultSet rs = null;
+		System.out.println("[DAO] Ejecutando SELECT para CBU: " + cbu);
 	    Cuenta cuenta = null;
 	    
-	    try {
-	        conn = Conexion.getSQLConexion();
-	        stmt = conn.prepareStatement("SELECT * FROM cuenta WHERE CBU = ?");
-	        stmt.setString(1, cbu);
-	        rs = stmt.executeQuery();
+	    try (
+	        Connection conn = Conexion.getSQLConexion();
+	        PreparedStatement ps = conn.prepareStatement("SELECT * FROM cuenta WHERE CBU = ?")) {
+	            ps.setString(1, cbu);
+	            ResultSet rs = ps.executeQuery();
 	        if (rs.next()) {
 	            cuenta = new Cuenta();
 	            cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
@@ -356,11 +366,6 @@ public class CuentaDAOImpl implements CuentaDAO {
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	    }
-	    finally {
-	        try { if (rs != null) rs.close(); } catch (Exception e) {}
-	        try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-	        try { if (conn != null) conn.close(); } catch (Exception e) {}
 	    }
 
 	    return cuenta;

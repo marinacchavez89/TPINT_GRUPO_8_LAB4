@@ -89,6 +89,7 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	
 	@Override
 	public Cuenta obtenerPorCBU(String cbu) {
+		System.out.println("[NEGOCIO] Buscando cuenta por CBU: " + cbu);
 	    return cuentaDAO.obtenerPorCBU(cbu);
 	}
 

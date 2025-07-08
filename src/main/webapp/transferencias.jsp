@@ -22,6 +22,19 @@
 <jsp:include page="navbar.jsp"/>
 <jsp:include page="bienvenidaUsuario.jsp"/>
 
+<%
+    String mensajeExito = (String) request.getAttribute("mensajeExito");
+    String mensajeError = (String) request.getAttribute("mensajeError");
+%>
+
+<% if (mensajeExito != null) { %>
+    <div class="alert alert-success text-center"><%= mensajeExito %></div>
+<% } %>
+
+<% if (mensajeError != null) { %>
+    <div class="alert alert-danger text-center"><%= mensajeError %></div>
+<% } %>
+
  <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="form-box p-4 shadow rounded">
       <h2 class="text-center mb-4">Transferencia</h2>
