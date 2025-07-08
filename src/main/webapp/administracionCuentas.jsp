@@ -24,13 +24,14 @@
       String confirmacionTipo  = (String) session.getAttribute("confirmacionTipo");
       if (mensaje != null && !mensaje.isEmpty()) {
   	  %>
-      Swal.fire({
-          icon: '<%= confirmacionTipo  %>',
-          title: 'Operación Exitosa',
-          text: '<%= mensaje %>',
-          showConfirmButton: false,
-          timer: 2000
-      });
+  		Swal.fire({
+  		    icon: '<%= confirmacionTipo %>',
+  	    	title: '<%= "success".equals(confirmacionTipo) ? "Operación Exitosa" : "Error en la operación" %>',
+  		    text: '<%= mensaje %>',
+  	        showConfirmButton: false,
+  	   	    timer: 2500
+  		});//mensaje dinamico
+
       <%
           session.removeAttribute("confirmacionMensaje");
           session.removeAttribute("confirmacionTipo");
@@ -111,8 +112,8 @@
           	 <form action="ServletCuenta" method="post">
 			  <input type="hidden" name="accion" value="CambiarEstado">
 			  <input type="hidden" name="nroCuenta" value="<%= c.getNroCuenta() %>">
-		      <button type="submit" class="btn btn-sm <%= c.isEstado() ? "btn-danger" : "btn-success" %>">
-		       <%= c.isEstado() ? "Inhabilitar" : "Habilitar" %>
+		      <button type="submit" style="width: 90px;" class="btn btn-sm <%= c.isEstado() ? "btn-danger" : "btn-success" %>">
+		       <%= c.isEstado() ? "Desactivar" : "Activar" %>
 		      </button>
  			 </form>
           </td>

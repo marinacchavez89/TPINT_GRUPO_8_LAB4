@@ -124,7 +124,18 @@ public class ServletCuenta extends HttpServlet {
 			case "Agregar":
 				cuenta.setEstado(true); // Solo al agregar.
 				resultado = cuentaNegocio.agregarCuenta(cuenta);
-				mensaje = resultado ? "Cuenta agregada correctamente." : "Error al agregar la cuenta.";
+				 if (!resultado) {
+				        Cuenta existente = cuentaNegocio.obtenerPorCBU(cuenta.getCBU());
+				        if (existente != null) {
+				            mensaje = "Error: El CBU ingresado ya existe.";
+				        } else {
+				            mensaje = "Error: El cliente ya tiene 3 cuentas activas.";
+				        }
+				    } else {
+				        mensaje = "Cuenta agregada correctamente.";
+				    }
+				   
+				//mensaje = resultado ? "Cuenta agregada correctamente." : "Error al agregar la cuenta.";
 				break;
 			case "Modificar":
 				resultado = cuentaNegocio.modificarCuenta(cuenta);

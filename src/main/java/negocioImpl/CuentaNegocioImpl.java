@@ -18,6 +18,11 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	    if (cuentasActivas >= 3) {
 	        return false; //no deja mas de 3 cuentas
 	    }
+	    
+	    Cuenta existente = cuentaDAO.obtenerPorCBU(cuenta.getCBU());
+	    if (existente != null) {
+	        return false; // ya existe una cuenta con ese CBU
+	    }
 
 	    cuenta.setSaldo(10000);// fuerza el monto inicial 
 
