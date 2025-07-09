@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet("/ServletPrestamos")
@@ -53,6 +54,7 @@ public class ServletPrestamos extends HttpServlet {
             prestamo.setCantidadCuotas(cuotas);
             prestamo.setIdCliente(cliente.getIdCliente());
             prestamo.setNroCuenta(nroCuenta);
+            prestamo.setFechaAlta(new java.util.Date());
 
             prestamoNegocio.solicitarPrestamo(prestamo);
             request.setAttribute("mensajeExito", "Préstamo solicitado correctamente.");

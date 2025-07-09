@@ -22,20 +22,20 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 
         try {
             conn = Conexion.getSQLConexion();
-/**CORREGIR ESTE INSERT. !!!!!!!!!!!!!!!!!!!!*/
-            String query = "INSERT INTO prestamo (id_cliente, nro_cuenta, importe_pedido, cantidad_cuotas, fecha_alta, importe_a_pagar, estado) VALUES (?, ?, ?, ?, ?, NOW(), 1)";
+            String query = "INSERT INTO prestamo (id_cliente, nro_cuenta, importe_pedido, cantidad_cuotas, fecha_alta, importe_a_pagar, estado) VALUES (?, ?, ?, ?, ?, ?, 1)";
             stmt = conn.prepareStatement(query);
-
+ 
             stmt.setInt(1, prestamo.getIdCliente());
             stmt.setInt(2, prestamo.getNroCuenta());
             stmt.setDouble(3, prestamo.getImportePedido());
             stmt.setInt(4, prestamo.getCantidadCuotas());
-            stmt.setDate(5, new Date(prestamo.getFechaAlta().getTime()));
+            stmt.setDate(5,	new java.sql.Date(prestamo.getFechaAlta().getTime()));
             stmt.setDouble(6, prestamo.getImporteAPagar());
-            // dejamos el estado inicial en 1 = pendiente
-            stmt.setInt(7, prestamo.getEstado());
             int filas = stmt.executeUpdate();
             estado = filas > 0;
+            if(filas > 0) {
+            	conn.commit();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();

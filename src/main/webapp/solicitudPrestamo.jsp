@@ -61,7 +61,7 @@
 
     <!-- Botones -->
     <div class="d-flex gap-2 justify-content-center mt-4 mb-5">
-      <input type="submit" class="btn-solicitar" value="Solicitar">
+      	<input type="submit" class="btn-solicitar" value="Solicitar">	
       <a href="gestionPrestamos.jsp" class="btn-volver">Volver</a>
       </div>
     </form>
