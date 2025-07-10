@@ -13,8 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import entidades.Cuenta;
 import entidades.TipoCuenta;
-import entidades.Movimiento;
-import entidades.TipoMovimiento;
 import negocio.CuentaNegocio;
 import negocio.MovimientoNegocio;
 import negocioImpl.MovimientoNegocioImpl;
@@ -136,30 +134,7 @@ public class ServletCuenta extends HttpServlet {
 				            mensaje = "Error: El cliente ya tiene 3 cuentas activas.";
 				        }
 				 } else {
-				      mensaje = "Cuenta agregada correctamente.";
-				      
-				      Cuenta cuentaInsertada = cuentaNegocio.obtenerPorCBU(cuenta.getCBU());
-				      
-				      TipoCuentaNegocio tipoCuentaNegocio = new TipoCuentaNegocioImpl();
-				       TipoCuenta tipoCuenta = tipoCuentaNegocio.obtenerTipoCuentaXId(cuenta.getIdTipoCuenta().getIdTipoCuenta());
-				       
-				        Movimiento movimiento = new Movimiento();
-				        movimiento.setFecha(new java.util.Date());
-				        movimiento.setDetalle("Alta de cuenta -  " + 
-				            (tipoCuenta != null ? tipoCuenta.getDescripcion() : "desconocida"));
-				        movimiento.setImporte(cuentaInsertada.getSaldo());
-				        movimiento.setCuenta(cuentaInsertada);
-				        
-				        TipoMovimiento tipoMovimiento = new TipoMovimiento();
-				        tipoMovimiento.setIdTipoMovimiento(1);         
-				        movimiento.setTipoMovimiento(tipoMovimiento);
-				        
-				        MovimientoNegocio movimientoNegocio = new MovimientoNegocioImpl();
-				        boolean exitoMovimiento = movimientoNegocio.agregarMovimiento(movimiento);
-				        
-				        if(!exitoMovimiento) {
-				        	System.out.println("Movimiento no agregado");
-				        }
+				      mensaje = "Cuenta agregada correctamente.";				      
 				   }
 				break;
 			case "Modificar":

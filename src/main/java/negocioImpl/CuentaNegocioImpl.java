@@ -5,8 +5,12 @@ import java.util.List;
 import dao.CuentaDAO;
 import daoImpl.CuentaDAOImpl;
 import entidades.Cuenta;
+import entidades.Movimiento;
 import entidades.TipoCuenta;
+import entidades.TipoMovimiento;
 import negocio.CuentaNegocio;
+import negocio.MovimientoNegocio;
+import negocio.TipoCuentaNegocio;
 
 public class CuentaNegocioImpl implements CuentaNegocio {
 	private CuentaDAO cuentaDAO= new CuentaDAOImpl();
@@ -26,7 +30,34 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 
 	    cuenta.setSaldo(10000);// fuerza el monto inicial 
 
-	    return cuentaDAO.agregarCuenta(cuenta);
+	    boolean cuentaAgregada= cuentaDAO.agregarCuenta(cuenta);
+	    
+	    if(cuentaAgregada) {
+		      Cuenta cuentaInsertada = cuentaDAO.obtenerPorCBU(cuenta.getCBU());
+		      
+		      TipoCuentaNegocio tipoCuentaNegocio = new TipoCuentaNegocioImpl();
+		       TipoCuenta tipoCuenta = tipoCuentaNegocio.obtenerTipoCuentaXId(cuenta.getIdTipoCuenta().getIdTipoCuenta());
+		       
+		        Movimiento movimiento = new Movimiento();
+		        movimiento.setFecha(new java.util.Date());
+		        movimiento.setDetalle("Alta de cuenta -  " + 
+		            (tipoCuenta != null ? tipoCuenta.getDescripcion() : "desconocida"));
+		        movimiento.setImporte(cuentaInsertada.getSaldo());
+		        movimiento.setCuenta(cuentaInsertada);
+		        
+		        TipoMovimiento tipoMovimiento = new TipoMovimiento();
+		        tipoMovimiento.setIdTipoMovimiento(1);         
+		        movimiento.setTipoMovimiento(tipoMovimiento);
+		        
+		        MovimientoNegocio movimientoNegocio = new MovimientoNegocioImpl();
+		        boolean exitoMovimiento = movimientoNegocio.agregarMovimiento(movimiento);
+		        
+		        if(!exitoMovimiento) {
+		        	System.out.println("Movimiento no agregado");
+		        }
+	    }
+	    
+	    return cuentaAgregada;
 	}
 
 	@Override
