@@ -33,7 +33,8 @@ public class ServletAutorizarPrestamos extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		List<Prestamo> listaPrestamosPendientes = prestamoNegocio.listarPrestamosPendientes();
 		request.setAttribute("prestamosPendientes", listaPrestamosPendientes);
 		

@@ -28,7 +28,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">Cliente ID: <%= p.getIdCliente() %></h5>
-        <p class="card-text"><strong>Fecha de solicitud:</strong><%= ((p.getFechaAlta() != null) ? sdf.format(p.getFechaAlta()) :"Sin fecha")%></p>
+        <p class="card-text"><strong>Fecha de solicitud:</strong><%= ((p.getFechaAlta() != null) ? sdf.format(p.getFechaAlta()) :"Sin fecha")%></p>
         <p class="card-text"><strong>Monto solicitado:</strong> $<%= p.getImportePedido() %></p>
         <p class="card-text"><strong>Plazo:</strong> <%= p.getCantidadCuotas() %> cuotas</p>
 
