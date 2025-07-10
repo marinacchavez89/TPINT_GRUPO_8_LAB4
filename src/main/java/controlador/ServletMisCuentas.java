@@ -10,6 +10,9 @@ import entidades.Cuenta;
 import entidades.Movimiento;
 
 import java.util.List;
+import java.util.Date;
+
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,8 +47,7 @@ public class ServletMisCuentas extends HttpServlet {
 		 	HttpSession session = request.getSession();
 		 	
 	        Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
-	       
-
+       
 	        
 	        if (cliente == null) {
 	            response.sendRedirect("login.jsp"); // o página de error
@@ -63,17 +65,39 @@ public class ServletMisCuentas extends HttpServlet {
 
 	        request.setAttribute("cuentasDelCliente", cuentas);
 	        
-
-	       
+	        
 	        String nroCuentaParam = request.getParameter("cuentaSeleccionada");
+	        
+	        
+	        Date fechaDesde = null;
+	        String fechaDesdeStr = request.getParameter("fechaDesde");
+	        
+	        
+	        Date fechaHasta = null;
+	        String fechaHastaStr = request.getParameter("fechaHasta");
+  
+	         if (fechaDesdeStr != null && !fechaDesdeStr.isEmpty()) {
+	                fechaDesde = java.sql.Date.valueOf(fechaDesdeStr);
+	            }
+	            if (fechaHastaStr != null && !fechaHastaStr.isEmpty()) {
+	                fechaHasta = java.sql.Date.valueOf(fechaHastaStr);
+	            }
+
+
+	        
 	        List<Movimiento> movimientos;
 
 	        if (nroCuentaParam != null && !nroCuentaParam.isEmpty()) {
 	            try {
 	                int nroCuenta = Integer.parseInt(nroCuentaParam);
-	                movimientos = movimientoNegocio.obtenerMovimientosXCuenta(nroCuenta);
+	               // movimientos = movimientoNegocio.obtenerMovimientosXCuenta(nroCuenta);
 	                request.setAttribute("cuentaSeleccionada", nroCuentaParam);
-
+	                
+	                if(fechaDesde != null && fechaHasta != null) {
+	                	movimientos = movimientoNegocio.obtenerMovimientosXFecha(nroCuenta,fechaDesde, fechaHasta);
+	                } else {
+	                	movimientos = movimientoNegocio.obtenerMovimientosXCuenta(nroCuenta);
+	                }
 	                
 	                for (Cuenta c : cuentas) {
 	                    if (c.getNroCuenta() == nroCuenta) {

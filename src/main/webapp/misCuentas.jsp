@@ -30,11 +30,11 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="fechaInicio">Fecha de Inicio</label>
-                    <input type="date" class="form-control" id="fechaInicio" >
+                    <input type="date" class="form-control" id="fechaInicio" name="fechaDesde" value="<%= request.getParameter("fechaDesde") != null ? request.getParameter("fechaDesde") : "" %>">
                 </div>
                 <div class="col-md-6">
                     <label for="fechaFin">Fecha de Fin</label>
-                    <input type="date" class="form-control" id="fechaFin" >
+                    <input type="date" class="form-control" id="fechaFin" name="fechaHasta" value="<%= request.getParameter("fechaHasta") != null ? request.getParameter("fechaHasta") : "" %>">>
                 </div>
             </div>
   
@@ -50,7 +50,7 @@
                             for (Cuenta c : cuentas) {
                                String selected = (cuentaSeleccionada != null && cuentaSeleccionada.equals(String.valueOf(c.getNroCuenta()))) ? "selected" : "";
                     %>
-                        <option value="<%= c.getNroCuenta() %>">Cuenta Nº <%= c.getNroCuenta() %> - Saldo: $<%= c.getSaldo() %></option>
+                        <option value="<%= c.getNroCuenta() %>" <%= selected %>>Cuenta Nº <%= c.getNroCuenta() %> - Saldo: $<%= c.getSaldo() %></option>
                     <%
                             }
                         }
