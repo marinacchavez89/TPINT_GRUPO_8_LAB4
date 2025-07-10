@@ -11,7 +11,7 @@
 <link href="css/estilos.css" rel="stylesheet">
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<jsp:include page="navbarAdmin.jsp" />
 <jsp:include page="bienvenidaUsuario.jsp"/>
 
 <div class="container mt-5">
