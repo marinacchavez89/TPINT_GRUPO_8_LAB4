@@ -114,10 +114,11 @@ public class PrestamoDAOImpl implements PrestamoDAO {
                 prestamo.setIdPrestamo(rs.getInt("id_prestamo"));
                 prestamo.setIdCliente(rs.getInt("id_cliente"));
                 prestamo.setNroCuenta(rs.getInt("nro_cuenta"));
-                prestamo.setImportePedido(rs.getDouble("importe_pedido"));
-                prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
                 prestamo.setFechaAlta(rs.getDate("fecha_alta"));
+                prestamo.setImportePedido(rs.getDouble("importe_pedido"));
+                prestamo.setPlazoPago(rs.getInt("plazo_pago"));
                 prestamo.setImporteAPagar(rs.getDouble("importe_a_pagar"));
+                prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
                 prestamo.setEstado(rs.getInt("estado"));
                 lista.add(prestamo);
 			}
