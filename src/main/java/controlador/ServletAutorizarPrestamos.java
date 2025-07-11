@@ -56,9 +56,9 @@ public class ServletAutorizarPrestamos extends HttpServlet {
 try {
 	int idPrestamo = Integer.parseInt(idParam);
 	boolean b;
-	Double importeAPagar = Double.parseDouble(impParam);
 	
 	if("autorizar".equals(accion)) {
+		Double importeAPagar = Double.parseDouble(impParam);
 		b = prestamoNegocio.autorizarPrestamo(idPrestamo, importeAPagar);
 		request.setAttribute("mensaje", b ? "Prestamo autorizado." : "error al autorizar el prestamo.");
 	
