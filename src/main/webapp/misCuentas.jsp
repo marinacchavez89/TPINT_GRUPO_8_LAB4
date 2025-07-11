@@ -34,13 +34,13 @@
                 </div>
                 <div class="col-md-6">
                     <label for="fechaFin">Fecha de Fin</label>
-                    <input type="date" class="form-control" id="fechaFin" name="fechaHasta" value="<%= request.getParameter("fechaHasta") != null ? request.getParameter("fechaHasta") : "" %>">>
+                    <input type="date" class="form-control" id="fechaFin" name="fechaHasta" value="<%= request.getParameter("fechaHasta") != null ? request.getParameter("fechaHasta") : "" %>">
                 </div>
             </div>
   
             <div class="col-md-6">        
                 <label for="categoria">Seleccione Cuenta:</label>
-                <select class="form-control" id="categoria" name="cuentaSeleccionada" required>
+                <select class="form-control" id="categoria" name="cuentaSeleccionada">
                     <option value="">Seleccione la cuenta</option>
       				<%
                         List<Cuenta> cuentas = (List<Cuenta>) request.getAttribute("cuentasDelCliente");
