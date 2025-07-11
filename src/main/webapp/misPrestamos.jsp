@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ page import="java.util.List, entidades.Prestamo, java.text.SimpleDateFormat, negocio.PrestamoNegocio" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +18,16 @@
 
 <div class="container mt-5">
   <h2 class="mb-4 text-center">Mis Préstamos</h2>
+	
+	<%
+  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
+  List<Prestamo> listaMisPrestamos = (List<Prestamo>) request.getAttribute("misPrestamos");
 
+
+    if (listaMisPrestamos != null && !listaMisPrestamos.isEmpty()) {
+      for (Prestamo p : listaMisPrestamos) {
+  %>
+	
     <div class="card mb-3">
     <div class="card-body">
       <h5 class="card-title">Préstamo nro: </h5>
@@ -25,8 +37,18 @@
       <p class="card-text"><strong>Estado:</strong> Aprobado/Rechazado</p>
     </div>
   </div>
+<%
+      }
+    
+    } else {
+  %>
 </div>
-
+    
+    <p class="text-center">No hay solicitudes de préstamos pendientes.</p>
+  
+  <%  
+    }
+  %>
   <div class="text-center mt-5 mb-5">
     <form action="gestionPrestamos.jsp" method="get">
       <input type="submit" class="btn-volver" value="Volver">
