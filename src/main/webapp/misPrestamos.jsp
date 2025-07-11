@@ -30,11 +30,15 @@
 	
     <div class="card mb-3">
     <div class="card-body">
-      <h5 class="card-title">Préstamo nro: </h5>
-      <p class="card-text"><strong>Fecha de solicitud:</strong> dd/mm/aaaa</p>
-      <p class="card-text"><strong>Monto solicitado:</strong> $</p>
-      <p class="card-text"><strong>Plazo:</strong> x</p>
-      <p class="card-text"><strong>Estado:</strong> Aprobado/Rechazado</p>
+      <h5 class="card-title">Préstamo nro: <%= p.getIdPrestamo() %></h5>
+      <p class="card-text"><strong>Fecha de solicitud:</strong> <%= (p.getFechaAlta() != null) ? sdf.format(p.getFechaAlta()) : "Sin fecha" %></p>
+      <p class="card-text"><strong>Monto solicitado:</strong> $<%= p.getImportePedido() %></p>
+      <p class="card-text"><strong>Plazo:</strong> <%= p.getCantidadCuotas() %> cuotas</p>
+      <p class="card-text"><strong>Estado:</strong> <%= 
+          (p.getEstado() == 1) ? "Pendiente" :
+          (p.getEstado() == 2) ? "Aprobado" :
+          (p.getEstado() == 0) ? "Rechazado" : "Desconocido" 
+        %></p>
     </div>
   </div>
 <%
