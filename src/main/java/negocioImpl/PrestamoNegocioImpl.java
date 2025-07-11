@@ -88,8 +88,6 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 			if(!cuotaDao.agregar(cuota)) return false;
 		}
 		
-		//DEPOSITO EN CUENTA HACER!! JUAN
-		
 		return true;
 	}
 	
