@@ -15,6 +15,7 @@ import dao.PrestamoDAO;
 import daoImpl.CuotaDAOImpl;
 import daoImpl.MovimientoDAOImpl;
 import daoImpl.PrestamoDAOImpl;
+import dominio.Conexion;
 import negocio.PrestamoNegocio;
 
 public class PrestamoNegocioImpl implements PrestamoNegocio {
@@ -45,7 +46,7 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		return prestamoDao.listarPorCliente(idCliente);
 	}
 	@Override
-	public boolean autorizarPrestamo(int idPrestamo) {
+	public boolean autorizarPrestamo(int idPrestamo, double importeAPagar){
 		// en primera instancia obtenemos el prestamo
 		Prestamo p = prestamoDao.obtenerPorId(idPrestamo);
 		if(p == null) return false; // el prestamo no existe o no nos retornan nada
@@ -62,29 +63,36 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		movDao.agregarMovimiento(movimiento);
 		if(!movDao.agregarMovimiento(movimiento)) return false;
 		
+		if (!prestamoDao.actualizarImporteAPagar(idPrestamo, importeAPagar)) return false;
+		
+		int cant = p.getCantidadCuotas();
+		float porCuota = (float) (importeAPagar / cant);
 		
 		// generacion de las cuotas
 		for(int x = 1; x <= p.getCantidadCuotas(); x++) {
 			Cuota cuota = new Cuota();
 			cuota.setIdPrestamo(idPrestamo);
 			cuota.setNumeroCuota(x);
-			cuota.setMonto((float) p.getImporteAPagar());
+			cuota.setMonto(porCuota);
 			cuota.setFechaPago(null);
 			cuota.setEstado(1);// SUPONGMAOS QUE ES PENDIENTE. no es string
 			if(!cuotaDao.agregar(cuota)) return false;
 		}
+		
+		//DEPOSITO EN CUENTA HACER!! JUAN
+		
 		return true;
 	}
 	
 	 public boolean rechazarPrestamo(int idPrestamo){
 		 Prestamo p = prestamoDao.obtenerPorId(idPrestamo);
 		 if (p == null) return false;
-		 return prestamoDao.modificarEstado(p,3); // 3: Rechazado
+		 return prestamoDao.modificarEstado(p,0); // 0: Rechazado
 	 }
-	
+	 	
 	 public boolean pagarCuota (int idCuota, int nroCuenta){
 
-		 return false;
+		 return false;// FALTA !!
 	 }
 	
 	

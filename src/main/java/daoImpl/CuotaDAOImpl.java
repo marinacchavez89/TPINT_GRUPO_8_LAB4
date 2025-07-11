@@ -13,13 +13,13 @@ public class CuotaDAOImpl implements CuotaDAO {
 
 	@Override
 	public boolean agregar(Cuota cuota) {
-		PreparedStatement statement =null;
 		Connection conn = Conexion.getSQLConexion();
+		PreparedStatement statement =null;
 		boolean agregado= false;		
 		
-		   String sql = "INSERT INTO cuotas (id_prestamo, numero_cuota, monto, fecha_pago, estado) VALUES (?,?,?,?,?)";	
+		   String sql = "INSERT INTO cuota (id_prestamo, numero_cuota, monto, fecha_pago, estado) VALUES (?,?,?,?,?)";	
 		   
-		try {
+		try  {
 			statement = conn.prepareStatement(sql);
 			// 1 id prestamo
             statement.setInt(1, cuota.getIdPrestamo());
@@ -28,14 +28,16 @@ public class CuotaDAOImpl implements CuotaDAO {
             // 3 monto
             statement.setFloat(3, cuota.getMonto());
             // 4 fecha_pago o null
-            statement.setDate(4, new java.sql.Date(cuota.getFechaPago().getTime()));
+            statement.setDate(4,null);// CORREGIR FECHA DE PAGO
             // 5 estado
-            statement.setInt(5, cuota.getEstado());
-		
-            if (statement.executeUpdate() > 0) {
-                conn.commit();
-                agregado = true;
+            statement.setInt(5,1); // 1 = pendiente
+            int filas = statement.executeUpdate();
+            if (filas > 0) {
+			conn.commit();
+			agregado = true;
             }
+            
+        
 		} catch (SQLException e) {
             e.printStackTrace();
             try {

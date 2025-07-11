@@ -15,6 +15,13 @@
 <jsp:include page="bienvenidaUsuario.jsp"/>
 
 <div class="container mt-5">
+
+  <% if (request.getAttribute("mensaje") != null) { %>
+    <div class="alert alert-info text-center">
+      <%= request.getAttribute("mensaje") %>
+    </div>
+  <% } %>
+
   <h2 class="mb-4 text-center">Solicitudes de Préstamos</h2>
 
   <%
@@ -33,11 +40,16 @@
         <p class="card-text"><strong>Plazo:</strong> <%= p.getCantidadCuotas() %> cuotas</p>
 
         <div class="d-flex gap-2">
-          <form action="ServletAutorizarPrestamos" method="post">
-            <input type="hidden" name="accion" value="autorizar">
-            <input type="hidden" name="idPrestamo" value="<%= p.getIdPrestamo() %>">
-            <button class="btn btn-success">Autorizar</button>
-          </form>
+
+
+	<form action="ServletAutorizarPrestamos" method="post" onsubmit="return validarImporte(this);">
+	<input type="hidden" name="accion" value="autorizar">
+	<input type="hidden" name="idPrestamo" value="<%= p.getIdPrestamo() %>">
+	<div class="d-flex flex-column flex-sm-row gap-2 align-items-start align-items-sm-center">
+	<input type="number" step="0.01" name="importeAPagar" class="form-control" placeholder="Importe a pagar" required>
+	<button class="btn btn-success" type="submit">Autorizar</button>
+	</div>
+	</form>
 
           <form action="ServletAutorizarPrestamos" method="post">
             <input type="hidden" name="accion" value="rechazar">

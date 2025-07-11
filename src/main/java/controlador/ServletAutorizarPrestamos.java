@@ -47,7 +47,33 @@ public class ServletAutorizarPrestamos extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String accion = request.getParameter("accion");
+		String idParam = request.getParameter("idPrestamo");
+		String impParam = request.getParameter("importeAPagar");
+		
+		if (accion != null && idParam != null) {
+			
+try {
+	int idPrestamo = Integer.parseInt(idParam);
+	boolean b;
+	Double importeAPagar = Double.parseDouble(impParam);
+	
+	if("autorizar".equals(accion)) {
+		b = prestamoNegocio.autorizarPrestamo(idPrestamo, importeAPagar);
+		request.setAttribute("mensaje", b ? "Prestamo autorizado." : "error al autorizar el prestamo.");
+	
+	} else if ("rechazar".equals(accion))
+	{
+		b = prestamoNegocio.rechazarPrestamo(idPrestamo);
+		request.setAttribute("mensaje" , b ? "prestamo rechazado." : "error al rechazar el prestamo.");
+		
+	}
+} catch (Exception e) { // cambiar la excepcion y manejarla
+	// TODO: handle exception
+}			
+			
+		}
+		doGet(request, response); // volvemos a listar y el forward al jsp
 	}
 
 }

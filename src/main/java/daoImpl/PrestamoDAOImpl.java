@@ -154,5 +154,27 @@ public class PrestamoDAOImpl implements PrestamoDAO {
         }
         return lista;
     }
+	@Override
+	public boolean actualizarImporteAPagar(int idPrestamo, double importeAPagar) {
+		PreparedStatement stmt = null;
+		Connection conn = Conexion.getSQLConexion();
+		boolean agregado = false;
+			
+	String sql = "UPDATE prestamo SET importe_a_pagar = ? WHERE id_prestamo = ?";
+	try {
+		stmt = conn.prepareStatement(sql);
+		stmt.setDouble(1, importeAPagar);
+		stmt.setInt(2, idPrestamo);
+		if(stmt.executeUpdate()>0)
+		{
+			conn.commit();
+			agregado = true;
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+		// TODO: handle exception
+	}
+			return agregado;
+	}
 }
 
