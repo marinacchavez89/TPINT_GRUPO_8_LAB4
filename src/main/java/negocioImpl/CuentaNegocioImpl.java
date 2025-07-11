@@ -128,5 +128,10 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	public Cuenta obtenerPorNroCuenta(int nroCuenta) {
 	    return cuentaDAO.obtenerPorNroCuenta(nroCuenta);
 	}
+	
+	@Override
+	public boolean incrementarSaldo (int nroCuenta, double importe) {
+		return cuentaDAO.incrementarSaldo(nroCuenta, importe);
+	}
 
 }

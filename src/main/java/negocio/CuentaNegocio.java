@@ -16,6 +16,6 @@ public interface CuentaNegocio {
 	public List<Cuenta> listarCuentasFiltradas(Boolean estado, int idCliente);
 	public Cuenta obtenerPorCBU(String cbu);
 	public Cuenta obtenerPorNroCuenta(int nroCuenta);
-
+	public boolean incrementarSaldo (int nroCuenta, double importe);
 
 }

@@ -16,5 +16,6 @@ public interface CuentaDAO {
 	public List<Cuenta> listarCuentasFiltradas(Boolean estado, int idCliente);
 	public boolean actualizarSaldo(Cuenta cuenta);
 	public Cuenta obtenerPorCBU(String cbu);
+	public boolean incrementarSaldo(int nroCuenta, double importe);
 
 }

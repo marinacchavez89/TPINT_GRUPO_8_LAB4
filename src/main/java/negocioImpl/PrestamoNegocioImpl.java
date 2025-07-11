@@ -13,18 +13,21 @@ import java.util.Map;
 import dao.CuotaDAO;
 import dao.MovimientoDAO;
 import dao.PrestamoDAO;
+import dao.CuentaDAO;
+import daoImpl.CuentaDAOImpl;
 import daoImpl.CuotaDAOImpl;
 import daoImpl.MovimientoDAOImpl;
 import daoImpl.PrestamoDAOImpl;
 import dominio.Conexion;
 import negocio.PrestamoNegocio;
+import negocio.CuentaNegocio;
 
 public class PrestamoNegocioImpl implements PrestamoNegocio {
     private PrestamoDAO prestamoDao = new PrestamoDAOImpl();
     private MovimientoDAO movDao = new MovimientoDAOImpl();
     private CuotaDAO cuotaDao = new CuotaDAOImpl();
-
-    
+    private CuentaDAO cuentaDao = new CuentaDAOImpl();
+    private CuentaNegocio cuentaNegocio = new CuentaNegocioImpl();
     
     @Override
     public boolean solicitarPrestamo(Prestamo prestamo) {
@@ -63,6 +66,11 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		movimiento.setTipoMovimiento(new TipoMovimiento(2, "Alta de Prestamo"));//
 		movDao.agregarMovimiento(movimiento);
 		if(!movDao.agregarMovimiento(movimiento)) return false;
+		
+		
+		boolean incrementado = cuentaNegocio.incrementarSaldo(p.getNroCuenta(), p.getImportePedido());
+		
+		if(!incrementado) return false;
 		
 		if (!prestamoDao.actualizarImporteAPagar(idPrestamo, importeAPagar)) return false;
 		
