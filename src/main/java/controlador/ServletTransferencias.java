@@ -94,15 +94,31 @@ public class ServletTransferencias extends HttpServlet {
 	     // Buscamos la cuenta destino por su CBU
 	        Cuenta cuentaDestinoObj = cuentaNegocio.obtenerPorCBU(cbuDestino);
 	        if (cuentaDestinoObj == null) {
-	            request.setAttribute("mensajeError", "No se encontró ninguna cuenta con ese CBU.");
-	        } else {
+	            session.setAttribute("mensajeError", "No se encontró ninguna cuenta con ese CBU.");
+	            response.sendRedirect("ServletTransferencias"); // 🔴 NUEVO: agregada la redirección en caso de error
+	            return;
+	        }
+
+	        // Validar que la cuenta destino esté activa
+	        if (!cuentaDestinoObj.isEstado()) {
+	            session.setAttribute("mensajeError", "La cuenta destino no está activa.");
+	            response.sendRedirect("ServletTransferencias");
+	            return;
+	        }
+
+	        //Validar que la cuenta origen esté activa (obtenida por nroCuenta)
+	        Cuenta cuentaOrigenObj = cuentaNegocio.obtenerPorNroCuenta(cuentaOrigen);
+	        if (cuentaOrigenObj == null || !cuentaOrigenObj.isEstado()) {
+	            session.setAttribute("mensajeError", "La cuenta origen no está activa o no existe.");
+	            response.sendRedirect("ServletTransferencias");
+	            return;
+	        }
 
 	        Transferencia transferencia = new Transferencia();
 	        transferencia.setNroCuentaOrigen(cuentaOrigen);
 	        transferencia.setNroCuentaDestino(cuentaDestinoObj.getNroCuenta());
 	        transferencia.setImporte(importe);
-	        
-	        
+	        	        
 	        boolean exito = transferenciaNegocio.registrarTransferencia(transferencia);
 	        System.out.println("[SERVLET] Resultado de registrarTransferencia: " + exito);
 	        
@@ -112,7 +128,6 @@ public class ServletTransferencias extends HttpServlet {
 	        } else {
 	            session.setAttribute("mensajeError", "Ocurrió un error al procesar la transferencia.");
 	        }
-	      }
 
 	    } catch (SaldoInsuficienteException e) {
 	    	System.out.println("[SERVLET] SaldoInsuficienteException atrapada");
@@ -129,7 +144,6 @@ public class ServletTransferencias extends HttpServlet {
 	    int idCliente = cliente.getIdCliente();
 	    List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(idCliente);
 	    request.setAttribute("cuentasDelCliente", cuentas);
-
 	    request.getRequestDispatcher("transferencias.jsp").forward(request, response);*/
 	    
 	 // Redirigir a doGet (PRG)

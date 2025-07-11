@@ -42,6 +42,14 @@ public class TransferenciaNegocioImpl implements TransferenciaNegocio {
         if (cuentaDestino == null) {
             throw new RuntimeException("CBU destino no encontrado");
         }
+        // Validar que ambas cuentas esten activas
+     		if (!cuentaOrigen.isEstado()) {
+     			throw new RuntimeException("La cuenta origen no está activa");
+     		}
+     		if (!cuentaDestino.isEstado()) {
+     			throw new RuntimeException("La cuenta destino no está activa");
+     		}
+     		System.out.println("[NEGOCIO] Ambas cuentas están activas");
         
         // 1. validar saldo
         System.out.println("[NEGOCIO] Validación de saldo OK");

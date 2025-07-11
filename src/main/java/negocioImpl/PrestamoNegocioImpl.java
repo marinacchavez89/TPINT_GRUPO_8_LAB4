@@ -8,6 +8,7 @@ import entidades.TipoMovimiento;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import dao.CuotaDAO;
 import dao.MovimientoDAO;
@@ -94,6 +95,10 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 
 		 return false;// FALTA !!
 	 }
+	 
+	 //funcion usada para la seccion reportes obtenerreporteprestamo: 
+	
+
 	
 	
 }
