@@ -78,7 +78,7 @@
         <tr>
           <th></th>
           <th>Nro Cuenta</th>
-          <th>Cliente</th>
+          <th>Cliente (DNI)</th>
           <th>Fecha Creación</th>
           <th>Tipo de Cuenta</th>
           <th>CBU</th>
@@ -89,6 +89,7 @@
       <tbody>
         <%
           List<Cuenta> cuentas = (List<Cuenta>) request.getAttribute("cuentas");
+          Map<Integer, String> dniPorIdCliente = (Map<Integer, String>) request.getAttribute("dniPorIdCliente");
           if (cuentas != null) {
             for (Cuenta c : cuentas) {
         %>
@@ -97,18 +98,19 @@
             <input type="radio" name="cuentaSeleccionada" onclick="seleccionarCuenta(this)"
               data-nro="<%= c.getNroCuenta() %>"
               data-idCliente="<%= c.getIdCliente() %>"
+              data-dni="<%= dniPorIdCliente.get(c.getIdCliente()) %>"
               data-fecha="<%= c.getFechaCreación() %>"
               data-tipo="<%= c.getIdTipoCuenta().getIdTipoCuenta() %>"
               data-cbu="<%= c.getCBU() %>"
               data-saldo="<%= c.getSaldo() %>">
           </td>
           <td><%= c.getNroCuenta() %></td>
-          <td><%= c.getIdCliente() %></td>
+          <td><%= dniPorIdCliente.get(c.getIdCliente()) %></td>
           <td><%= c.getFechaCreación() %></td>
           <td><%= c.getIdTipoCuenta().getDescripcion() %></td>
           <td><%= c.getCBU() %></td>
           <td><%= c.getSaldo() %></td>
-          <td> <!-- esto es el botón de habilitar/inhabilitar -->
+          <td> <!-- esto es el botón de activar/ desactivar -->
           	 <form action="ServletCuenta" method="post">
 			  <input type="hidden" name="accion" value="CambiarEstado">
 			  <input type="hidden" name="nroCuenta" value="<%= c.getNroCuenta() %>">
@@ -140,9 +142,10 @@
           <input type="number" name="numeroCuenta" class="form-control" placeholder="Nro Cuenta" readonly>
         </div>
         <div class="mb-3">
-          <label for="idCliente">ID Cliente</label>
-          <input type="number" name="idCliente" class="form-control" placeholder="ID Cliente" required>
-        </div>
+  			<label for="dniCliente">DNI Cliente</label>
+ 		    <input type="text" name="dniCliente" class="form-control" readonly>
+ 			<input type="hidden" name="idCliente">
+		</div>
         <div class="mb-3">
            <label for="fechaCreacion">Fecha de Creación</label>
           <input type="date" name="fechaCreacion" class="form-control" placeholder="Fecha Creación" required>
@@ -195,8 +198,8 @@
         	 value="<%= request.getAttribute("proximoNroCuenta") %>" readonly>
 		</div>
         <div class="mb-3">
-          <label for="idCliente">ID Cliente</label>
-          <input type="number" min="0" name="idCliente" class="form-control" placeholder="ID Cliente" required>
+          <label for="dniCliente">DNI Cliente</label>
+		  <input type="text" name="dniCliente" class="form-control" placeholder="DNI Cliente" required>
         </div>
         <div class="mb-3">
           <label for="fechaCreacion">Fecha de Creación</label>
@@ -248,6 +251,7 @@
     formAgregar.style.display = "none";
 
     document.querySelector('input[name="numeroCuenta"]').value = datos.nro;
+    document.querySelector('input[name="dniCliente"]').value = datos.dni;
     document.querySelector('input[name="idCliente"]').value = datos.idcliente;
     document.querySelector('input[name="fechaCreacion"]').value = datos.fecha;
     document.querySelector('select[name="tipoCuenta"]').value = datos.tipo;
@@ -262,7 +266,7 @@
 	
 	   // Limpieza de campos menos el numero de cuenta y saldo
 	  const inputs = formAgregarCuenta.querySelectorAll('input');
-     inputs.forEach(input => {
+      inputs.forEach(input => {
    	  if (input.name === "saldo") {
    	      input.value = "10000.0"; // monto fijo
    	  } else if (input.name !== "proximoNroCuenta") {
