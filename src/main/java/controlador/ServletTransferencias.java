@@ -46,7 +46,17 @@ public class ServletTransferencias extends HttpServlet {
 	        response.sendRedirect("login.jsp");
 	        return;
 	    }
-
+	    // Muestro msj temporales que estan en la sesion y los paso al request p q puedan ser usados en el jsp
+	    if (session.getAttribute("mensajeExito") != null) {
+	        request.setAttribute("mensajeExito", session.getAttribute("mensajeExito"));
+	        session.removeAttribute("mensajeExito");//Y los borro p q no se vuelvan a mostrar si el usuario recarga
+	    }
+	    if (session.getAttribute("mensajeError") != null) {
+	        request.setAttribute("mensajeError", session.getAttribute("mensajeError"));
+	        session.removeAttribute("mensajeError");
+	    }
+	    
+	    //cargo cuentas
 	    int idCliente = cliente.getIdCliente();
 	    System.out.println("Cliente recuperado: " + cliente.getIdCliente());
 	    
@@ -95,28 +105,35 @@ public class ServletTransferencias extends HttpServlet {
 	        
 	        boolean exito = transferenciaNegocio.registrarTransferencia(transferencia);
 	        System.out.println("[SERVLET] Resultado de registrarTransferencia: " + exito);
-
+	        
+	        // saque  request.setAttribute(...) porque con sendRedirect(...) se pierde el request.
 	        if (exito) {
-	            request.setAttribute("mensajeExito", "Transferencia realizada con éxito.");
+	            session.setAttribute("mensajeExito", "Transferencia realizada con éxito.");
 	        } else {
-	            request.setAttribute("mensajeError", "Ocurrió un error al procesar la transferencia.");
+	            session.setAttribute("mensajeError", "Ocurrió un error al procesar la transferencia.");
 	        }
 	      }
 
 	    } catch (SaldoInsuficienteException e) {
 	    	System.out.println("[SERVLET] SaldoInsuficienteException atrapada");
-	        request.setAttribute("mensajeError", "Saldo insuficiente para realizar la transferencia.");
+	        session.setAttribute("mensajeError", "Saldo insuficiente para realizar la transferencia.");
+	        response.sendRedirect("ServletTransferencias");
+	        return;
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        request.setAttribute("mensajeError", "Error inesperado al procesar la transferencia.");
-	    }
+	        session.setAttribute("mensajeError", "Error inesperado al procesar la transferencia.");
+	        response.sendRedirect("ServletTransferencias");
+	        return;	    }
 	    
-	 // Volvemos a cargar las cuentas para mostrar nuevamente el formulario
+	 /* Volvemos a cargar las cuentas para mostrar nuevamente el formulario
 	    int idCliente = cliente.getIdCliente();
 	    List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(idCliente);
 	    request.setAttribute("cuentasDelCliente", cuentas);
 
-	    request.getRequestDispatcher("transferencias.jsp").forward(request, response);
+	    request.getRequestDispatcher("transferencias.jsp").forward(request, response);*/
+	    
+	 // Redirigir a doGet (PRG)
+	    response.sendRedirect("ServletTransferencias");
 	}
 }
 

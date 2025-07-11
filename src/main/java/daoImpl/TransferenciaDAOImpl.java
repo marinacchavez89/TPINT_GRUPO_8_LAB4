@@ -33,7 +33,9 @@ public class TransferenciaDAOImpl implements TransferenciaDAO {
 			statement.setInt(1, transferencia.getNroCuentaOrigen());
 			statement.setInt(2, transferencia.getNroCuentaDestino());
 			statement.setFloat(3, transferencia.getImporte());
-			statement.setDate(4, new java.sql.Date(transferencia.getFecha().getTime()));
+			//statement.setDate(4, new java.sql.Date(transferencia.getFecha().getTime())); solo guarda la fecha
+			statement.setTimestamp(4, new java.sql.Timestamp(transferencia.getFecha().getTime()));
+
 		
 			if(statement.executeUpdate() > 0) {
 				conn.commit();
