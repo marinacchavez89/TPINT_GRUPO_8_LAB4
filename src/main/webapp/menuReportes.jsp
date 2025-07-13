@@ -24,7 +24,7 @@
     <div class="list-group col-6 mx-auto">
         <a href="" class="list-group-item list-group-item-action">Reporte de Ingresos vs. Egresos</a>
         <a href="" class="list-group-item list-group-item-action">Reporte de Cuentas Nuevas</a>
-        <a href="" class="list-group-item list-group-item-action">Reporte de Préstamos Autorizados</a>
+        <a href="ServletReportePrestamos" class="list-group-item list-group-item-action">Reporte de Préstamos Autorizados</a>
         <a href="" class="list-group-item list-group-item-action">Reporte de Pagos de Cuotas</a>
     </div>
 </div>

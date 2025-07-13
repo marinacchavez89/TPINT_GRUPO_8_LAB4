@@ -104,8 +104,6 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 	 
 	 //funcion usada para la seccion reportes obtenerreporteprestamo: 
 	
-
-	
 	
 }
 //falta desarrollar autorizar prestamo. Pero hay que hacer movimientos

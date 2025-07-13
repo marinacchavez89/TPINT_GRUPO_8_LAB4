@@ -16,6 +16,4 @@ public interface PrestamoNegocio {
 	boolean autorizarPrestamo(int idPrestamo, double importeAPagar);
 	boolean rechazarPrestamo (int idPrestamo);
 	
-	//Map<String, String> obtenerReportePrestamos(Date fechaDesde, Date fechaHasta);
-
 }

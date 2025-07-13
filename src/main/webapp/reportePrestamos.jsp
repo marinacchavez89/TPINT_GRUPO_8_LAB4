@@ -32,8 +32,9 @@
 
     <div class="mt-5">
         <%
-            String totalSolicitado = (String) request.getAttribute("totalSolicitado");
-            String cantidad = (String) request.getAttribute("cantidad");
+	        Double totalSolicitado = (Double) request.getAttribute("totalSolicitado");
+	        Integer cantidad = (Integer) request.getAttribute("cantidad");
+
 
             if (totalSolicitado != null && cantidad != null) {
         %>
