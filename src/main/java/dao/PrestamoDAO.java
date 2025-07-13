@@ -16,5 +16,7 @@ public interface PrestamoDAO{
 	/** Listado de p´restamos de un cliente (para la vista cliente)*/
 	List<Prestamo> listarPorCliente (int idCliente);
 	
+	List<Prestamo> listarAutorizados();
+	
 	boolean actualizarImporteAPagar(int idPrestamo, double importeAPagar);
 }

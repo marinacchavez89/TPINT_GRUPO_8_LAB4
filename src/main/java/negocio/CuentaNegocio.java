@@ -17,5 +17,5 @@ public interface CuentaNegocio {
 	public Cuenta obtenerPorCBU(String cbu);
 	public Cuenta obtenerPorNroCuenta(int nroCuenta);
 	public boolean incrementarSaldo (int nroCuenta, double importe);
-
+	public boolean decrementarSaldo(int nroCuenta, double importe);
 }

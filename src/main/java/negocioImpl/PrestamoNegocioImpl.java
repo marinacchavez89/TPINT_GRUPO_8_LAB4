@@ -44,6 +44,10 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		return prestamoDao.listarPendientes(); // solo lista los -1
 		
 	}
+	public List<Prestamo> listarPrestamosAutorizados()
+	{
+		return prestamoDao.listarAutorizados();
+	}
 	@Override
 	public List <Prestamo> listarPrestamosPorCliente(int idCliente)
 	{
@@ -96,10 +100,45 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		 if (p == null) return false;
 		 return prestamoDao.modificarEstado(p,0); // 0: Rechazado
 	 }
-	 	
+	 @Override
 	 public boolean pagarCuota (int idCuota, int nroCuenta){
 
-		 return false;// FALTA !!
+		 Cuota cuota = cuotaDao.obtenerPorId(idCuota);
+		 if (cuota == null || cuota.getEstado() != 1) // estado distinto de pendiente
+		 {
+			 return false;
+		 }
+		 
+		 Cuenta cuenta = cuentaDao.obtenerPorNroCuenta(nroCuenta);
+		 if(cuenta == null) {
+			 return false;
+		 }
+		 if (cuenta.getSaldo() < cuota.getMonto()) {
+			 return false;
+		 }
+		 
+		 Movimiento movimiento = new Movimiento();
+		 movimiento.setFecha(new Date());
+		 movimiento.setCuenta(cuenta);
+		 movimiento.setDetalle("Pago de cuota" + cuota.getNumeroCuota());
+		 movimiento.setImporte(-cuota.getMonto());
+		 movimiento.setTipoMovimiento(new TipoMovimiento(3, "Pago de prestamo"));
+		 if(!movDao.agregarMovimiento(movimiento))
+		 {
+			 return false;
+		 }
+		 if(!cuentaNegocio.decrementarSaldo(nroCuenta, cuota.getMonto()))
+		 {
+			 return false;
+		 }
+		 cuota.setEstado(2); // pagada
+		 cuota.setFechaPago(new java.sql.Date(new Date().getTime()));
+		 if(!cuotaDao.actualizar(cuota))
+		 {
+			 return false;
+		 }
+		 
+		 return true;
 	 }
 	 
 	 //funcion usada para la seccion reportes obtenerreporteprestamo: 

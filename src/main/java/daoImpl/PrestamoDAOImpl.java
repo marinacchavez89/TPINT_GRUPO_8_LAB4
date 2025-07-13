@@ -176,5 +176,37 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 	}
 			return agregado;
 	}
+	@Override
+	public List<Prestamo> listarAutorizados(){
+		List<Prestamo> lista = new ArrayList<>();
+		String sql = "SELECT * FROM prestamo WHERE estado = 2 ORDER BY fecha_alta";
+		
+        Connection conn = null;
+        PreparedStatement stmt=null;
+		ResultSet rs = null;
+		try {
+			conn = Conexion.getSQLConexion();
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while(rs.next())
+			{
+				Prestamo prestamo = new Prestamo();
+                prestamo.setIdPrestamo(rs.getInt("id_prestamo"));
+                prestamo.setIdCliente(rs.getInt("id_cliente"));
+                prestamo.setNroCuenta(rs.getInt("nro_cuenta"));
+                prestamo.setFechaAlta(rs.getDate("fecha_alta"));
+                prestamo.setImportePedido(rs.getDouble("importe_pedido"));
+                prestamo.setPlazoPago(rs.getInt("plazo_pago"));
+                prestamo.setImporteAPagar(rs.getDouble("importe_a_pagar"));
+                prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
+                prestamo.setEstado(rs.getInt("estado"));
+                lista.add(prestamo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return lista;
+}
 }
 

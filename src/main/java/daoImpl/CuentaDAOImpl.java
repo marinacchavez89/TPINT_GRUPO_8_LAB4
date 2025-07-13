@@ -397,5 +397,31 @@ public class CuentaDAOImpl implements CuentaDAO {
 
         return modificado;
 	}
+	public boolean decrementarSaldo(int nroCuenta, double importe)
+	{
+		PreparedStatement statement;
+		Connection conn = Conexion.getSQLConexion();
+		boolean modificado= false;
+		String sql = "UPDATE cuenta SET saldo = saldo - ? WHERE nro_cuenta = ?";
+		try {
+			statement = (PreparedStatement) conn.prepareStatement(sql);
+			statement.setDouble(1, importe);
+			statement.setInt(2, nroCuenta);
+
+            if (statement.executeUpdate() > 0) {
+                conn.commit();
+                modificado = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return modificado;
+	}
 
 }

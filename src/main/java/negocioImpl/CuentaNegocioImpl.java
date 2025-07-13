@@ -133,5 +133,9 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	public boolean incrementarSaldo (int nroCuenta, double importe) {
 		return cuentaDAO.incrementarSaldo(nroCuenta, importe);
 	}
+	public boolean decrementarSaldo(int nroCuenta, double importe)
+	{
+		return cuentaDAO.decrementarSaldo(nroCuenta, importe);
+	}
 
 }

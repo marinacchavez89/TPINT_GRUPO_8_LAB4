@@ -13,7 +13,8 @@ public interface PrestamoNegocio {
     public boolean modificarEstadoPrestamo(Prestamo prestamo, int estado);
 	List<Prestamo> listarPrestamosPorCliente(int idCliente);
 	List<Prestamo> listarPrestamosPendientes();
+	List<Prestamo> listarPrestamosAutorizados();
 	boolean autorizarPrestamo(int idPrestamo, double importeAPagar);
 	boolean rechazarPrestamo (int idPrestamo);
-	
+	boolean pagarCuota(int idCuota , int nroCuenta);
 }

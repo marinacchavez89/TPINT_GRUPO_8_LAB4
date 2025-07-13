@@ -46,7 +46,18 @@
        </a>
     </div>  
 
-  </div>
+  	<div class="col">
+          <a href="ServletListarPrestamosAutorizados" class="text-decoration-none text-dark">
+               <div class="card h-100 shadow-sm">
+                   <div class="card-body">
+                     <i class="bi bi-cash-stack fs-1 mb-2"></i>
+                      <h5 class="card-title">Préstamos Autorizados</h5>
+                    </div>
+                </div>
+          </a>
+    </div>
+
+
 </div>
 </main>
       

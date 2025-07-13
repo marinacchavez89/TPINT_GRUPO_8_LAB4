@@ -17,5 +17,5 @@ public interface CuentaDAO {
 	public boolean actualizarSaldo(Cuenta cuenta);
 	public Cuenta obtenerPorCBU(String cbu);
 	public boolean incrementarSaldo(int nroCuenta, double importe);
-
+	public boolean decrementarSaldo(int nroCuenta, double importe);
 }

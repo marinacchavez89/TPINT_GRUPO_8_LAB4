@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 
 import dao.CuotaDAO;
 import dominio.Conexion;
@@ -74,6 +75,35 @@ public class CuotaDAOImpl implements CuotaDAO {
 	    }
 
 	    return cuota;
+	}
+	public boolean actualizar(Cuota cuota)
+	{
+		Connection conn = Conexion.getSQLConexion();
+		PreparedStatement statement = null;
+		boolean actualizado = false;
+		String sql = "UPDATE cuota SET monto = ?, fecha_pago = ?, estado = ? , WHERE id_cuota = ?";
+		try {
+			statement = conn.prepareStatement(sql);
+			statement.setFloat(1, cuota.getMonto());
+			java.sql.Date sqlDate = cuota.getFechaPago() != null ? new java.sql.Date(cuota.getFechaPago().getTime()) : null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+			statement.setDate(2, sqlDate);
+			statement.setInt(3, cuota.getEstado());
+			statement.setInt(4, cuota.getIdCuota());
+			
+			int filas = statement.executeUpdate();
+			if(filas> 0)
+			{
+				conn.commit();
+				actualizado = true;
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+					
+			// TODO: handle exception
+		}
+		return actualizado;
 	}
 
 }
