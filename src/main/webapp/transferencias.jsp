@@ -15,7 +15,7 @@
 	rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
 <link href="css/estilos.css" rel="stylesheet">
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -38,7 +38,7 @@
  <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="form-box p-4 shadow rounded">
       <h2 class="text-center mb-4">Transferencia</h2>
-      <form method="post" action= "ServletTransferencias">
+      <form id="formTransferencia" method="post" action= "ServletTransferencias">
         <div class="mb-3">
           <label for="cbuDestino" class="form-label">CBU destino:</label>
           <input type="text" class="form-control" id="cbuDestino" name="cbuDestino" required>    
@@ -67,7 +67,7 @@
         </div>
 
         <div class="d-grid mt-5 mb-5">
-          <button type="submit" class="btn btn-primary">Transferir</button>
+          <button type="submit" id="btnTransferir" class="btn btn-primary">Transferir</button>
         </div>
         
         <div class="row mt-3">
@@ -79,6 +79,40 @@
       </form>
     </div>
   </div>
+  
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const btnTransferir = document.getElementById("btnTransferir");
+    const formTransferencia = document.getElementById("formTransferencia");
+
+    if (btnTransferir && formTransferencia) {
+      btnTransferir.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+          title: '¿Deseas realizar la transferencia?',
+          text: "Una vez realizada no se puede deshacer.",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, transferir',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            formTransferencia.submit();
+          } else {
+            Swal.fire(
+              'Cancelado',
+              'La transferencia fue cancelada.',
+              'info'
+            );
+          }
+        });
+      });
+    }
+  });
+</script>
   
 <jsp:include page="footer.jsp" />
 </body>
