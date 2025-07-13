@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/estilos.css" rel="stylesheet">
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Pagar Prestamos</title>
 </head>
 <body>
     <jsp:include page="navbar.jsp" />
@@ -20,8 +20,8 @@
                 <h2>Cuotas Pendientes</h2>
             </div>
         </div>
-        <form method="post" action="ServletPagarPrestamos">
-            <input type="hidden" name="idCuenta" value="<%= request.getParameter("idCuenta") %>" />
+        <form method="post" action="${pageContext.request.contextPath}/ServletPagarCuotas">
+            <input type="hidden" name="cuentaSeleccionada" value="<%= request.getParameter("cuentaSeleccionada") %>" />
             <input type="hidden" name="idPrestamo" value="<%= request.getParameter("idPrestamo") %>" />
             <% String error = (String) request.getAttribute("errorPago");
                if (error != null) { %>

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import dao.CuotaDAO;
@@ -105,5 +107,30 @@ public class CuotaDAOImpl implements CuotaDAO {
 		}
 		return actualizado;
 	}
-
+	public List<Cuota> listarPorPrestamo(int idPrestamo)
+	{
+		  List<Cuota> lista = new ArrayList<>();
+	        String sql = "SELECT id_cuota, id_prestamo, numero_cuota, monto, fecha_pago, estado " +
+	                     "FROM cuota WHERE id_prestamo = ? ORDER BY numero_cuota";
+	        try (Connection conn = Conexion.getSQLConexion();
+	             PreparedStatement stmt = conn.prepareStatement(sql)) {
+	            stmt.setInt(1, idPrestamo);
+	            try (ResultSet rs = stmt.executeQuery()) {
+	                while (rs.next()) {
+	                    Cuota cuota = new Cuota();
+	                    cuota.setIdCuota(rs.getInt("id_cuota"));
+	                    cuota.setIdPrestamo(rs.getInt("id_prestamo"));
+	                    cuota.setNumeroCuota(rs.getInt("numero_cuota"));
+	                    cuota.setMonto(rs.getFloat("monto"));
+	                    cuota.setFechaPago(rs.getDate("fecha_pago"));
+	                    cuota.setEstado(rs.getInt("estado"));
+	                    lista.add(cuota);
+	                }
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		
+		return lista;
+	}
 }

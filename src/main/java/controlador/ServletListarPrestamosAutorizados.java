@@ -77,9 +77,7 @@ public class ServletListarPrestamosAutorizados extends HttpServlet {
         }
     }
     request.setAttribute("prestamosAutorizados", autorizados);
-    
-        // Mostramos JSP
-        request.getRequestDispatcher("listarPrestamosAutorizados.jsp").forward(request, response);
+    request.getRequestDispatcher("listarPrestamosAutorizados.jsp").forward(request, response);
 	}
 
 	}

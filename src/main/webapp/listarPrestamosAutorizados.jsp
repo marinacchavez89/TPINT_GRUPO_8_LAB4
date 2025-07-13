@@ -66,7 +66,7 @@
                         <td><%= p.getFechaAlta()!=null ? sdf.format(p.getFechaAlta()) : "-" %></td>
                         <td><%= p.getCantidadCuotas() %></td>
                         <td>
-                            <a href="ServletPagarPrestamos?cuentaSeleccionada=<%= request.getParameter("cuentaSeleccionada") %>&idPrestamo=<%= p.getIdPrestamo() %>" 
+                            <a href="ServletPagarCuotas?cuentaSeleccionada=<%= request.getParameter("cuentaSeleccionada") %>&idPrestamo=<%= p.getIdPrestamo() %>" 
                                class="btn btn-success btn-sm">Pagar Cuotas</a>
                         </td>
                     </tr>
