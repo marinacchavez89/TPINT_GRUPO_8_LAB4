@@ -22,7 +22,7 @@
       <%
       String mensaje = (String) session.getAttribute("confirmacionMensaje");
       String confirmacionTipo  = (String) session.getAttribute("confirmacionTipo");
-      if (mensaje != null && !mensaje.isEmpty()) {
+      if (mensaje != null&& !mensaje.isEmpty()) {
   	  %>
   		Swal.fire({
   		    icon: '<%= confirmacionTipo %>',
@@ -37,15 +37,33 @@
           session.removeAttribute("confirmacionTipo");
       }
       %>
-      
+      <%
+      String mensajeRequest = (String) request.getAttribute("confirmacionMensaje");
+      String tipoRequest = (String) request.getAttribute("confirmacionTipo");
+      if (mensajeRequest != null && !mensajeRequest.isEmpty()) {
+      %>
+        Swal.fire({
+          icon: '<%= tipoRequest %>',
+          title: '<%= "success".equals(tipoRequest) ? "Operación Exitosa" : ("warning".equals(tipoRequest) ? "Atención" : "Error") %>',
+          text: '<%= mensajeRequest %>',
+          showConfirmButton: false,
+          timer: 2500
+        });
+      <%
+      } %>
+   // Validar solo números en el filtro DNI. No deja escribir otra cosa
+      $('#dniCliente').on('input', function () {
+        let valor = $(this).val();
+        if (!/^\d*$/.test(valor)) {
+          $(this).val(valor.replace(/\D/g, ''));
+        }
+      });
     });
   </script>
 </head>
-
 <body>
 <jsp:include page="navbarAdmin.jsp"/>
 <jsp:include page="bienvenidaUsuario.jsp" />
-
 
 <!-- Filtros -->
 <div class="container mt-4 mb-3">
@@ -54,23 +72,21 @@
       <label for="filtroEstado" class="form-label">Estado</label>
       <select name="filtroEstado" id="filtroEstado" class="form-select">
         <option value="">-- Todos --</option>
-        <option value="true" <%= "true".equals(request.getParameter("filtroEstado")) ? "selected" : "" %>>Habilitadas</option>
-        <option value="false" <%= "false".equals(request.getParameter("filtroEstado")) ? "selected" : "" %>>Inhabilitadas</option>
+        <option value="true" <%= "true".equals(request.getParameter("filtroEstado")) ? "selected" : "" %>>Activas</option>
+        <option value="false" <%= "false".equals(request.getParameter("filtroEstado")) ? "selected" : "" %>>Inactivas</option>
       </select>
     </div>
     <div class="col-md-3">
-      <label for="idCliente" class="form-label">ID Cliente</label>
-      <input type="number" name="idCliente" id="idCliente" class="form-control" placeholder="Ej: 1001"
-             value="<%= request.getParameter("idCliente") != null ? request.getParameter("idCliente") : "" %>">
-    </div>
+  	  <label for="dniCliente" class="form-label">DNI Cliente</label>
+  	  <input type="text" name="dniCliente" id="dniCliente" class="form-control" placeholder="Ej: 12345678"
+         value="<%= request.getParameter("dniCliente") != null ? request.getParameter("dniCliente") : "" %>">
+	</div>
     <div class="col-md-3 d-flex gap-2">
   		<button type="submit" class="btn btn-primary w-50">Aplicar </button>
   		<a href="ServletCuenta" class="btn btn-secondary w-50 text-center">Limpiar</a>
 	</div>
-
   </form>
 </div>
-
 
   <div class="tabla-contenedor">
     <table id="tablaCuentas" class="tabla">
@@ -131,7 +147,6 @@
     <button type="button" onClick="mostrarFormularioAgregarCuenta()" class="btn btn-success btn-sm">Agregar</button>
     <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
   </div>
-
 <form action="ServletCuenta" method="post" id="formModificarCuenta" style="display: none;">
   <div class="tabla-contenedor mt-3">
     <h4 class="mb-3">Modificar o Eliminar cuenta</h4>

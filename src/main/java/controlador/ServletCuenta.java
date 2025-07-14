@@ -34,28 +34,47 @@ public class ServletCuenta extends HttpServlet {
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String filtroEstado = request.getParameter("filtroEstado");
-	    String idClienteStr = request.getParameter("idCliente");
+		String dniCliente = request.getParameter("dniCliente");
+		Boolean estado = (filtroEstado != null && !filtroEstado.isEmpty()) ? Boolean.parseBoolean(filtroEstado) : null;
+		Integer idCliente = null;
+		ClienteNegocio clienteNegocio = new ClienteNegocioImpl();
+		boolean dniValido = true;
 	    
-	    List<Cuenta> listaCuentas;
+		if (dniCliente != null && !dniCliente.isEmpty()) {
+		    try {
+		        int dni = Integer.parseInt(dniCliente);
+		        if (dni <= 0) {
+		            dniValido = false;
+		        } else {
+		            idCliente = clienteNegocio.obtenerIdXDni(String.valueOf(dni));
+		            if (idCliente == 0) {
+		                dniValido = false;
+		            }
+		        }
+		    } catch (NumberFormatException e) {
+		        dniValido = false;
+		    }
+		}
 
-	    if ((filtroEstado != null && !filtroEstado.isEmpty()) || (idClienteStr != null && !idClienteStr.isEmpty())) {
-	        Boolean estado = (filtroEstado != null && !filtroEstado.isEmpty()) ? Boolean.parseBoolean(filtroEstado) : null;
-	        int idCliente = (idClienteStr != null && !idClienteStr.isEmpty()) ? Integer.parseInt(idClienteStr) : 0;
+		List<Cuenta> listaCuentas;
+		if (!dniValido) {
+		    listaCuentas = List.of();
+		    request.setAttribute("confirmacionMensaje", "No se encontraron cuentas con el DNI ingresado.");
+		    request.setAttribute("confirmacionTipo", "warning");
+		} else if (estado != null || idCliente != null) {
+		    listaCuentas = cuentaNegocio.listarCuentasFiltradas(estado, idCliente != null ? idCliente : 0);
+		} else {
+		    listaCuentas = cuentaNegocio.listarCuentas();
+		}
 
-	        listaCuentas = cuentaNegocio.listarCuentasFiltradas(estado, idCliente);
-	    } else {
-	        listaCuentas = cuentaNegocio.listarCuentas();
-	    }
-
-	    request.setAttribute("cuentas", listaCuentas);
-	    
+		request.setAttribute("cuentas", listaCuentas);
+		request.setAttribute("dniCliente", dniCliente);
 	    List<TipoCuenta> tiposCuenta = tipoCuentaNegocio.listar();
 	    request.setAttribute("tiposCuenta", tiposCuenta);
 	    
 	    int proximoNroCuenta = cuentaNegocio.obtenerProximoNumeroCuenta();
 		request.setAttribute("proximoNroCuenta", proximoNroCuenta);
 	    
-		ClienteNegocio clienteNegocio = new ClienteNegocioImpl();
 		List<Cliente> listaClientes = clienteNegocio.listarClientes(); 
 		
 		// Mapeo de ID y DNI
@@ -101,7 +120,7 @@ public class ServletCuenta extends HttpServlet {
 		}
 
 		ClienteNegocio clienteNegocio = new ClienteNegocioImpl();
-		String dni = request.getParameter("dni");
+		String dni = request.getParameter("dniCliente");
 
 		int idCliente = clienteNegocio.obtenerIdXDni(dni);
 		if (idCliente == 0) {
