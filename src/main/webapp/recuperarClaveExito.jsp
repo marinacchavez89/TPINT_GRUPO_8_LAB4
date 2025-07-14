@@ -19,7 +19,7 @@
                     <h3>Actualizá tu clave</h3>
                 </div>
                 <div class="card-body">
-                    <form action="ActualizarClaveServlet" method="post">
+                    <form action="ActualizarClaveServlet" method="post">                    	
                         <div class="mb-3">
                             <label for="nuevaClave" class="form-label">Ingrese su nueva clave:</label>
                             <input type="password" class="form-control" id="nuevaClave" name="nuevaClave" required>

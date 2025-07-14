@@ -21,7 +21,7 @@
                     <h3>Recuperar clave</h3>
                 </div>
                 <div class="card-body">
-                    <form action="RecuperarClaveServlet" method="post">
+                    <form action="ServletRecuperarClave" method="post">
                         <div class="mb-3">
                             <label for="correo" class="form-label">Correo electrónico registrado</label>
                             <input type="email" class="form-control" id="correo" name="correo" required placeholder="ejemplo@correo.com">
