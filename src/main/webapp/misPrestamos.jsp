@@ -62,9 +62,11 @@
         estadoStr = "Pendiente";
       } else if (p.getEstado() == 2) {
         estadoStr = "Aprobado";
+      } else if (p.getEstado() == 3) {
+          estadoStr = "Pagado";
       } else if (p.getEstado() == 0) {
         estadoStr = "Rechazado";
-      }
+      } 
     %>
     <%= estadoStr %>
   </td>

@@ -138,6 +138,23 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 			 return false;
 		 }
 		 
+		 List<Cuota> cuotasDelPrestamo = cuotaDao.listarPorPrestamo(cuota.getIdPrestamo());
+		    boolean todasPagadas = true;
+
+		    for (Cuota c : cuotasDelPrestamo) {
+		        if (c.getEstado() != 2) {
+		            todasPagadas = false;
+		            break;
+		        }
+		    }
+
+		    if (todasPagadas) {
+		        Prestamo prestamo = prestamoDao.obtenerPorId(cuota.getIdPrestamo());
+		        if (prestamo != null) {
+		            prestamoDao.modificarEstado(prestamo, 3); //Pagado
+		        }
+		    }
+		 
 		 return true;
 	 }
 	 
