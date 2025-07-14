@@ -265,13 +265,13 @@
     form.style.display = "block";
     formAgregar.style.display = "none";
 
-    document.querySelector('input[name="numeroCuenta"]').value = datos.nro;
-    document.querySelector('input[name="dniCliente"]').value = datos.dni;
-    document.querySelector('input[name="idCliente"]').value = datos.idcliente;
-    document.querySelector('input[name="fechaCreacion"]').value = datos.fecha;
-    document.querySelector('select[name="tipoCuenta"]').value = datos.tipo;
-    document.querySelector('input[name="cbu"]').value = datos.cbu;
-    document.querySelector('input[name="saldo"]').value = datos.saldo;
+    form.querySelector('input[name="numeroCuenta"]').value = datos.nro;
+    form.querySelector('input[name="dniCliente"]').value = datos.dni;
+    form.querySelector('input[name="idCliente"]').value = datos.idcliente;
+    form.querySelector('input[name="fechaCreacion"]').value = datos.fecha;
+    form.querySelector('select[name="tipoCuenta"]').value = datos.tipo;
+    form.querySelector('input[name="cbu"]').value = datos.cbu;
+    form.querySelector('input[name="saldo"]').value = datos.saldo;
   }
   
   function mostrarFormularioAgregarCuenta() {

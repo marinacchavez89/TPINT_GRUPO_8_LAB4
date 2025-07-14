@@ -24,8 +24,6 @@ import entidades.Cliente;
 import negocio.ClienteNegocio;
 import negocioImpl.ClienteNegocioImpl;
 
-
-
 @WebServlet("/ServletCuenta")
 public class ServletCuenta extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -84,11 +82,9 @@ public class ServletCuenta extends HttpServlet {
 		}
 
 		request.setAttribute("dniPorIdCliente", dniPorIdCliente);
-
 	    request.getRequestDispatcher("administracionCuentas.jsp").forward(request, response);
 	}
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String accion = request.getParameter("accion");
 		HttpSession session = request.getSession();
@@ -97,7 +93,6 @@ public class ServletCuenta extends HttpServlet {
 			response.sendRedirect("ServletCuenta");
 			return;
 		}
-
 		if ("CambiarEstado".equals(accion)) {
 			int nroCuenta = parseInt(request.getParameter("nroCuenta"));
 			boolean exito = cuentaNegocio.cambiarEstadoCuenta(nroCuenta);
@@ -189,7 +184,6 @@ public class ServletCuenta extends HttpServlet {
 
 					TipoCuentaNegocio tipoCuentaNegocio = new TipoCuentaNegocioImpl();
 					TipoCuenta tipoCuenta = tipoCuentaNegocio.obtenerTipoCuentaXId(cuenta.getIdTipoCuenta().getIdTipoCuenta());
-
 				}
 				break;
 

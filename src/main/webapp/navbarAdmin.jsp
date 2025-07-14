@@ -21,6 +21,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="autorizarPrestamo.jsp">Administración Préstamos</a>
                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="menuReportes.jsp">Reportes</a>
+                </li>
                 <% 
         			if (session.getAttribute("usuarioLogueado") != null) {
 			    %>
