@@ -49,6 +49,18 @@ public class ServletPagarCuotas extends HttpServlet {
 	      return;
 	    }
 
+	    String error = (String) session.getAttribute("errorPago");
+	    String exito = (String) session.getAttribute("exitoPago");
+
+	    if (error != null) {
+	        request.setAttribute("errorPago", error);
+	        session.removeAttribute("errorPago");
+	    }
+	    if (exito != null) {
+	        request.setAttribute("exitoPago", exito);
+	        session.removeAttribute("exitoPago");
+	    }
+	    
 	    // 1) Leer parámetros
 	    String cuentaParam  = request.getParameter("cuentaSeleccionada");
 	    String prestamoParam= request.getParameter("idPrestamo");
@@ -98,6 +110,8 @@ public class ServletPagarCuotas extends HttpServlet {
         if (!pagado) {
             // Guardar mensaje de error para mostrarlo tras redirección
             session.setAttribute("errorPago", "No se pudo pagar la cuota. Verifique sus fondos.");
+        } else {
+        	session.setAttribute("exitoPago", "La cuota fue pagada exitosamente");
         }
 		
 		

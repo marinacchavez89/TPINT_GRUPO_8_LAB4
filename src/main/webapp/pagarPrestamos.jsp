@@ -27,6 +27,14 @@
                if (error != null) { %>
                 <div class="alert alert-danger"><%= error %></div>
             <% } %>
+            
+            <% String exito = (String) request.getAttribute("exitoPago");
+   				if (exito != null) { %>
+    			<div class="alert alert-success alert-dismissible fade show" role="alert">
+        	<%= exito %>
+        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    		</div>
+			<% } %>
             <ul class="list-group">
                 <%
                 List<Cuota> cuotas = (List<Cuota>) request.getAttribute("cuotasPendientes");
