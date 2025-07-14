@@ -120,7 +120,7 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		 Movimiento movimiento = new Movimiento();
 		 movimiento.setFecha(new Date());
 		 movimiento.setCuenta(cuenta);
-		 movimiento.setDetalle("Pago de cuota" + cuota.getNumeroCuota());
+		 movimiento.setDetalle("Pago de cuota " + cuota.getNumeroCuota());
 		 movimiento.setImporte(-cuota.getMonto());
 		 movimiento.setTipoMovimiento(new TipoMovimiento(3, "Pago de prestamo"));
 		 if(!movDao.agregarMovimiento(movimiento))

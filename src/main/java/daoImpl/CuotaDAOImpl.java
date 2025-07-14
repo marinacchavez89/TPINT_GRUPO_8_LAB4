@@ -83,7 +83,7 @@ public class CuotaDAOImpl implements CuotaDAO {
 		Connection conn = Conexion.getSQLConexion();
 		PreparedStatement statement = null;
 		boolean actualizado = false;
-		String sql = "UPDATE cuota SET monto = ?, fecha_pago = ?, estado = ? , WHERE id_cuota = ?";
+		String sql = "UPDATE cuota SET monto = ?, fecha_pago = ?, estado = ? WHERE id_cuota = ?";
 		try {
 			statement = conn.prepareStatement(sql);
 			statement.setFloat(1, cuota.getMonto());
