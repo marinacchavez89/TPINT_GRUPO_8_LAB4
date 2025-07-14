@@ -20,6 +20,8 @@
   }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -30,7 +32,7 @@
  <div class="perfil-card">
   <h2 class="text-center mb-4">Solicitar Préstamo</h2>
   
-  <form action="ServletPrestamos" method="post" class="perfil-form">
+  <form action="ServletPrestamos" method="post" class="perfil-form" id="formPrestamo">
     <div class="row">
       <div class="mb-3">
         <label for="monto" class="form-label">Monto Solicitado</label>
@@ -61,7 +63,7 @@
 
     <!-- Botones -->
     <div class="d-flex gap-2 justify-content-center mt-4 mb-5">
-      	<input type="submit" class="btn-solicitar" value="Solicitar">	
+      	<input type="submit" id="btnSolicitar" class="btn-solicitar" value="Solicitar">	
       <a href="gestionPrestamos.jsp" class="btn-volver">Volver</a>
       </div>
     </form>
@@ -70,6 +72,49 @@
 
 <!-- Footer afuera de los contenedores -->
 <jsp:include page="footer.jsp" />
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const btnSolicitar = document.getElementById("btnSolicitar");
+    const formPrestamo = document.getElementById("formPrestamo");
+
+    if (btnSolicitar && formPrestamo) {
+      btnSolicitar.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+          title: '¿Deseas solicitar el préstamo?',
+          text: "Una vez solicitado será procesado.",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, solicitar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: '¡Solicitud enviada!',
+              text: 'Tu solicitud de préstamo fue registrada.',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 2000
+            });
+            setTimeout(() => {
+              formPrestamo.submit();
+            }, 2000);
+          } else {
+            Swal.fire(
+              'Cancelado',
+              'La solicitud fue cancelada.',
+              'info'
+            );
+          }
+        });
+      });
+    }
+  });
+</script>
 
 </body>
 </html>
