@@ -23,7 +23,7 @@
                 </li>
                  <li class="nav-item">
                     <a class="nav-link" href="gestionPrestamos.jsp">Prestamos</a>
-                </li>
+                </li>               
                	<% 
         			if (session.getAttribute("usuarioLogueado") != null) {
 			    %>

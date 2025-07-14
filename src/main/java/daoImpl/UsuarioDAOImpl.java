@@ -178,5 +178,39 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 	    return passEditada;
 	}
+	
+	@Override
+	public boolean actualizarPasswordPorIdUsuario(int idUsuario, String nuevaPassword) {
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    boolean actualizada = false;
+
+	    try {
+	        conn = Conexion.getSQLConexion();
+	        conn.setAutoCommit(false);
+
+	        String query = "UPDATE usuario SET contrasena = ? WHERE id_usuario = ?";
+	        stmt = conn.prepareStatement(query);
+	        stmt.setString(1, nuevaPassword);
+	        stmt.setInt(2, idUsuario);
+
+	        int filasAfectadas = stmt.executeUpdate();
+	        if (filasAfectadas > 0) {
+	            conn.commit();
+	            actualizada = true;
+	        } else {
+	            conn.rollback();
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        try { if (conn != null) conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
+	    } finally {
+	        try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+	        try { if (conn != null) conn.close(); } catch (Exception e) {}
+	    }
+
+	    return actualizada;
+	}
 }
 

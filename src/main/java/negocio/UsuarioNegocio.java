@@ -7,4 +7,5 @@ public interface UsuarioNegocio {
 	public int obtenerIdPorCliente(int idCliente);
 	public Integer obtenerIdClientePorDni(String dni);
 	public boolean actualizarPasswordPorDni(String dni, String nuevaPassword);
+	public boolean actualizarPasswordPorIdUsuario(int idUsuario, String nuevaPassword);
 }

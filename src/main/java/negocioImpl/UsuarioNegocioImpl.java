@@ -32,4 +32,9 @@ public class UsuarioNegocioImpl implements UsuarioNegocio{
 	public boolean actualizarPasswordPorDni(String dni, String nuevaPassword) {
 	    return usuarioDAO.actualizarPasswordPorDni(dni, nuevaPassword);
 	}
+	
+	@Override
+	public boolean actualizarPasswordPorIdUsuario(int idUsuario, String nuevaPassword) {
+		return usuarioDAO.actualizarPasswordPorIdUsuario(idUsuario, nuevaPassword);
+	}
 }
