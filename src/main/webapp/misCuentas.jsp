@@ -20,6 +20,18 @@
 <jsp:include page="bienvenidaUsuario.jsp"/>
 
 <div class="container mt-5 mb-5">
+
+	<%
+	String mensajeError = (String) session.getAttribute("mensajeError");
+	if(mensajeError != null) {
+	%>
+		<div class="alert alert-danger text-center"> 
+		<%= mensajeError %>
+		</div>
+<%
+	session.removeAttribute("mensajeError");
+	}
+%>
         <div class="row mb-3">
             <div class="col bank-heading text-center">
                 <h1>Mis Cuentas </h1>
