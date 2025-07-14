@@ -112,5 +112,71 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 	    return idUsuario;
 	}
+	
+	@Override
+	public Integer obtenerIdClientePorDni(String dni) {
+	    Integer idCliente = null;
+	    Connection conn = Conexion.getSQLConexion();
+	    String sql = "SELECT id_cliente FROM cliente WHERE dni = ?";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, dni);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            idCliente = rs.getInt("id_cliente");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return idCliente;
+	}
+	
+	@Override
+	public boolean actualizarPasswordPorDni(String dni, String nuevaPassword) {
+	    boolean passEditada = false;
+	    Integer idCliente = obtenerIdClientePorDni(dni);
+
+	    System.out.println("ID Cliente encontrado para DNI " + dni + ": " + idCliente);
+
+	    if (idCliente != null) {
+	        int idUsuario = obtenerIdPorCliente(idCliente);
+	        System.out.println("ID Usuario encontrado para ID Cliente " + idCliente + ": " + idUsuario);
+
+	        if (idUsuario > 0) {
+	            Connection conn = null;
+	            PreparedStatement stmt = null;
+
+	            try {
+	                conn = Conexion.getSQLConexion();
+	                conn.setAutoCommit(false); // para controlar commit manualmente
+	                
+	                String query = "UPDATE usuario SET contrasena = ? WHERE id_usuario = ?";
+	                stmt = conn.prepareStatement(query);
+	                stmt.setString(1, nuevaPassword);
+	                stmt.setInt(2, idUsuario);
+
+	                int filasAfectadas = stmt.executeUpdate();
+	                System.out.println("Filas afectadas al actualizar password: " + filasAfectadas);
+	                
+	                if (filasAfectadas > 0) {
+	                    conn.commit();
+	                    passEditada = true;
+	                } else {
+	                    conn.rollback();
+	                }
+
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                try { if (conn != null) conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
+	            } finally {
+	                try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+	                try { if (conn != null) conn.close(); } catch (Exception e) {}
+	            }
+	        }
+	    }
+
+	    return passEditada;
+	}
 }
 

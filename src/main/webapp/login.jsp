@@ -35,7 +35,6 @@
 				    <%
 				        }
 				    %>
-					
 						<form action="ServletLogin" method="post">
 							<div class="mb-3">
 								<label for="usuario" class="form-label">Usuario:</label> <input
