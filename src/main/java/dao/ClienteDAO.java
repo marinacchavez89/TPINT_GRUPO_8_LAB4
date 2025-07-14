@@ -11,4 +11,5 @@ public interface ClienteDAO {
 	public int obtenerIdXDni(String dni);
 	public List<Cliente> listar();
 	public boolean setearUsuarioEnCliente(int idCliente, int idUsuario);
+	public boolean existeClientePorDniYCorreo(String dni, String correo);
 }

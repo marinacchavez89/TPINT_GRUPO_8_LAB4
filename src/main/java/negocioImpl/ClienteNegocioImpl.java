@@ -44,4 +44,9 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 	public boolean setearUsuarioEnCliente(int idCliente, int idUsuario) {
 	    return clienteDAO.setearUsuarioEnCliente(idCliente, idUsuario);
 	}
+	
+	@Override 
+	public boolean existeClientePorDniYCorreo(String dni, String correo) {
+		 return clienteDAO.existeClientePorDniYCorreo(dni, correo);
+	}
 }

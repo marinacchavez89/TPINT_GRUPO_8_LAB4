@@ -12,6 +12,7 @@ import entidades.Movimiento;
 import java.util.List;
 import java.util.Date;
 
+import excepciones.SinCuentasException;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -43,8 +44,8 @@ public class ServletMisCuentas extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		 	HttpSession session = request.getSession();
+			
+			HttpSession session = request.getSession();
 		 	
 	        Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
        
@@ -54,10 +55,15 @@ public class ServletMisCuentas extends HttpServlet {
 	            return;
 	        } 
 
-	        int idCliente = cliente.getIdCliente();
-
+		
+		try {
+			int idCliente = cliente.getIdCliente();
 	   
 	        List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(idCliente);
+	        
+	        if(cuentas==null || cuentas.isEmpty()  ) {
+	        	throw new SinCuentasException();
+	        }
 	       
 	        for (Cuenta c : cuentas) {
 	            System.out.println("Cuenta: " + c.getNroCuenta() + " - Saldo: " + c.getSaldo());
@@ -116,7 +122,18 @@ public class ServletMisCuentas extends HttpServlet {
 	        request.setAttribute("movimientos", movimientos);
 
 	        request.getRequestDispatcher("misCuentas.jsp").forward(request, response);
-	    }
+	        
+	    } catch (SinCuentasException e) {
+	    	session.setAttribute("mensajeError", e.getMessage());
+	    	response.sendRedirect("misCuentas.jsp");
+	    	return;
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.setAttribute("mensajeError", "Error inesperado al cargar sus cuentas.");
+			response.sendRedirect("misCuentas.jsp");
+			return;
+		}
+	}	
 		
 
 	/**

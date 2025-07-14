@@ -11,4 +11,5 @@ public interface ClienteNegocio {
 	public int obtenerIdXDni(String dni);
 	public List<Cliente> listarClientes();
 	boolean setearUsuarioEnCliente(int idCliente, int idUsuario);
+	public boolean existeClientePorDniYCorreo(String dni, String correo);
 }

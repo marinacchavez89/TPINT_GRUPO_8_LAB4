@@ -21,7 +21,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		String sql = "INSERT INTO cliente (Dni, Cuil, Nombre, Apellido, Sexo, ID_Nacionalidad, Fecha_Nacimiento, ID_Direccion, Correo_Electronico, Telefono, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				
 		PreparedStatement statement = null;
-		boolean agregado= false;		
+		boolean agregado= false;
 		Connection conn = null;
 		ResultSet rsKKeys = null;
 		try {
@@ -321,5 +321,33 @@ public class ClienteDAOImpl implements ClienteDAO {
 	        try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
 	    }
 	    return false;
+	}
+	
+	public boolean existeClientePorDniYCorreo(String dni, String correo) {
+	    boolean existe = false;
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	    	conn = Conexion.getSQLConexion();
+	        String query = "SELECT COUNT(*) FROM cliente WHERE dni = ? AND correo_electronico = ?";
+	        stmt = conn.prepareStatement(query);
+	        stmt.setString(1, dni);
+	        stmt.setString(2, correo);
+	        rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            existe = rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try { if (rs != null) rs.close(); } catch (Exception e) {}
+	        try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+	        try { if (conn != null) conn.close(); } catch (Exception e) {}
+	    }
+
+	    return existe;
 	}
  }

@@ -106,7 +106,8 @@
     <form action="inicioCliente.jsp" method="get">
       <input type="submit" class="btn-volver" value="Volver">
     </form>
-  </div>
+  </div>  
+  <div class="text-center mt-3"><a href="recuperarClaveCliente.jsp">Cambiar contraseña</a> </div>
  </div>
 </main>
 

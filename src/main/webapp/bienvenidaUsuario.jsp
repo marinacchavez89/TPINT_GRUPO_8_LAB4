@@ -1,17 +1,20 @@
 <%@ page import="entidades.Usuario" %>
+<%@ page import="entidades.Cliente" %>
 <%
-	//Intenta recuperar el usuario de la sesión
     Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+    Cliente clienteLogueado = (Cliente) session.getAttribute("clienteLogueado");
 
-	//Por si esta página se incluye sin pasar por validarSesion.jsp
-	if (usuarioLogueado == null) {
-	    return; // No mostramos nada si no hay sesión
-	}
-	
-	// Definimos si es admin o cliente	
-       String tipo = usuarioLogueado.getTipoUsuario().equalsIgnoreCase("admin") ? "Administrador" : "Cliente";
+    if (usuarioLogueado == null) {
+        return;
+    }
+
+    String tipo = usuarioLogueado.getTipoUsuario().equalsIgnoreCase("admin") ? "Administrador" : "Cliente";
+
+    String nombreMostrar = usuarioLogueado.getTipoUsuario().equalsIgnoreCase("cliente") && clienteLogueado != null
+        ? clienteLogueado.getNombre() + " " + clienteLogueado.getApellido()
+        : usuarioLogueado.getNombreUsuario();
 %>
-    <div class="bg-light text-dark px-4 py-2 border-bottom shadow-sm fw-semibold">
-        Bienvenido: <%= usuarioLogueado.getNombreUsuario() %> (<%= tipo %>)
-    </div>
 
+<div class="bg-light text-dark px-4 py-2 border-bottom shadow-sm fw-semibold">
+    Bienvenido: <%= nombreMostrar %> (<%= tipo %>)
+</div>
