@@ -14,6 +14,8 @@
 <title>Reporte Cuentas </title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="css/estilos.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
 
@@ -67,13 +69,16 @@
                 %>
             </tbody>
         </table>
-    <%
-        } else if (request.getParameter("fechaDesde") != null) {
-    %>
-        <div class="alert alert-warning text-center">No se encontraron cuentas en el período indicado.</div>
-    <%
-        }
-    %>
+    <% } else if (request.getParameter("fechaDesde") != null) { %>
+    <script>
+        Swal.fire({
+            icon: 'info',
+            title: 'Sin resultados',
+            text: 'No se encontraron cuentas en el período indicado.',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+	<% } %>
   
 <c:if test="${not empty stats}">
     <div class="card mt-4 mb-4 shadow-sm">
