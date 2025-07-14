@@ -1,6 +1,9 @@
 package negocioImpl;
 
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dao.CuentaDAO;
 import daoImpl.CuentaDAOImpl;
@@ -137,5 +140,46 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	{
 		return cuentaDAO.decrementarSaldo(nroCuenta, importe);
 	}
+
+	@Override
+	public List<Cuenta> listarCuentasFiltradasPorFecha(Date fechaDesde, Date fechaHasta) {
+		 return cuentaDAO.listarCuentasFiltradasPorFecha(fechaDesde, fechaHasta);
+	}
+	
+	@Override
+	public Map<String, Object> generarEstadisticas(List<Cuenta> cuentas) {
+	    Map<String, Object> stats = new HashMap<>();
+
+	    int total = cuentas.size();
+	    float saldoTotal = 0;
+	    int ahorro = 0, corriente = 0;
+	    int activas = 0, inactivas = 0;
+
+	    for (Cuenta c : cuentas) {
+	        saldoTotal += c.getSaldo();
+
+	        if (c.getIdTipoCuenta().getIdTipoCuenta() == 1) {
+	            ahorro++;
+	        } else if (c.getIdTipoCuenta().getIdTipoCuenta() == 2) {
+	            corriente++;
+	        }
+
+	        if (c.isEstado()) {
+	            activas++;
+	        } else {
+	            inactivas++;
+	        }
+	    }
+
+	    stats.put("total", total);
+	    stats.put("saldoTotal", saldoTotal);
+	    stats.put("ahorro", ahorro);
+	    stats.put("corriente", corriente);
+	    stats.put("activas", activas);
+	    stats.put("inactivas", inactivas);
+
+	    return stats;
+	}
+
 
 }

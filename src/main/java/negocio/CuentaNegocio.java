@@ -2,7 +2,10 @@ package negocio;
 
 import entidades.Cuenta;
 import entidades.TipoCuenta;
+
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface CuentaNegocio {
 	public boolean agregarCuenta(Cuenta cuenta);
@@ -18,4 +21,8 @@ public interface CuentaNegocio {
 	public Cuenta obtenerPorNroCuenta(int nroCuenta);
 	public boolean incrementarSaldo (int nroCuenta, double importe);
 	public boolean decrementarSaldo(int nroCuenta, double importe);
+	//Reportes
+	public List<Cuenta> listarCuentasFiltradasPorFecha(Date fechaDesde, Date fechaHasta);
+	public Map<String, Object> generarEstadisticas(List<Cuenta> lista);
+
 }

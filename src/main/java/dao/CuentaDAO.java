@@ -1,6 +1,8 @@
 package dao;
 
 import entidades.Cuenta;
+
+import java.sql.Date;
 import java.util.List;
 
 public interface CuentaDAO {
@@ -18,4 +20,7 @@ public interface CuentaDAO {
 	public Cuenta obtenerPorCBU(String cbu);
 	public boolean incrementarSaldo(int nroCuenta, double importe);
 	public boolean decrementarSaldo(int nroCuenta, double importe);
+	//Reporte
+	public List<Cuenta> listarCuentasFiltradasPorFecha(Date fechaDesde, Date fechaHasta);
+	
 }

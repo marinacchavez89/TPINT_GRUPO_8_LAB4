@@ -1,6 +1,7 @@
 package daoImpl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -423,5 +424,57 @@ public class CuentaDAOImpl implements CuentaDAO {
 
         return modificado;
 	}
+
+	public List<Cuenta> listarCuentasFiltradasPorFecha(Date desde, Date hasta) {
+	    List<Cuenta> lista = new ArrayList<>();
+	    Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        conn = Conexion.getSQLConexion();
+	        String query = "SELECT c.nro_cuenta, c.id_cliente, c.fecha_creacion, c.id_tipo_cuenta, " +
+                    "tc.desc_tipo_cuenta, c.cbu, c.saldo, c.estado " +
+                    "FROM cuenta c " +
+                    "INNER JOIN tipo_cuenta tc ON c.id_tipo_cuenta = tc.id_tipo_cuenta " +
+                    "WHERE c.fecha_creacion BETWEEN ? AND ?";
+	        stmt = conn.prepareStatement(query);
+	        stmt.setDate(1, desde);
+	        stmt.setDate(2, hasta);
+	        rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            Cuenta cuenta = new Cuenta();
+	            cuenta.setNroCuenta(rs.getInt("nro_cuenta"));
+	            cuenta.setIdCliente(rs.getInt("id_cliente"));
+	            cuenta.setFechaCreación(rs.getDate("fecha_creacion"));
+	            cuenta.setCBU(rs.getString("cbu"));
+	            cuenta.setSaldo(rs.getFloat("saldo"));
+	            cuenta.setEstado(rs.getBoolean("estado"));
+
+	            TipoCuenta tipo = new TipoCuenta();
+	            tipo.setIdTipoCuenta(rs.getInt("id_tipo_cuenta"));
+	            tipo.setDescripcion(rs.getString("desc_tipo_cuenta"));
+	            cuenta.setTipoCuenta(tipo);
+
+	            lista.add(cuenta);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (stmt != null) stmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return lista;
+	}
+
+
 
 }
