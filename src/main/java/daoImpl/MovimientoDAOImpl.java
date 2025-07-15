@@ -5,10 +5,13 @@ import dao.MovimientoDAO;
 import entidades.Movimiento;
 import entidades.TipoMovimiento;
 import java.util.Date;
+import java.util.HashMap;
+
 import entidades.Cuenta;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 
 public class MovimientoDAOImpl implements MovimientoDAO {
@@ -184,4 +187,67 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 			
 		return movimientos; 	
 	}
+	
+	//reportes
+	public Map<String, Double> obtenerResumenIngresosEgresos(Date desde, Date hasta) {
+        Map<String, Double> resumen = new HashMap<>();
+        String sql = "SELECT id_tipo_movimiento, SUM(ABS(importe)) AS total " +
+                     "FROM movimiento WHERE fecha BETWEEN ? AND ? " +
+                     "AND id_tipo_movimiento IN (2, 3, 4, 5) GROUP BY id_tipo_movimiento";
+
+        Connection conn = Conexion.getSQLConexion();
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        double totalIngresos = 0, totalEgresos = 0;
+        int cantIngresos = 0, cantEgresos = 0;
+        Map<Integer, Double> totalesPorTipo = new HashMap<>();
+
+        try {
+        	System.out.println("Ejecutando consulta con fechas: " + desde + " hasta " + hasta);
+
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, new java.sql.Date(desde.getTime()));
+            stmt.setDate(2, new java.sql.Date(hasta.getTime()));
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+            	
+                int tipo = rs.getInt("id_tipo_movimiento");
+                double total = rs.getDouble("total");
+                totalesPorTipo.put(tipo, total);
+                System.out.println("Tipo: " + tipo + " Total: " + total);
+
+                if (tipo == 3 || tipo == 5) { // ingresos
+                    totalIngresos += total;
+                    cantIngresos++;
+                } else if (tipo == 2 || tipo == 4) { // egresos
+                    totalEgresos += total;
+                    cantEgresos++;
+                }
+            }
+
+            resumen.put("totalIngresos", totalIngresos);
+            resumen.put("totalEgresos", totalEgresos);
+            resumen.put("promedioIngresos", cantIngresos > 0 ? totalIngresos / cantIngresos : 0);
+            resumen.put("promedioEgresos", cantEgresos > 0 ? totalEgresos / cantEgresos : 0);
+
+            resumen.put("pagosPrestamo", totalesPorTipo.getOrDefault(3, 0.0));
+            resumen.put("transferenciasDebito", totalesPorTipo.getOrDefault(4, 0.0));
+            resumen.put("transferenciasCredito", totalesPorTipo.getOrDefault(5, 0.0));
+            resumen.put("prestamosOtorgados", totalesPorTipo.getOrDefault(2, 0.0));
+            
+            System.out.println("Totales finales:");
+            System.out.println("Total ingresos: " + totalIngresos);
+            System.out.println("Total egresos: " + totalEgresos);
+            System.out.println("Promedio ingresos: " + (cantIngresos > 0 ? totalIngresos / cantIngresos : 0));
+            System.out.println("Promedio egresos: " + (cantEgresos > 0 ? totalEgresos / cantEgresos : 0));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resumen;
+    }
 }

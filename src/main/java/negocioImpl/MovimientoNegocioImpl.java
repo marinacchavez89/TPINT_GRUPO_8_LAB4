@@ -1,6 +1,7 @@
 package negocioImpl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Date;
 
 import dao.MovimientoDAO;
@@ -31,4 +32,12 @@ public class MovimientoNegocioImpl implements MovimientoNegocio {
 	public List<Movimiento> obtenerMovimientosXFecha(int nroCuenta, Date fechaDesde, Date fechaHasta) {
 		return movimientoDAO.obtenerMovimientosXFecha(nroCuenta, fechaDesde, fechaHasta);
 	}
+	
+	//reportes
+
+	    @Override
+	    public Map<String, Double> obtenerResumenIngresosEgresos(Date desde, Date hasta) {
+	        return movimientoDAO.obtenerResumenIngresosEgresos(desde, hasta);
+	    }
+	
 }
