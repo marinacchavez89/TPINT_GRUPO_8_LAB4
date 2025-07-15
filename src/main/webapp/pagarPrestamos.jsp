@@ -42,7 +42,7 @@
                     for (Cuota c : cuotas) {
                 %>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Cuota #<%= c.getNumeroCuota() %> - Monto: $<%= c.getMonto() %>
+                    Cuota #<%= c.getNumeroCuota() %> - Monto: $<%= String.format("%,.2f", c.getMonto()) %>
                     <button type="submit" name="idCuota" value="<%= c.getIdCuota() %>" class="btn btn-primary btn-sm">Pagar</button>
                 </li>
                 <%   }

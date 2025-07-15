@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.PrestamoDAO;
+import entidades.Cliente;
 import entidades.Prestamo;
 import dominio.Conexion;
 
@@ -99,32 +100,39 @@ public class PrestamoDAOImpl implements PrestamoDAO {
 	@Override
 	public List<Prestamo> listarPendientes(){
 		List<Prestamo> lista = new ArrayList<>();
-		String sql = "SELECT * FROM prestamo WHERE estado = 1 ORDER BY fecha_alta";
+		String sql = "SELECT p.*, c.dni FROM prestamo p INNER JOIN cliente c ON p.id_cliente = c.id_cliente WHERE p.estado = 1 ORDER BY p.fecha_alta";
 		
         Connection conn = null;
         PreparedStatement stmt=null;
 		ResultSet rs = null;
-		try {
-			conn = Conexion.getSQLConexion();
-			stmt = conn.prepareStatement(sql);
-			rs = stmt.executeQuery();
-			while(rs.next())
-			{
-				Prestamo prestamo = new Prestamo();
-                prestamo.setIdPrestamo(rs.getInt("id_prestamo"));
-                prestamo.setIdCliente(rs.getInt("id_cliente"));
-                prestamo.setNroCuenta(rs.getInt("nro_cuenta"));
-                prestamo.setFechaAlta(rs.getDate("fecha_alta"));
-                prestamo.setImportePedido(rs.getDouble("importe_pedido"));
-                prestamo.setPlazoPago(rs.getInt("plazo_pago"));
-                prestamo.setImporteAPagar(rs.getDouble("importe_a_pagar"));
-                prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
-                prestamo.setEstado(rs.getInt("estado"));
-                lista.add(prestamo);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		 try {
+		        conn = Conexion.getSQLConexion();
+		        stmt = conn.prepareStatement(sql);
+		        rs = stmt.executeQuery();
+		        while (rs.next()) {
+		            Prestamo prestamo = new Prestamo();
+		            prestamo.setIdPrestamo(rs.getInt("id_prestamo"));
+		            prestamo.setIdCliente(rs.getInt("id_cliente"));
+		            prestamo.setNroCuenta(rs.getInt("nro_cuenta"));
+		            prestamo.setFechaAlta(rs.getDate("fecha_alta"));
+		            prestamo.setImportePedido(rs.getDouble("importe_pedido"));
+		            prestamo.setPlazoPago(rs.getInt("plazo_pago"));
+		            prestamo.setImporteAPagar(rs.getDouble("importe_a_pagar"));
+		            prestamo.setCantidadCuotas(rs.getInt("cantidad_cuotas"));
+		            prestamo.setEstado(rs.getInt("estado"));
+
+		            // Cargar cliente
+		            Cliente cliente = new Cliente();
+		            cliente.setIdCliente(rs.getInt("id_cliente")); // opcional
+		            cliente.setDni(rs.getString("dni"));
+
+		            prestamo.setCliente(cliente); // asociar cliente al préstamo
+
+		            lista.add(prestamo);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
 		
 		return lista;
 	}

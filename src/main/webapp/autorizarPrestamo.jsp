@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="validarSesion.jsp" %>
 <%@ page import="java.util.List, entidades.Prestamo, java.text.SimpleDateFormat, negocio.PrestamoNegocio" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +33,8 @@
   %>
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title">Cliente ID: <%= p.getIdCliente() %></h5>
+        <!-- <h5 class="card-title">Cliente ID: <%= p.getIdCliente() %></h5>  -->
+        <h5 class="card-title">Cliente DNI: <%= p.getCliente().getDni() %></h5>
         <p class="card-text"><strong>Fecha de solicitud:</strong><%= ((p.getFechaAlta() != null) ? sdf.format(p.getFechaAlta()) :"Sin fecha")%></p>
         <p class="card-text"><strong>Monto solicitado:</strong> $<%= p.getImportePedido() %></p>
         <p class="card-text"><strong>Plazo:</strong> <%= p.getCantidadCuotas() %> cuotas</p>

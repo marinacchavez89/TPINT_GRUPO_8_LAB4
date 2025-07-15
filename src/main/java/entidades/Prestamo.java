@@ -13,6 +13,7 @@ public class Prestamo {
     private double importeAPagar;
     private int cantidadCuotas;
     private int estado;
+    private Cliente cliente;
 
     public  Prestamo() {}
     
@@ -103,6 +104,14 @@ public class Prestamo {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+    
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
 

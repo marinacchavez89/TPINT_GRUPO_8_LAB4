@@ -67,8 +67,7 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		movimiento.setCuenta(p.getNroCuenta());
 		movimiento.setDetalle("Deposito prestamo " + idPrestamo);
 		movimiento.setImporte((float)p.getImportePedido());
-		movimiento.setTipoMovimiento(new TipoMovimiento(2, "Alta de Prestamo"));//
-		movDao.agregarMovimiento(movimiento);
+		movimiento.setTipoMovimiento(new TipoMovimiento(2, "Alta de Prestamo"));
 		if(!movDao.agregarMovimiento(movimiento)) return false;
 		
 		

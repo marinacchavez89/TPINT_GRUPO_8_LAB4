@@ -1,5 +1,6 @@
 package entidades;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Cuota {
