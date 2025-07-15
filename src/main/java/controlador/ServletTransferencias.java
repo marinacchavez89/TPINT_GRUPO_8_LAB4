@@ -124,6 +124,27 @@ public class ServletTransferencias extends HttpServlet {
 	            response.sendRedirect("ServletTransferencias");
 	            return;
 	        }
+	        
+	        // Validamos que no se pueda transferir a una misma cuenta
+	        if (cuentaOrigenObj.getCBU().equals(cbuDestino)) {
+	            session.setAttribute("mensajeError", "No puede transferir a la misma cuenta.");
+	            response.sendRedirect("ServletTransferencias");
+	            return;
+	        }
+	        
+	        // Validamos que el cliente sea el tt de la cuenta
+	        if (cuentaOrigenObj.getIdCliente() != cliente.getIdCliente()) {
+	            session.setAttribute("mensajeError", "No puede transferir desde una cuenta que no le pertenece.");
+	            response.sendRedirect("ServletTransferencias");
+	            return;
+	        }
+	        
+	        // Valisamos que el saldo no sea menor al importe que transferiremos
+	        if (cuentaOrigenObj.getSaldo() < importe) {
+	            session.setAttribute("mensajeError", "Saldo insuficiente para realizar la transferencia.");
+	            response.sendRedirect("ServletTransferencias");
+	            return;
+	        }
 
 	        Transferencia transferencia = new Transferencia();
 	        transferencia.setNroCuentaOrigen(cuentaOrigen);

@@ -43,7 +43,7 @@ public class ServletCuenta extends HttpServlet {
 		        int dni = Integer.parseInt(dniCliente);
 		        if (dni <= 0) {
 		            dniValido = false;
-		        } else {
+		        } else {		        	
 		            idCliente = clienteNegocio.obtenerIdXDni(String.valueOf(dni));
 		            if (idCliente == 0) {
 		                dniValido = false;
@@ -116,7 +116,7 @@ public class ServletCuenta extends HttpServlet {
 
 		ClienteNegocio clienteNegocio = new ClienteNegocioImpl();
 		String dni = request.getParameter("dniCliente");
-
+		
 		int idCliente = clienteNegocio.obtenerIdXDni(dni);
 		if (idCliente == 0) {
 		    session.setAttribute("confirmacionMensaje", "DNI no encontrado en el sistema.");

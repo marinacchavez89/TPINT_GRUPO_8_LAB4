@@ -192,7 +192,7 @@
 		  <option value="">Seleccione género</option>
 		  <option value="F">F</option>
 		  <option value="M">M</option>
-		  <option value="Otro">O</option>
+		  <option value="O">O</option>
 		</select>
       </div>
       <div class="mb-3">
@@ -306,7 +306,7 @@
 		  <option value="">Seleccione género</option>
 		  <option value="F">F</option>
 		  <option value="M">M</option>
-		  <option value="Otro">O</option>
+		  <option value="O">O</option>
 		</select>
       </div>
      <div class="mb-3">
@@ -383,7 +383,7 @@
 	    form.querySelector('input[name="cuil"]').value = datos.cuil;
 	    form.querySelector('input[name="nombre"]').value = datos.nombre;
 	    form.querySelector('input[name="apellido"]').value = datos.apellido;
-	    form.querySelector('input[name="sexo"]').value = datos.sexo;
+	    form.querySelector('select[name="sexo"]').value = datos.sexo;
 	    form.querySelector('select[name="nacionalidad"]').value = datos.nacionalidad; // Es un select, pero se setea directo si la opción ya existe
 	    form.querySelector('input[name="fechaNacimiento"]').value = datos.fecha;
 
