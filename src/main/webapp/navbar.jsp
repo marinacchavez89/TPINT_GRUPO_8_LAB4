@@ -22,7 +22,7 @@
                     <a class="nav-link" href="perfilCliente.jsp">Perfil</a>
                 </li>
                  <li class="nav-item">
-                    <a class="nav-link" href="ServletListarPrestamos">Prestamos</a>
+                    <a class="nav-link" href="gestionPrestamos.jsp">Prestamos</a>
                 </li>               
                	<% 
         			if (session.getAttribute("usuarioLogueado") != null) {
