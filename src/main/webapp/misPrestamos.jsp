@@ -29,6 +29,19 @@
 
 <h1 class="text-center my-4">Mis Préstamos</h1>
 <div class="tabla-contenedor">
+
+	<%
+	String mensajeError = (String) session.getAttribute("mensajeError");
+	if(mensajeError != null) {
+	%>
+		<div class="alert alert-danger text-center"> 
+		<%= mensajeError %>
+		</div>
+<%
+	session.removeAttribute("mensajeError");
+	}
+%>
+
     <table id="tablaMisPrestamos" class="tabla">
       <thead>
         <tr>

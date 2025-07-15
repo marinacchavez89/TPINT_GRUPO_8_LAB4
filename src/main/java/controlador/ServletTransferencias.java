@@ -4,6 +4,7 @@ import entidades.*;
 import negocio.*;
 import negocioImpl.*;
 import excepciones.SaldoInsuficienteException;
+import excepciones.SinCuentasException;
 
 import java.util.List;
 import java.io.IOException;
@@ -58,13 +59,23 @@ public class ServletTransferencias extends HttpServlet {
 	    
 	    //cargo cuentas
 	    int idCliente = cliente.getIdCliente();
-	    System.out.println("Cliente recuperado: " + cliente.getIdCliente());
+	    System.out.println("Cliente recuperado: " + cliente.getIdCliente());	    
 	    
-	    List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(idCliente);
-	    request.setAttribute("cuentasDelCliente", cuentas);
-
-
-	    request.getRequestDispatcher("transferencias.jsp").forward(request, response);	
+	    try {
+	    	List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(idCliente);
+	    	if(cuentas == null || cuentas.isEmpty()) {
+	    		throw new SinCuentasException();
+		    }	    	
+	    	request.setAttribute("cuentasDelCliente", cuentas);
+	 	    request.getRequestDispatcher("transferencias.jsp").forward(request, response);	
+	    }
+	    catch (Exception e) {
+	    	session.setAttribute("mensajeErrorSinCuentas", e.getMessage());
+			response.sendRedirect("transferencias.jsp");
+	    }
+	    
+	    
+	   
 		
 	}
 

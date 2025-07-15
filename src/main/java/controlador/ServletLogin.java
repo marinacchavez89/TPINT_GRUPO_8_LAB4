@@ -52,7 +52,7 @@ public class ServletLogin extends HttpServlet {
                 response.sendRedirect("inicioCliente.jsp");
             }
         } else {
-            request.setAttribute("mensajeError", "Usuario o contraseña incorrectos, o usuario inactivo.");
+            request.setAttribute("mensaje", "Usuario o contraseña incorrectos.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         

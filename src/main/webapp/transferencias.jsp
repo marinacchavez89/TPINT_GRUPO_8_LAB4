@@ -23,6 +23,18 @@
 <jsp:include page="bienvenidaUsuario.jsp"/>
 
 <%
+	String mensajeErrorSinCuentas = (String) session.getAttribute("mensajeErrorSinCuentas");
+	if(mensajeErrorSinCuentas != null) {
+	%>
+		<div class="alert alert-danger text-center"> 
+		<%= mensajeErrorSinCuentas %>
+		</div>
+<%
+	session.removeAttribute("mensajeErrorSinCuentas");
+	}
+%>
+
+<%
     String mensajeExito = (String) request.getAttribute("mensajeExito");
     String mensajeError = (String) request.getAttribute("mensajeError");
 %>

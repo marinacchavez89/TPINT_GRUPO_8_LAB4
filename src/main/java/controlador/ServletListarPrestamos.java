@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import entidades.Cliente;
 import entidades.Prestamo;
+import excepciones.SinCuentasException;
+import excepciones.SinPrestamosException;
 import negocio.PrestamoNegocio;
 import negocioImpl.PrestamoNegocioImpl;
 
@@ -38,11 +40,20 @@ public class ServletListarPrestamos extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		Cliente cliente = (Cliente)session.getAttribute("clienteLogueado");
+		
+		
 		List<Prestamo> listaMisPrestamos = prestamoNegocio.listarPrestamosPorCliente(cliente.getIdCliente());
 		
-		request.setAttribute("misPrestamos", listaMisPrestamos);
-		
-		request.getRequestDispatcher("misPrestamos.jsp").forward(request, response);
+		try {
+		    if (listaMisPrestamos == null || listaMisPrestamos.isEmpty()) {
+		        throw new SinPrestamosException();
+		    }
+		    request.setAttribute("misPrestamos", listaMisPrestamos);
+		    request.getRequestDispatcher("misPrestamos.jsp").forward(request, response);
+		} catch (SinPrestamosException e) {
+			session.setAttribute("mensajeError", e.getMessage());
+			response.sendRedirect("misPrestamos.jsp");
+		}
 	}
 
 	/**
