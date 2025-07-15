@@ -85,7 +85,7 @@ public class TransferenciaNegocioImpl implements TransferenciaNegocio {
 	    movCredito.setDetalle("Transferencia desde CBU " + cuentaOrigen.getCBU());
 	    movCredito.setImporte(importe); // positivo
 	    TipoMovimiento tmCredito = new TipoMovimiento();
-	    tmCredito.setIdTipoMovimiento(3);
+	    tmCredito.setIdTipoMovimiento(4);
 	    movCredito.setTipoMovimiento(tmCredito);
 	    movimientoDAO.agregarMovimiento(movCredito);
              

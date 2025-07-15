@@ -139,7 +139,7 @@ public class ServletTransferencias extends HttpServlet {
 	            return;
 	        }
 	        
-	        // Valisamos que el saldo no sea menor al importe que transferiremos
+	        // Validamos que el saldo no sea menor al importe que transferiremos
 	        if (cuentaOrigenObj.getSaldo() < importe) {
 	            session.setAttribute("mensajeError", "Saldo insuficiente para realizar la transferencia.");
 	            response.sendRedirect("ServletTransferencias");

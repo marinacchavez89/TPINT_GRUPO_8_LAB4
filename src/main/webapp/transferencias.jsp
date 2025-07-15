@@ -104,7 +104,7 @@
         const monto = parseFloat(document.getElementById("monto").value);
         const cuenta = document.getElementById("cuentaOrigen").value;
 
-        const cbuValido = cbu !== "" && /^\d{22}$/.test(cbu);
+        const cbuValido = cbu !== "" && /^\d+$/.test(cbu);
         const montoValido = !isNaN(monto) && monto > 0;
         const cuentaSeleccionada = cuenta !== "";
 
