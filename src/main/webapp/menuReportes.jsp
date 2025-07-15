@@ -24,7 +24,7 @@
    <div class="card shadow-lg p-4" style="width: 100%; max-width: 600px;">
       <h3 class="text-center mb-4">Seleccione un Reporte</h3>
       <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center mb-2">
+        <a href="ServletReporteIngresosEgresos" class="list-group-item list-group-item-action d-flex align-items-center mb-2">
           <i class="bi bi-graph-up me-2 text-primary"></i> Reporte de Ingresos vs. Egresos
         </a>
         <a href="ServletReporteCuentas" class="list-group-item list-group-item-action d-flex align-items-center mb-2">
