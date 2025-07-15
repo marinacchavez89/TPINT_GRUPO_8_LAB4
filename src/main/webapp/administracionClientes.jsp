@@ -28,7 +28,7 @@
         %>
             Swal.fire({
                 icon: '<%= tipo %>', // success, error, warning, info, question
-                title: 'Operación Exitosa',
+                title:'<%= tipo.equals("success") ? "Operación Exitosa" : tipo.equals("error") ? "Error" : tipo.equals("warning") ? "Advertencia" : "Información" %>',
                 text: '<%= mensaje %>',
                 showConfirmButton: false,
                 timer: 2000 // El cartel se cierra automáticamente después de 2 segundos

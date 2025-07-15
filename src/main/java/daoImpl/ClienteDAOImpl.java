@@ -350,4 +350,54 @@ public class ClienteDAOImpl implements ClienteDAO {
 
 	    return existe;
 	}
+
+	@Override
+	public boolean existeDni(String dni, int idClienteExcluir) {
+		Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    boolean existe = false;
+
+	    try {
+	        conn = Conexion.getSQLConexion();
+	        String query = "SELECT COUNT(*) FROM cliente WHERE dni = ? AND id_cliente != ?";
+	        stmt = conn.prepareStatement(query);
+	        stmt.setString(1, dni);
+	        stmt.setInt(2, idClienteExcluir);
+	        rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            existe = rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } 
+
+	    return existe;
+	}
+
+	@Override
+	public boolean existeCuil(String cuil, int idClienteExcluir) {
+		Connection conn = null;
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    boolean existe = false;
+
+	    try {
+	        conn = Conexion.getSQLConexion();
+	        String query = "SELECT COUNT(*) FROM cliente WHERE cuil = ? AND id_cliente != ?";
+	        stmt = conn.prepareStatement(query);
+	        stmt.setString(1, cuil);
+	        stmt.setInt(2, idClienteExcluir);
+	        rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            existe = rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return existe;
+	}
  }

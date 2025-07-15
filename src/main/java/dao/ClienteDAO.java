@@ -12,4 +12,7 @@ public interface ClienteDAO {
 	public List<Cliente> listar();
 	public boolean setearUsuarioEnCliente(int idCliente, int idUsuario);
 	public boolean existeClientePorDniYCorreo(String dni, String correo);
+	public boolean existeDni(String dni, int idClienteExcluir);
+	public boolean existeCuil(String cuil, int idClienteExcluir);
+
 }

@@ -152,7 +152,19 @@ public class ServletCliente extends HttpServlet {
         String mensajeExito = "";
 
         switch (accion) {
-            case "Agregar":
+            case "Agregar"://validacion del dni y del cuil
+            	 if (clienteNegocio.existeDni(cliente.getDni(), 0)) {
+            		 session.setAttribute("confirmacionMensaje", "El DNI ingresado ya está registrado.");
+            		    session.setAttribute("confirmacionTipo", "error");
+            		    response.sendRedirect("ServletCliente");
+            		    return;
+                 }
+                 if (clienteNegocio.existeCuil(cliente.getCuil(), 0)) {
+                	 session.setAttribute("confirmacionMensaje", "El CUIL ingresado ya está registrado.");
+                	 session.setAttribute("confirmacionTipo", "error");
+                	 response.sendRedirect("ServletCliente");
+                	 return;
+                 }
             	int idDireccionNueva = direccionNegocio.agregarDireccion(direccion);
                 if (idDireccionNueva > 0) {
                     direccion.setIdDireccion(idDireccionNueva);
@@ -195,6 +207,16 @@ public class ServletCliente extends HttpServlet {
                 }
                 break;
             case "Modificar":
+            	 if (clienteNegocio.existeDni(cliente.getDni(), cliente.getIdCliente())) {
+                     mensajeExito = "El DNI ya está registrado para otro cliente.";
+                     resultado = false;
+                     break;
+                 }
+                 if (clienteNegocio.existeCuil(cliente.getCuil(), cliente.getIdCliente())) {
+                     mensajeExito = "El CUIL ya está registrado para otro cliente.";
+                     resultado = false;
+                     break;
+                 }
             	boolean modDireccion = direccionNegocio.modificarDireccion(direccion);
 
                 // 2. Modificar el Cliente (solo si la dirección se actualizó correctamente)

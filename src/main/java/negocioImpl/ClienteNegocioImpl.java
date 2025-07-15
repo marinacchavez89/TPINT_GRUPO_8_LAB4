@@ -49,4 +49,16 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 	public boolean existeClientePorDniYCorreo(String dni, String correo) {
 		 return clienteDAO.existeClientePorDniYCorreo(dni, correo);
 	}
+
+	@Override
+	public boolean existeDni(String dni, int idClienteExcluir) {
+		
+	    return clienteDAO.existeDni(dni, idClienteExcluir);
+	}
+
+	@Override
+	public boolean existeCuil(String cuil, int idClienteExcluir) {
+		
+	    return clienteDAO.existeCuil(cuil, idClienteExcluir);
+	}
 }
