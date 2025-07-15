@@ -30,6 +30,7 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css" rel="stylesheet">
 <link href="css/estilos.css" rel="stylesheet">
 </head>
 <body>
@@ -101,17 +102,19 @@
     </div>
   </form>
 
+  <div class="text-center mt-3">
+  <a href="recuperarClaveCliente.jsp" class="btn btn-primary">
+  <i class= "bi bi-shield-lock"></i> Cambiar contraseña</a> 
+  </div>
   
   <div class="text-center mt-4">
     <form action="inicioCliente.jsp" method="get">
       <input type="submit" class="btn-volver" value="Volver">
     </form>
-  </div>  
-  <div class="text-center mt-3"><a href="recuperarClaveCliente.jsp">Cambiar contraseña</a> </div>
+  </div> 
+  
  </div>
 </main>
-
-
 
 <jsp:include page="footer.jsp" />
 
