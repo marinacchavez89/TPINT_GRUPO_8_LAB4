@@ -32,7 +32,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             statement.setString(1, cliente.getDni());
             statement.setString(2, cliente.getCuil());
             statement.setString(3, cliente.getNombre());
-            statement.setString(4, cliente.getApellido());
+            statement.setString(4, cliente.getApellido());            
             statement.setString(5, String.valueOf(cliente.getSexo()));
             statement.setInt(6, cliente.getNacionalidad().getIdNacionalidad());
             statement.setDate(7, new java.sql.Date(cliente.getFechaNacimiento().getTime()));

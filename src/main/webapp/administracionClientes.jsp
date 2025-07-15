@@ -138,16 +138,21 @@
         <input type="text" name="id" class="form-control" placeholder="ID" readonly>
       </div>
       <div class="mb-3">
-        <input type="text" name="dni" class="form-control" placeholder="DNI" required>
+        <input type="text" name="dni" class="form-control" placeholder="DNI" required
+        pattern="^\d{7,10}$" inputmode="numeric" title="Ingrese solo números, entre 7 y 10 dígitos.">
       </div>
       <div class="mb-3">
-        <input type="text" name="cuil" class="form-control" placeholder="CUIL" required>
+        <input type="text" name="cuil" class="form-control" placeholder="CUIL/CUIT" required
+        pattern="^\d{2}-\d{8}-\d{1}$"
+        title="Formato esperado: 11-11111111-1 (dos dígitos, guión, ocho dígitos, guión, un dígito)">
       </div>
       <div class="mb-3">
-        <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
+        <input type="text" name="nombre" class="form-control" placeholder="Nombre" required
+        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Ingrese solo letras (sin números ni símbolos).">
       </div>
       <div class="mb-3">
-        <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
+        <input type="text" name="apellido" class="form-control" placeholder="Apellido" required
+        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Ingrese solo letras (sin números ni símbolos).">
       </div>
       <div class="mb-3">
 	  <select name="paisResidencia" class="form-select")">
@@ -182,7 +187,13 @@
     <!-- Columna derecha -->
     <div class="col-md-6">
       <div class="mb-3">
-        <input type="text" name="sexo" class="form-control" placeholder="Sexo">
+        <!-- <input type="text" name="sexo" class="form-control" placeholder="Sexo"> -->
+        <select name="sexo" class="form-select" required>
+		  <option value="">Seleccione género</option>
+		  <option value="F">F</option>
+		  <option value="M">M</option>
+		  <option value="Otro">O</option>
+		</select>
       </div>
       <div class="mb-3">
 	  <select name="nacionalidad" class="form-select" required>
@@ -210,16 +221,19 @@
 		  <input type="text" name="calle" class="form-control" placeholder="Calle">
 		</div>
 		<div class="mb-3">
-		  <input type="text" name="numero" class="form-control" placeholder="Número">
+		  <input type="text" name="numero" class="form-control" placeholder="Número"
+		  pattern="^\d{1,6}$" inputmode="numeric" title="Ingrese solo números (hasta 6 dígitos).">
 		</div>
 		<div class="mb-3">
-		  <input type="text" name="codigoPostal" class="form-control" placeholder="Código Postal">
+		  <input type="text" name="codigoPostal" class="form-control" placeholder="Código Postal"
+		  pattern="^\d{4,8}$" inputmode="numeric" title="Ingrese solo números, entre 4 y 8 dígitos.">
 		</div>
       <div class="mb-3">
         <input type="email" name="email" class="form-control" placeholder="Correo Electrónico">
       </div>
       <div class="mb-3">
-        <input type="tel" name="telefono" class="form-control" placeholder="Teléfono">
+        <input type="tel" name="telefono" class="form-control" placeholder="Teléfono"
+        pattern="^\d{6,15}$" inputmode="numeric" title="Ingrese solo números, sin guiones ni espacios.">
       </div>
     </div>
   </div>
@@ -241,16 +255,21 @@
     <!-- Columna izquierda -->
     <div class="col-md-6">
       <div class="mb-3">
-        <input type="text" name="dni" class="form-control" placeholder="DNI" required>
+        <input type="text" name="dni" class="form-control" placeholder="DNI" required
+        pattern="^\d{7,10}$" inputmode="numeric" title="Ingrese solo números, entre 7 y 10 dígitos.">
       </div>
       <div class="mb-3">
-        <input type="text" name="cuil" class="form-control" placeholder="CUIL" required>
+        <input type="text" name="cuil" class="form-control" placeholder="CUIL/CUIT" required
+        pattern="^\d{2}-\d{8}-\d{1}$"
+        title="Formato esperado: 11-11111111-1 (dos dígitos, guión, ocho dígitos, guión, un dígito)">
       </div>
       <div class="mb-3">
-        <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
+        <input type="text" name="nombre" class="form-control" placeholder="Nombre" required
+        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Ingrese solo letras (sin números ni símbolos).">
       </div>
       <div class="mb-3">
-        <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
+        <input type="text" name="apellido" class="form-control" placeholder="Apellido" required
+        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$" title="Ingrese solo letras (sin números ni símbolos).">
       </div>
       <div class="mb-3">
 	  <select name="paisResidencia" class="form-select">
@@ -282,7 +301,13 @@
     <!-- Columna derecha -->
     <div class="col-md-6">
       <div class="mb-3">
-        <input type="text" name="sexo" class="form-control" placeholder="Sexo">
+        <!-- <input type="text" name="sexo" class="form-control" placeholder="Sexo"> -->
+        <select name="sexo" class="form-select" required>
+		  <option value="">Seleccione género</option>
+		  <option value="F">F</option>
+		  <option value="M">M</option>
+		  <option value="Otro">O</option>
+		</select>
       </div>
      <div class="mb-3">
 	  <select name="nacionalidad" class="form-select" required>
@@ -309,16 +334,19 @@
 	  	<input type="text" name="calle" class="form-control" placeholder="Calle" required>
 	  </div>
 	  <div class="mb-3">
-	  	<input type="text" name="numero" class="form-control" placeholder="Número" required>
+	  	<input type="text" name="numero" class="form-control" placeholder="Número" required
+	  	pattern="^\d{1,6}$" inputmode="numeric" title="Ingrese solo números (hasta 6 dígitos).">
 	  </div>
 	  <div class="mb-3">
-	  	<input type="text" name="codigoPostal" class="form-control" placeholder="Código Postal" required>
+	  	<input type="text" name="codigoPostal" class="form-control" placeholder="Código Postal" required
+	  	pattern="^\d{4,8}$" inputmode="numeric" title="Ingrese solo números, entre 4 y 8 dígitos.">
 	  </div>
       <div class="mb-3">
         <input type="email" name="email" class="form-control" placeholder="Correo Electrónico">
       </div>
       <div class="mb-3">
-        <input type="tel" name="telefono" class="form-control" placeholder="Teléfono">
+        <input type="tel" name="telefono" class="form-control" placeholder="Teléfono"
+        pattern="^\d{6,15}$" inputmode="numeric" title="Ingrese solo números, sin guiones ni espacios.">
       </div>
     </div>
   </div>
