@@ -47,8 +47,11 @@ public class ServletListarPrestamosAutorizados extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
-
+        try {
         List<Cuenta> cuentas = cuentaNegocio.listarCuentasFiltradas(true , cliente.getIdCliente());
+        if (cuentas == null || cuentas.isEmpty()) {
+            throw new excepciones.SinCuentasException();
+        }
         request.setAttribute("cuentasDelCliente", cuentas);
 
     String cuentaParam = request.getParameter("cuentaSeleccionada");
@@ -78,6 +81,10 @@ public class ServletListarPrestamosAutorizados extends HttpServlet {
     }
     request.setAttribute("prestamosAutorizados", autorizados);
     request.getRequestDispatcher("listarPrestamosAutorizados.jsp").forward(request, response);
+        } catch (excepciones.SinCuentasException ex) {
+        	session.setAttribute("mensajeError", ex.getMessage());
+            response.sendRedirect("listarPrestamosAutorizados.jsp");
+        }
 	}
 
 	}

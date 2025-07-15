@@ -31,16 +31,26 @@
 <div class="perfil-container">
  <div class="perfil-card">
   <h2 class="text-center mb-4">Solicitar Préstamo</h2>
-  
+  <%
+	String mensajeError = (String) session.getAttribute("mensajeError");
+	if(mensajeError != null) {
+	%>
+		<div class="alert alert-danger text-center"> 
+		<%= mensajeError %>
+		</div>
+<%
+	session.removeAttribute("mensajeError");
+	}
+%>
   <form action="ServletPrestamos" method="post" class="perfil-form" id="formPrestamo">
     <div class="row">
       <div class="mb-3">
         <label for="monto" class="form-label">Monto Solicitado</label>
-        <input type="number" name="monto" id="monto" class="form-control" required>
+        <input type="number" name="monto" id="monto" class="form-control" required min="1" step="1" pattern="\d+">
       </div>
        <div class="mb-3">
         <label for="cuotas" class="form-label">Cantidad de Cuotas</label>
-        <input type="number" name="cuotas" id="cuotas" class="form-control" required>
+        <input type="number" name="cuotas" id="cuotas" class="form-control" required min="1" step="1" pattern="\d+">
       </div>
       <div class="mb-3">
         <label for="cuenta" class="form-label">Cuenta de depósito</label>
@@ -82,6 +92,32 @@
       btnSolicitar.addEventListener("click", function (e) {
         e.preventDefault();
 
+        // Obtener valores de los campos
+        const monto = document.getElementById("monto").value.trim();
+        const cuotas = document.getElementById("cuotas").value.trim();
+        const cuenta = document.getElementById("cuenta").value;
+
+        // Validar que monto y cuotas sean números positivos
+        const montoValido = /^\d+$/.test(monto) && parseInt(monto) > 0;
+        const cuotasValidas = /^\d+$/.test(cuotas) && parseInt(cuotas) > 0;
+        const cuentaSeleccionada = cuenta !== "";
+
+        if (!montoValido || !cuotasValidas || !cuentaSeleccionada) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Campos inválidos',
+            html: `
+              <ul style="text-align: left;">
+                ${!montoValido ? "<li>El monto debe ser un número entero mayor a cero.</li>" : ""}
+                ${!cuotasValidas ? "<li>Las cuotas deben ser un número entero mayor a cero.</li>" : ""}
+                ${!cuentaSeleccionada ? "<li>Debe seleccionar una cuenta para el depósito.</li>" : ""}
+              </ul>
+            `
+          });
+          return;
+        }
+
+        // Si todo es válido, mostrar confirmación
         Swal.fire({
           title: '¿Deseas solicitar el préstamo?',
           text: "Una vez solicitado será procesado.",
@@ -104,11 +140,7 @@
               formPrestamo.submit();
             }, 2000);
           } else {
-            Swal.fire(
-              'Cancelado',
-              'La solicitud fue cancelada.',
-              'info'
-            );
+            Swal.fire('Cancelado', 'La solicitud fue cancelada.', 'info');
           }
         });
       });

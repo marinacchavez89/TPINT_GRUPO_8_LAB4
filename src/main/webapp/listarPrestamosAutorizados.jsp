@@ -18,6 +18,17 @@
         <div class="row mb-3">
             <div class="col text-center">
                 <h2>Préstamos Autorizados</h2>
+		    <%
+			String mensajeError = (String) session.getAttribute("mensajeError");
+			if(mensajeError != null) {
+			%>
+				<div class="alert alert-danger text-center"> 
+				<%= mensajeError %>
+				</div>
+			<%
+				session.removeAttribute("mensajeError");
+				}
+			%>
             </div>
         </div>
         <!-- Selección de Cuenta -->

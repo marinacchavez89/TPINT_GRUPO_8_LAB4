@@ -23,18 +23,6 @@
 <jsp:include page="bienvenidaUsuario.jsp"/>
 
 <%
-	String mensajeErrorSinCuentas = (String) session.getAttribute("mensajeErrorSinCuentas");
-	if(mensajeErrorSinCuentas != null) {
-	%>
-		<div class="alert alert-danger text-center"> 
-		<%= mensajeErrorSinCuentas %>
-		</div>
-<%
-	session.removeAttribute("mensajeErrorSinCuentas");
-	}
-%>
-
-<%
     String mensajeExito = (String) request.getAttribute("mensajeExito");
     String mensajeError = (String) request.getAttribute("mensajeError");
 %>
@@ -49,6 +37,17 @@
 
  <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="form-box p-4 shadow rounded">
+    <%
+	String mensajeErrorSinCuentas = (String) session.getAttribute("mensajeErrorSinCuentas");
+	if(mensajeErrorSinCuentas != null) {
+	%>
+		<div class="alert alert-danger text-center"> 
+		<%= mensajeErrorSinCuentas %>
+		</div>
+<%
+	session.removeAttribute("mensajeErrorSinCuentas");
+	}
+%>
       <h2 class="text-center mb-4">Transferencia</h2>
       <form id="formTransferencia" method="post" action= "ServletTransferencias">
         <div class="mb-3">
@@ -92,7 +91,7 @@
     </div>
   </div>
   
-  <script>
+<script>
   document.addEventListener("DOMContentLoaded", function () {
     const btnTransferir = document.getElementById("btnTransferir");
     const formTransferencia = document.getElementById("formTransferencia");
@@ -100,6 +99,29 @@
     if (btnTransferir && formTransferencia) {
       btnTransferir.addEventListener("click", function (e) {
         e.preventDefault();
+
+        const cbu = document.getElementById("cbuDestino").value.trim();
+        const monto = parseFloat(document.getElementById("monto").value);
+        const cuenta = document.getElementById("cuentaOrigen").value;
+
+        const cbuValido = cbu !== "" && /^\d{22}$/.test(cbu);
+        const montoValido = !isNaN(monto) && monto > 0;
+        const cuentaSeleccionada = cuenta !== "";
+
+        if (!cbuValido || !montoValido || !cuentaSeleccionada) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Campos inválidos',
+            html: `
+              <ul style="text-align: left;">
+                ${!cbuValido ? "<li>El CBU debe ser dígitos numéricos.</li>" : ""}
+                ${!montoValido ? "<li>El monto debe ser un número mayor a cero.</li>" : ""}
+                ${!cuentaSeleccionada ? "<li>Debe seleccionar una cuenta de origen.</li>" : ""}
+              </ul>
+            `
+          });
+          return;
+        }
 
         Swal.fire({
           title: '¿Deseas realizar la transferencia?',

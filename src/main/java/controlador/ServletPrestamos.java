@@ -3,6 +3,7 @@ package controlador;
 import entidades.Cliente;
 import entidades.Cuenta;
 import entidades.Prestamo;
+import excepciones.SinCuentasException;
 import negocio.CuentaNegocio;
 import negocio.PrestamoNegocio;
 import negocioImpl.CuentaNegocioImpl;
@@ -29,10 +30,19 @@ public class ServletPrestamos extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-        List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(cliente.getIdCliente());
-        request.setAttribute("cuentasDelCliente", cuentas);
-        request.getRequestDispatcher("solicitudPrestamo.jsp").forward(request, response);
-
+        
+        try {
+        	List<Cuenta> cuentas = cuentaNegocio.obtenerXIdCliente(cliente.getIdCliente());
+        	if (cuentas == null || cuentas.isEmpty()){
+        		throw new SinCuentasException();
+        	}
+        	  request.setAttribute("cuentasDelCliente", cuentas);
+              request.getRequestDispatcher("solicitudPrestamo.jsp").forward(request, response);
+        }
+        catch (SinCuentasException e) {
+        	session.setAttribute("mensajeError", e.getMessage());
+			response.sendRedirect("solicitudPrestamo.jsp");
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
