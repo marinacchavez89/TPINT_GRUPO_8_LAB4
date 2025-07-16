@@ -33,7 +33,8 @@ public class ServletLogin extends HttpServlet {
     	String nombreUsuario = request.getParameter("usuario");
         String contrasena = request.getParameter("clave");
         
-        Usuario usuarioLogueado = usuarioNegocio.autenticarUsuario(nombreUsuario, contrasena);
+        Usuario usuarioLogueado = usuarioNegocio.autenticarUsuario(nombreUsuario, contrasena);     
+       
 
         if (usuarioLogueado != null && usuarioLogueado.getEstado()) {
             HttpSession session = request.getSession();
@@ -42,9 +43,19 @@ public class ServletLogin extends HttpServlet {
         if (usuarioLogueado.getIdCliente() != null) {        
             Cliente cliente = clienteNegocio.obtenerClienteXId(usuarioLogueado.getIdCliente());
             if (cliente != null) {
+            	if(!cliente.isEstado()) {
+            		request.setAttribute("mensaje", "Cliente dado de baja o inexistente.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    return;
+            	}
                 session.setAttribute("clienteLogueado", cliente);
             }
-        }    
+            else if(cliente==null) {            	
+            		request.setAttribute("mensaje", "Cliente dado de baja o inexistente.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    return;
+            }
+        }
 
             if ("admin".equalsIgnoreCase(usuarioLogueado.getTipoUsuario())) {
                 response.sendRedirect("inicioAdmin.jsp");
