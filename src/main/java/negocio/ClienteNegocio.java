@@ -15,4 +15,7 @@ public interface ClienteNegocio {
 	
 	public boolean existeDni(String dni, int idClienteExcluir);
 	public boolean existeCuil(String cuil, int idClienteExcluir);
+	
+	public List<Cliente> listarInactivos();
+	public boolean activarCliente(int idCliente);
 }

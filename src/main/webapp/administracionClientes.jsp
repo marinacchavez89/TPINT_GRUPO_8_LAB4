@@ -51,7 +51,7 @@
 <form action="ServletCliente" method="post">
 <div class="tabla-contenedor">
  <table id="tablaClientes" class="tabla">
- 
+
 <thead>
     <tr>
       <th></th> <!-- columna vacía para el radio -->
@@ -119,6 +119,9 @@
 <div class="contenedor-botones">
   <!--<button type="submit" name="accion" value="Agregar"  class="btn btn-success btn-sm">Agregar</button>-->
   <button type="button" onclick="mostrarFormularioAgregar()" class="btn btn-success btn-sm">Agregar</button>  
+  <button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='ServletActivarClientes'">
+  Ver Clientes Inactivos
+  </button>
   <a href="inicioAdmin.jsp" class="btn btn-volver btn-sm">Volver</a>
 </div>
 </form>

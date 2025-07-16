@@ -61,4 +61,12 @@ public class ClienteNegocioImpl implements ClienteNegocio {
 		
 	    return clienteDAO.existeCuil(cuil, idClienteExcluir);
 	}
+	
+	public List<Cliente> listarInactivos() {
+	    return clienteDAO.listarInactivos();
+	}
+
+	public boolean activarCliente(int idCliente) {
+	    return clienteDAO.actualizarEstado(idCliente, true);
+	}
 }

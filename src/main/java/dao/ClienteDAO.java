@@ -14,5 +14,8 @@ public interface ClienteDAO {
 	public boolean existeClientePorDniYCorreo(String dni, String correo);
 	public boolean existeDni(String dni, int idClienteExcluir);
 	public boolean existeCuil(String cuil, int idClienteExcluir);
+	
+	public List<Cliente> listarInactivos();
+	public boolean actualizarEstado(int idCliente, boolean estado);
 
 }

@@ -408,4 +408,102 @@ public class ClienteDAOImpl implements ClienteDAO {
 
 	    return existe;
 	}
- }
+ 
+	@Override
+	public List<Cliente> listarInactivos() {
+	    List<Cliente> clientes = new ArrayList<>();
+
+	    PreparedStatement statement;
+	    ResultSet rs;
+	    Connection conn = Conexion.getSQLConexion();
+
+	    String sql = "SELECT "
+	            + "c.*, "
+	            + "n.desc_nacionalidad, "
+	            + "d.calle, d.numero, d.codigo_postal, "
+	            + "l.id_localidad, l.nombre_localidad, "
+	            + "p.id_provincia, p.nombre_pcia, "
+	            + "pr.id_pais_residencia, pr.desc_pais_residencia "
+	            + "FROM cliente c "
+	            + "INNER JOIN nacionalidad n ON c.id_nacionalidad = n.id_nacionalidad "
+	            + "INNER JOIN direccion d ON c.id_direccion = d.id_direccion "
+	            + "INNER JOIN localidad l ON d.id_localidad = l.id_localidad "
+	            + "INNER JOIN provincia p ON l.id_provincia = p.id_provincia "
+	            + "INNER JOIN pais_residencia pr ON p.id_pais_residencia = pr.id_pais_residencia "
+	            + "WHERE c.estado = 0"; // --> Lista los inactivos.
+
+	    try {
+	        statement = conn.prepareStatement(sql);
+	        rs = statement.executeQuery();
+
+	        while (rs.next()) {
+	            Cliente cliente = new Cliente();
+	            cliente.setIdCliente(rs.getInt("id_cliente"));
+	            cliente.setIdUsuario(rs.getInt("id_usuario"));
+	            cliente.setDni(rs.getString("dni"));
+	            cliente.setCuil(rs.getString("cuil"));
+	            cliente.setNombre(rs.getString("nombre"));
+	            cliente.setApellido(rs.getString("apellido"));
+	            cliente.setSexo(rs.getString("sexo").charAt(0));
+	            cliente.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+	            cliente.setCorreoElectronico(rs.getString("correo_electronico"));
+	            cliente.setTelefono(rs.getString("telefono"));
+	            cliente.setEstado(rs.getBoolean("estado"));
+
+	            Nacionalidad nacionalidad = new Nacionalidad();
+	            nacionalidad.setIdNacionalidad(rs.getInt("id_nacionalidad"));
+	            nacionalidad.setDescripcion(rs.getString("desc_nacionalidad"));
+	            cliente.setNacionalidad(nacionalidad);
+
+	            PaisResidencia paisResidencia = new PaisResidencia();
+	            paisResidencia.setIdPaisResidencia(rs.getInt("id_pais_residencia"));
+	            paisResidencia.setDescripcion(rs.getString("desc_pais_residencia"));
+
+	            Provincia provincia = new Provincia();
+	            provincia.setIdProvincia(rs.getInt("id_provincia"));
+	            provincia.setNombreProvincia(rs.getString("nombre_pcia"));
+	            provincia.setPaisResidencia(paisResidencia);
+
+	            Localidad localidad = new Localidad();
+	            localidad.setIdLocalidad(rs.getInt("id_localidad"));
+	            localidad.setNombreLocalidad(rs.getString("nombre_localidad"));
+	            localidad.setProvincia(provincia);
+
+	            Direccion direccion = new Direccion();
+	            direccion.setIdDireccion(rs.getInt("id_direccion"));
+	            direccion.setCalle(rs.getString("calle"));
+	            direccion.setNumero(rs.getString("numero"));
+	            direccion.setCodigoPostal(rs.getString("codigo_postal"));
+	            direccion.setLocalidad(localidad);
+
+	            cliente.setDireccion(direccion);
+
+	            clientes.add(cliente);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return clientes;
+	}
+
+	public boolean actualizarEstado(int idCliente, boolean estado) {
+	    String sql = "UPDATE cliente SET estado = ? WHERE id_cliente = ?";
+	    try (Connection conn = Conexion.getSQLConexion();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setBoolean(1, estado);
+	        ps.setInt(2, idCliente);
+	        int filas = ps.executeUpdate();
+	        conn.commit();
+	        return filas > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+	            Conexion.getSQLConexion().rollback();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	    return false;
+	}
+}
