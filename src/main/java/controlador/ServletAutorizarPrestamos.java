@@ -36,7 +36,7 @@ public class ServletAutorizarPrestamos extends HttpServlet {
 			throws ServletException, IOException {
 		List<Prestamo> listaPrestamosPendientes = prestamoNegocio.listarPrestamosPendientes();
 		request.setAttribute("prestamosPendientes", listaPrestamosPendientes);
-		
+		request.getSession().setAttribute("prestamosPendientes", listaPrestamosPendientes);
 		
 		request.getRequestDispatcher("autorizarPrestamo.jsp").forward(request, response);
 	}
@@ -58,6 +58,26 @@ try {
 	
 	if("autorizar".equals(accion)) {
 		Double importeAPagar = Double.parseDouble(impParam);
+		
+		List <Prestamo> listaPrestamosPendientes = (List<Prestamo>) request.getSession().getAttribute("prestamosPendientes");
+		Prestamo prestamo = null;
+		
+		if(listaPrestamosPendientes != null) {
+			for (Prestamo p: listaPrestamosPendientes) {
+				if(p.getIdPrestamo() == idPrestamo) {
+					prestamo = p;
+					break;
+				}
+			}
+			
+		}
+	
+		if (prestamo != null && importeAPagar < prestamo.getImportePedido() ) {
+			request.setAttribute("mensaje", "El importe autorizado no puede ser menor al solicitado ($" + prestamo.getImportePedido() + ").");
+			doGet(request, response); // volver a mostrar la vista
+			return;
+		}
+		
 		b = prestamoNegocio.autorizarPrestamo(idPrestamo, importeAPagar);
 		request.setAttribute("mensaje", b ? "Prestamo autorizado." : "error al autorizar el prestamo.");
 	
@@ -68,7 +88,8 @@ try {
 		
 	}
 } catch (Exception e) { // cambiar la excepcion y manejarla
-	// TODO: handle exception
+	e.printStackTrace();
+	request.setAttribute("mensaje", "Ocurrio un error procesando la solicitud.");
 }			
 			
 		}

@@ -42,11 +42,11 @@
         <div class="d-flex gap-2">
 
 
-	<form action="ServletAutorizarPrestamos" method="post" onsubmit="return validarImporte(this);">
+	<form action="ServletAutorizarPrestamos" method="post" onsubmit="return validarImporte(this, <%= p.getImportePedido() %>);">
 	<input type="hidden" name="accion" value="autorizar">
 	<input type="hidden" name="idPrestamo" value="<%= p.getIdPrestamo() %>">
 	<div class="d-flex flex-column flex-sm-row gap-2 align-items-start align-items-sm-center">
-	<input type="number" step="0.01" name="importeAPagar" class="form-control" placeholder="Importe a pagar" required>
+	<input type="number" step="0.01" name="importeAPagar" class="form-control" placeholder="Importe a pagar" min = "<%= p.getImportePedido() %>" required>
 	<button class="btn btn-success" type="submit">Autorizar</button>
 	</div>
 	</form>
