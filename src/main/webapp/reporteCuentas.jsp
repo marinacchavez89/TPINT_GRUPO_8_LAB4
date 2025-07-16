@@ -83,7 +83,7 @@
 <c:if test="${not empty stats}">
     <div class="card mt-4 mb-4 shadow-sm">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Resumen de cuentas nuevas</h5>
+            <h5 class="mb-0">Resumen de cuentas </h5>
         </div>
         <div class="card-body">
             <div class="row text-center">

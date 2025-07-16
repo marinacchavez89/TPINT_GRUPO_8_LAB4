@@ -156,8 +156,13 @@ public class PrestamoNegocioImpl implements PrestamoNegocio {
 		 
 		 return true;
 	 }
+
+	@Override
+	public boolean tienePrestamosActivosPorCuenta(int nroCuenta) {
+		return prestamoDao.tienePrestamosActivosPorCuenta(nroCuenta);
+
+	}
 	 
-	 //funcion usada para la seccion reportes obtenerreporteprestamo: 
 	
 	
 }

@@ -191,62 +191,82 @@ public class MovimientoDAOImpl implements MovimientoDAO {
 	//reportes
 	public Map<String, Double> obtenerResumenIngresosEgresos(Date desde, Date hasta) {
         Map<String, Double> resumen = new HashMap<>();
-        String sql = "SELECT id_tipo_movimiento, SUM(ABS(importe)) AS total " +
+        String sqlTotales = "SELECT id_tipo_movimiento, SUM(ABS(importe)) AS total " +
                      "FROM movimiento WHERE fecha BETWEEN ? AND ? " +
                      "AND id_tipo_movimiento IN (2, 3, 4, 5) GROUP BY id_tipo_movimiento";
+        
+        String sqlPromedios = "SELECT " +
+                "AVG(CASE WHEN id_tipo_movimiento IN (3, 5) THEN ABS(importe) END) AS avg_ingresos, " +
+                "AVG(CASE WHEN id_tipo_movimiento IN (2, 4) THEN ABS(importe) END) AS avg_egresos " +
+                "FROM movimiento WHERE fecha BETWEEN ? AND ?";
 
         Connection conn = Conexion.getSQLConexion();
-        PreparedStatement stmt;
-        ResultSet rs;
+        PreparedStatement stmtTotales;
+        PreparedStatement stmtPromedios;
+        ResultSet rsTotales;
+        ResultSet rsPromedios;
 
         double totalIngresos = 0, totalEgresos = 0;
-        int cantIngresos = 0, cantEgresos = 0;
         Map<Integer, Double> totalesPorTipo = new HashMap<>();
 
         try {
         	System.out.println("Ejecutando consulta con fechas: " + desde + " hasta " + hasta);
 
-            stmt = conn.prepareStatement(sql);
-            stmt.setDate(1, new java.sql.Date(desde.getTime()));
-            stmt.setDate(2, new java.sql.Date(hasta.getTime()));
-            rs = stmt.executeQuery();
+        	// Totales por tipo
+            stmtTotales = conn.prepareStatement(sqlTotales);
+            stmtTotales.setDate(1, new java.sql.Date(desde.getTime()));
+            stmtTotales.setDate(2, new java.sql.Date(hasta.getTime()));
+            rsTotales = stmtTotales.executeQuery();
 
-            while (rs.next()) {
+            while (rsTotales.next()) {
             	
-                int tipo = rs.getInt("id_tipo_movimiento");
-                double total = rs.getDouble("total");
+            	int tipo = rsTotales.getInt("id_tipo_movimiento");
+                double total = rsTotales.getDouble("total");
                 totalesPorTipo.put(tipo, total);
-                System.out.println("Tipo: " + tipo + " Total: " + total);
 
-                if (tipo == 3 || tipo == 5) { // ingresos
+                if (tipo == 3 || tipo == 5) {
                     totalIngresos += total;
-                    cantIngresos++;
-                } else if (tipo == 2 || tipo == 4) { // egresos
+                } else if (tipo == 2 || tipo == 4) {
                     totalEgresos += total;
-                    cantEgresos++;
                 }
+
+                System.out.println("Tipo: " + tipo + " Total: " + total);
+            }
+
+         // Promedios reales
+            stmtPromedios = conn.prepareStatement(sqlPromedios);
+            stmtPromedios.setDate(1, new java.sql.Date(desde.getTime()));
+            stmtPromedios.setDate(2, new java.sql.Date(hasta.getTime()));
+            rsPromedios = stmtPromedios.executeQuery();
+
+            double promedioIngresos = 0;
+            double promedioEgresos = 0;
+
+            if (rsPromedios.next()) {
+                promedioIngresos = rsPromedios.getDouble("avg_ingresos");
+                promedioEgresos = rsPromedios.getDouble("avg_egresos");
             }
 
             resumen.put("totalIngresos", totalIngresos);
             resumen.put("totalEgresos", totalEgresos);
-            resumen.put("promedioIngresos", cantIngresos > 0 ? totalIngresos / cantIngresos : 0);
-            resumen.put("promedioEgresos", cantEgresos > 0 ? totalEgresos / cantEgresos : 0);
+            resumen.put("promedioIngresos", promedioIngresos);
+            resumen.put("promedioEgresos", promedioEgresos);
 
             resumen.put("pagosPrestamo", totalesPorTipo.getOrDefault(3, 0.0));
             resumen.put("transferenciasDebito", totalesPorTipo.getOrDefault(4, 0.0));
             resumen.put("transferenciasCredito", totalesPorTipo.getOrDefault(5, 0.0));
             resumen.put("prestamosOtorgados", totalesPorTipo.getOrDefault(2, 0.0));
-            
+
             System.out.println("Totales finales:");
             System.out.println("Total ingresos: " + totalIngresos);
             System.out.println("Total egresos: " + totalEgresos);
-            System.out.println("Promedio ingresos: " + (cantIngresos > 0 ? totalIngresos / cantIngresos : 0));
-            System.out.println("Promedio egresos: " + (cantEgresos > 0 ? totalEgresos / cantEgresos : 0));
-
+            System.out.println("Promedio ingresos: " + promedioIngresos);
+            System.out.println("Promedio egresos: " + promedioEgresos);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
         return resumen;
     }

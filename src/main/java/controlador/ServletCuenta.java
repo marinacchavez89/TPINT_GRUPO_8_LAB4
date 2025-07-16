@@ -23,12 +23,17 @@ import negocioImpl.TipoCuentaNegocioImpl;
 import entidades.Cliente;
 import negocio.ClienteNegocio;
 import negocioImpl.ClienteNegocioImpl;
+import negocio.PrestamoNegocio;
+import negocioImpl.PrestamoNegocioImpl;
+
 
 @WebServlet("/ServletCuenta")
 public class ServletCuenta extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CuentaNegocio cuentaNegocio = new CuentaNegocioImpl();
 	private TipoCuentaNegocio tipoCuentaNegocio = new TipoCuentaNegocioImpl();
+	private PrestamoNegocio prestamoNegocio = new PrestamoNegocioImpl();
+	
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String filtroEstado = request.getParameter("filtroEstado");
@@ -94,19 +99,36 @@ public class ServletCuenta extends HttpServlet {
 			return;
 		}
 		if ("CambiarEstado".equals(accion)) {
-			int nroCuenta = parseInt(request.getParameter("nroCuenta"));
-			boolean exito = cuentaNegocio.cambiarEstadoCuenta(nroCuenta);
-
-			if (exito) {
-				session.setAttribute("confirmacionMensaje", "Estado de cuenta actualizado correctamente.");
-				session.setAttribute("confirmacionTipo", "success");
-			} else {
-				session.setAttribute("confirmacionMensaje", "Error al actualizar el estado de la cuenta. Verifique si ya tiene 3 cuentas activas.");
-				session.setAttribute("confirmacionTipo", "error");
-			}
-			response.sendRedirect("ServletCuenta");
-			return;
+		    int nroCuenta = Integer.parseInt(request.getParameter("nroCuenta"));
+		    Cuenta cuenta = cuentaNegocio.obtenerPorNroCuenta(nroCuenta);
+		    
+		    if (cuenta.isEstado()) { // si está activa y se quiere desactivar
+		        boolean tienePrestamos = prestamoNegocio.tienePrestamosActivosPorCuenta(nroCuenta);
+		        if (tienePrestamos) {
+		            session.setAttribute("confirmacionMensaje", "No se puede desactivar la cuenta porque tiene préstamos pendientes o autorizados.");
+		            session.setAttribute("confirmacionTipo", "error");
+		            response.sendRedirect("ServletCuenta");
+		            return;
+		        }
+		    }
+		    
+		    // invertimos estado
+		    cuenta.setEstado(!cuenta.isEstado());
+		    
+		    boolean exito = cuentaNegocio.cambiarEstadoCuenta(cuenta);
+		    
+		    if (exito) {
+		        session.setAttribute("confirmacionMensaje", "Estado de cuenta actualizado correctamente.");
+		        session.setAttribute("confirmacionTipo", "success");
+		    } else {
+		        session.setAttribute("confirmacionMensaje", "Error al actualizar el estado de la cuenta.");
+		        session.setAttribute("confirmacionTipo", "error");
+		    }
+		    
+		    response.sendRedirect("ServletCuenta");
+		    return;
 		}
+
 
 		Cuenta cuenta = new Cuenta();
 

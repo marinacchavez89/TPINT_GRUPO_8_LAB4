@@ -474,7 +474,20 @@ public class CuentaDAOImpl implements CuentaDAO {
 
 	    return lista;
 	}
-
-
+	/*1=pendiente 2 =autorizado
+	public boolean tienePrestamosActivosPorCuenta(int nroCuenta) {
+	    String sql = "SELECT COUNT(*) FROM prestamo WHERE nro_cuenta = ? AND estado IN (1, 2)";
+	    try (Connection con = Conexion.getSQLConexion();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        ps.setInt(1, nroCuenta);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}*/
 
 }

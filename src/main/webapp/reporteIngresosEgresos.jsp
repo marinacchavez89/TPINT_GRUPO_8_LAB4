@@ -38,11 +38,13 @@
 %>
 
     <div class="alert alert-info text-center">
-        <strong>Total Ingresos:</strong> $<%= String.format("%.2f", resumen.getOrDefault("totalIngresos", 0.0)) %> <br>
-        <strong>Promedio Ingresos:</strong> $<%= String.format("%.2f", resumen.getOrDefault("promedioIngresos", 0.0)) %> <br>
-        <strong>Total Egresos:</strong> $<%= String.format("%.2f", resumen.getOrDefault("totalEgresos", 0.0)) %> <br>
-        <strong>Promedio Egresos:</strong> $<%= String.format("%.2f", resumen.getOrDefault("promedioEgresos", 0.0)) %>
-    </div>
+    <h5>Resumen general del período</h5>
+    <p><strong>Suma total de ingresos realizados:</strong> $<%= String.format("%.2f", resumen.getOrDefault("totalIngresos", 0.0)) %></p>
+    <p><strong>Promedio de ingresos por operación:</strong> $<%= String.format("%.2f", resumen.getOrDefault("promedioIngresos", 0.0)) %></p>
+    <p><strong>Suma total de egresos realizados:</strong> $<%= String.format("%.2f", resumen.getOrDefault("totalEgresos", 0.0)) %></p>
+    <p><strong>Promedio de egresos por operación:</strong> $<%= String.format("%.2f", resumen.getOrDefault("promedioEgresos", 0.0)) %></p>
+</div>
+
 
     <div class="card mt-4 mb-4 shadow-sm">
         <div class="card-header bg-primary text-white">
@@ -52,25 +54,25 @@
             <div class="row text-center">
                 <div class="col-md-3 mb-3">
                     <div class="border p-3 rounded bg-light">
-                        <h6>Pagos de cuotas</h6>
+                        <h6>Total en pesos: Pagos de cuotas</h6>
                         <p class="h4 text-success">$<%= String.format("%.2f", resumen.getOrDefault("pagosPrestamo", 0.0)) %></p>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="border p-3 rounded bg-light">
-                        <h6>Transferencias debitadas</h6>
+                        <h6>Total en pesos: Transferencias debitadas</h6>
                         <p class="h4 text-danger">$<%= String.format("%.2f", resumen.getOrDefault("transferenciasDebito", 0.0)) %></p>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="border p-3 rounded bg-light">
-                        <h6>Transferencias acreditadas</h6>
+                        <h6>Total en pesos: Transferencias acreditadas</h6>
                         <p class="h4 text-success">$<%= String.format("%.2f", resumen.getOrDefault("transferenciasCredito", 0.0)) %></p>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="border p-3 rounded bg-light">
-                        <h6>Préstamos otorgados</h6>
+                        <h6>Total en pesos: Préstamos otorgados</h6>
                         <p class="h4 text-success">$<%= String.format("%.2f", resumen.getOrDefault("prestamosOtorgados", 0.0)) %></p>
                     </div>
                 </div>

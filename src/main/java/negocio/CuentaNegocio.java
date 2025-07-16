@@ -16,6 +16,8 @@ public interface CuentaNegocio {
 	public int obtenerCantidadCuentasActivas(int idCliente);
 	public List<Cuenta> obtenerXIdCliente (int idCliente);
 	public boolean cambiarEstadoCuenta(int nroCuenta);
+	boolean cambiarEstadoCuenta(Cuenta cuenta);
+
 	public List<Cuenta> listarCuentasFiltradas(Boolean estado, int idCliente);
 	public Cuenta obtenerPorCBU(String cbu);
 	public Cuenta obtenerPorNroCuenta(int nroCuenta);

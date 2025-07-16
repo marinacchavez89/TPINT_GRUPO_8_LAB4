@@ -38,12 +38,13 @@ public class ServletReporteIngresosEgresos extends HttpServlet {
 
         MovimientoNegocio movNegocio = new MovimientoNegocioImpl();
         Map<String, Double> resumen = movNegocio.obtenerResumenIngresosEgresos(fechaDesde, fechaHasta);
-        System.out.println("Resumen obtenido:");
-        /*for (Map.Entry<String, Double> entry : resumen.entrySet()) {
+
+        for (Map.Entry<String, Double> entry : resumen.entrySet()) {
             request.setAttribute(entry.getKey(), entry.getValue());
-        }*/
+        }
         request.setAttribute("resumen", resumen);
         request.getRequestDispatcher("reporteIngresosEgresos.jsp").forward(request, response);
-    }
+
+	}
 
 }

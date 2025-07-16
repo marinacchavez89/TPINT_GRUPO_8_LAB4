@@ -19,4 +19,5 @@ public interface PrestamoDAO{
 	List<Prestamo> listarAutorizados();
 	
 	boolean actualizarImporteAPagar(int idPrestamo, double importeAPagar);
+	public boolean tienePrestamosActivosPorCuenta(int nroCuenta);
 }

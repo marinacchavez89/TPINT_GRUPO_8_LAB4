@@ -17,4 +17,5 @@ public interface PrestamoNegocio {
 	boolean autorizarPrestamo(int idPrestamo, double importeAPagar);
 	boolean rechazarPrestamo (int idPrestamo);
 	boolean pagarCuota(int idCuota , int nroCuenta);
+	public boolean tienePrestamosActivosPorCuenta(int nroCuenta);
 }

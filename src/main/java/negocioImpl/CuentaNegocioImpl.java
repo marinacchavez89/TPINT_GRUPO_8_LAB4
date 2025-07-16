@@ -14,6 +14,9 @@ import entidades.TipoMovimiento;
 import negocio.CuentaNegocio;
 import negocio.MovimientoNegocio;
 import negocio.TipoCuentaNegocio;
+import negocio.PrestamoNegocio;
+import negocioImpl.PrestamoNegocioImpl;
+
 
 public class CuentaNegocioImpl implements CuentaNegocio {
 	private CuentaDAO cuentaDAO= new CuentaDAOImpl();
@@ -181,5 +184,23 @@ public class CuentaNegocioImpl implements CuentaNegocio {
 	    return stats;
 	}
 
+	@Override
+	public boolean cambiarEstadoCuenta(Cuenta cuenta) {
+		 if (!cuenta.isEstado()) {
+		        // Quiere activar la cuenta, no hace falta validación
+		        return cuentaDAO.actualizarEstadoCuenta(cuenta);
+		    }
 
+		    // Si quiere desactivarla, hay que validar que no tenga préstamos activos
+		    PrestamoNegocio prestamoNegocio = new PrestamoNegocioImpl();
+		    boolean tienePrestamosActivos = prestamoNegocio.tienePrestamosActivosPorCuenta(cuenta.getNroCuenta());
+
+		    if (tienePrestamosActivos) {
+		        return false; // No se puede desactivar
+		    }
+
+		    return cuentaDAO.actualizarEstadoCuenta(cuenta);
+	}
+
+	
 }
