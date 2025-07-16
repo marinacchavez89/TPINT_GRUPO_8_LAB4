@@ -33,9 +33,6 @@
         <a href="ServletReportePrestamos" class="list-group-item list-group-item-action d-flex align-items-center mb-2">
           <i class="bi bi-cash-coin me-2 text-info"></i> Reporte de Préstamos Autorizados
         </a>
-        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center mb-2">
-          <i class="bi bi-calendar-check me-2 text-warning"></i> Reporte de Pagos de Cuotas
-        </a>
       </div>
       <div class="text-center mt-4">
         <a href="inicioAdmin.jsp" class="btn btn-outline-secondary"> Volver

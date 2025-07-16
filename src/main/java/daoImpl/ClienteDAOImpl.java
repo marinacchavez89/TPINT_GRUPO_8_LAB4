@@ -13,7 +13,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.CuentaDAO;
+
 public class ClienteDAOImpl implements ClienteDAO {
+	
+	private CuentaDAO cuentaDAO = new CuentaDAOImpl();
 	
 	@Override
 	public boolean agregar(Cliente cliente) {
@@ -95,43 +99,47 @@ public class ClienteDAOImpl implements ClienteDAO {
 	}
 	
 	@Override
-	public boolean eliminar(int idCliente) {
-	    PreparedStatement statement = null;
-	    Connection conn = Conexion.getSQLConexion();
-	    boolean actualizado = false; // Renamed for clarity, as it's an update, not a delete
+    public boolean eliminar(int idCliente) {
+        // Verificar si el cliente tiene cuentas activas
+        int cuentasActivas = cuentaDAO.contarCuentasActivasPorCliente(idCliente);
 
-	    // SQL to logically delete the client by setting their 'estado' to FALSE
-	    String sql = "UPDATE cliente SET estado = FALSE WHERE ID_Cliente = ?";
+        if (cuentasActivas > 0) {
+            System.err.println("No se puede eliminar el cliente. Posee " + cuentasActivas + " cuenta(s) activa(s).");
+            return false;
+        }
 
-	    try {
-	        statement = conn.prepareStatement(sql);
-	        statement.setInt(1, idCliente);
+        // Si no tiene cuentas activas, se elimina el cliente
+        Connection conn = Conexion.getSQLConexion();
+        boolean eliminado = false;
+        PreparedStatement statement = null;
+        String sql = "UPDATE cliente SET estado = false WHERE id_cliente = ?";
+        try {
+            statement = conn.prepareStatement(sql);
+            statement.setInt(1, idCliente);
 
-	        // Execute the update. If more than 0 rows are affected, it was successful.
-	        if (statement.executeUpdate() > 0) {
-	            conn.commit();
-	            actualizado = true;
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        try {
-	            // Rollback the transaction in case of an error
-	            conn.rollback();
-	        } catch (SQLException ex) {
-	            ex.printStackTrace();
-	        }
-	    } finally {
-	        // It's good practice to close the statement and connection
-	        try {
-	            if (statement != null) statement.close();
-	            if (conn != null) conn.close(); // Only if you manage connections here
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
+            if (statement.executeUpdate() > 0) {
+                conn.commit();
+                eliminado = true;
+                System.out.println("Cliente dado de baja lógicamente (estado = false).");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return eliminado;
+    }
 
-	    return actualizado;
-	}
 	
 	@Override
 	public int obtenerIdXDni(String dni) {

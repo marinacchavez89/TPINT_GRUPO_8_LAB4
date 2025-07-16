@@ -237,11 +237,15 @@ public class ServletCliente extends HttpServlet {
                 break;
             case "Eliminar":
             	resultado = clienteNegocio.eliminarCliente(cliente.getIdCliente());
-                if(resultado) {
+                if (resultado) {
                     mensajeExito = "Cliente eliminado correctamente.";
                 } else {
-                    System.out.println("⚠️ No se pudo eliminar el cliente.");
-                    mensajeExito = "Error al eliminar el cliente.";
+                    // Colocamos el mensaje personalizado para SweetAlert de cuentas activas:
+                    mensajeExito = "No se pudo eliminar el cliente ya que posee cuentas activas.";
+                    session.setAttribute("confirmacionTipo", "error");
+                    session.setAttribute("confirmacionMensaje", mensajeExito);
+                    response.sendRedirect("ServletCliente");
+                    return;
                 }
                 break;
         }

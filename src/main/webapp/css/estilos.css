@@ -120,9 +120,13 @@ main {
   color: #495057;
 }
 
-.perfil-form input{
-  background-color: #e9ecef;
+.perfil-form input[disabled],
+.perfil-form select[disabled],
+.perfil-form input[readonly],
+.perfil-form select[readonly] {
+  background-color: #e9ecef; /* gris claro */
   cursor: not-allowed;
+  color: #6c757d; /* texto gris para indicar que está inhabilitado */
 }
 
 .btn-volver {

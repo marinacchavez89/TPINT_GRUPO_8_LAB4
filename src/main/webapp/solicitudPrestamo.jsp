@@ -13,12 +13,6 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
 <link href="css/estilos.css" rel="stylesheet">
-<style> 
-  .perfil-form input {
-    cursor: text !important;
-    background-color: #fff !important;
-  }
-</style>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -73,7 +67,7 @@
 
     <!-- Botones -->
     <div class="d-flex gap-2 justify-content-center mt-4 mb-5">
-      	<input type="submit" id="btnSolicitar" class="btn-solicitar" value="Solicitar">	
+      	<input type="submit" id="btnSolicitar" class="btn btn-secondary" value="Solicitar">	
       <a href="gestionPrestamos.jsp" class="btn-volver">Volver</a>
       </div>
     </form>
