@@ -45,7 +45,7 @@ public class ServletCliente extends HttpServlet {
     	
     	 String idPaisParam = request.getParameter("idPais");
          if (idPaisParam != null) {
-             // 1) Si vienen idPais, respondemos solo las <option> para provincias
+             // 1) Si vienen idPais, respondemos solo las <option> para provincias -> AJAX
              int idPais = Integer.parseInt(idPaisParam);
              List<Provincia> provincias = provinciaNegocio.obtenerPorIdPaisResidencia(idPais);
 

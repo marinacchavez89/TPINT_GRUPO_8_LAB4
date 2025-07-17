@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ page import="java.util.List, entidades.Prestamo, java.text.SimpleDateFormat, negocio.PrestamoNegocio" %>
-
+<%@ page import="java.text.NumberFormat" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +55,8 @@
       </thead>
       <tbody>
         <%
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new java.util.Locale("es", "AR"));
         List<Prestamo> listaMisPrestamos = (List<Prestamo>) request.getAttribute("misPrestamos");
 
 
@@ -66,7 +67,7 @@
   <td><%= p.getIdPrestamo()%></td>
   <td><%= p.getIdCliente() %></td>
   <td><%= (p.getFechaAlta() != null) ? sdf.format(p.getFechaAlta()) : "Sin fecha" %></td>
-  <td><%= p.getImportePedido() %></td>
+  <td><%= formatoMoneda.format(p.getImportePedido()) %></td>
   <td><%= p.getCantidadCuotas() + " cuotas" %></td>
   <td>
     <%
